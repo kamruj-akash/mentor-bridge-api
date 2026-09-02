@@ -4,6 +4,7 @@ import { authController } from "./auth.controller";
 import {
   ForgetPasswordVerifyOtpZod,
   ForgetPasswordZod,
+  LoginUserZod,
   RegisterUserZod,
   VerifyRegOtpZod,
 } from "./auth.validation";
@@ -30,5 +31,11 @@ router.post(
   dataValidationZod(ForgetPasswordVerifyOtpZod),
   authController.verifyForgetPasswordOtp,
 );
+router.post(
+  "/login",
+  dataValidationZod(LoginUserZod),
+  authController.loginUser,
+);
+router.get("/me", authController.getMe);
 
 export const AuthRoute = router;

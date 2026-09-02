@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import httpStatus from "http-status";
+import jwt from "jsonwebtoken";
 import { Role } from "../../../prisma/src/generated/prisma/enums";
 import envConfig from "../../config/env";
 import { redisClient } from "../../config/redis";
@@ -7,6 +8,7 @@ import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
 import type {
   IForgetPasswordVerifyOtp,
+  ILoginUser,
   IRegisterUser,
   IVerifyRegOtp,
 } from "./auth.interface";
@@ -14,7 +16,8 @@ import type {
 const generateOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
 const registerUser = async (payload: IRegisterUser) => {
-  const { name, email, password, role } = payload;
+  const { name, password, role } = payload;
+  const email = payload.email.trim().toLowerCase();
   const isUserExists = await prisma.user.findUnique({
     where: { email },
   });
@@ -58,7 +61,8 @@ const registerUser = async (payload: IRegisterUser) => {
 };
 
 const verifyRegOtp = async (payload: IVerifyRegOtp) => {
-  const { email, otp } = payload;
+  const { otp } = payload;
+  const email = payload.email.trim().toLowerCase();
   const storedOtp = await redisClient.get(`registerOtp:${email}`);
   if (!storedOtp) {
     throw new AppError(
@@ -103,7 +107,8 @@ const verifyRegOtp = async (payload: IVerifyRegOtp) => {
   return registerUser;
 };
 
-const forgetPassword = async (email: string) => {
+const forgetPassword = async (userEmail: string) => {
+  const email = userEmail.trim().toLowerCase();
   const isUserExists = await prisma.user.findUnique({
     where: { email },
   });
@@ -131,7 +136,15 @@ const forgetPassword = async (email: string) => {
 };
 
 const verifyForgetPasswordOtp = async (payload: IForgetPasswordVerifyOtp) => {
-  const { email, newPassword, otp } = payload;
+  const { newPassword, otp } = payload;
+  const email = payload.email.trim().toLowerCase();
+  const userData = await redisClient.get(`newUser:${email}`);
+  if (!userData) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "User data has expired, please try again",
+    );
+  }
   const storedOtp = await redisClient.get(`forgetPasswordOtp:${payload.email}`);
   if (!storedOtp) {
     throw new AppError(
@@ -157,9 +170,66 @@ const verifyForgetPasswordOtp = async (payload: IForgetPasswordVerifyOtp) => {
   return updatedUser;
 };
 
+const loginUser = async (payload: ILoginUser) => {
+  const { password } = payload;
+  const userEmail = payload.email.trim().toLowerCase();
+  const user = await prisma.user.findUnique({
+    where: { email: userEmail },
+  });
+
+  if (!user) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "User does not exist, please register",
+    );
+  }
+
+  if (!user.password && user.authProvider === "GOOGLE") {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "User does not have a password, please login with Google!",
+    );
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password!);
+  if (!isMatch) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Password is incorrect, please try again",
+    );
+  }
+
+  const jwtPayload = {
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+
+  const refreshToken = jwt.sign(jwtPayload, envConfig.jwt_refresh_secret, {
+    expiresIn: Number(envConfig.jwt_refresh_expires_in),
+  });
+
+  const accessToken = jwt.sign(jwtPayload, envConfig.jwt_access_secret, {
+    expiresIn: Number(envConfig.jwt_access_expires_in),
+  });
+
+  return { refreshToken, accessToken };
+};
+
+const getMe = async (user: any) => {
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: { id: user.userId },
+  });
+
+  return userData;
+};
+
 export const authService = {
   registerUser,
   verifyRegOtp,
   forgetPassword,
   verifyForgetPasswordOtp,
+  loginUser,
+  getMe,
 };
