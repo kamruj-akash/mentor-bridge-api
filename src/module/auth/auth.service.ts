@@ -225,6 +225,11 @@ const loginUser = async (payload: ILoginUser) => {
 const getMe = async (user: any) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: { id: user.userId },
+    omit: { password: true },
+    include: {
+      student: true,
+      mentor: true,
+    },
   });
 
   return userData;

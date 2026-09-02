@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, {
   type Application,
@@ -10,8 +11,14 @@ import { AuthRoute } from "./module/auth/auth.route";
 
 const app: Application = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/auth", AuthRoute);
