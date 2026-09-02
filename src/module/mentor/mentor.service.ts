@@ -45,7 +45,10 @@ const registerMentor = async (payload: IRegisterMentor) => {
   return;
 };
 
-const verifyMentor = async (payload: IVerifyMentor) => {
+const verifyMentor = async (
+  payload: IVerifyMentor,
+  documents: Express.Multer.File,
+) => {
   const { email: otpEmail, otp } = payload;
   const userKey = `mentorRegister:${otpEmail}`;
   const otpKey = `mentorRegisterOtp:${otpEmail}`;
@@ -74,6 +77,8 @@ const verifyMentor = async (payload: IVerifyMentor) => {
       "User already exists, user another email!",
     );
   }
+
+  // const uploadedDocument = await r2
 
   const user = await prisma.user.create({
     data: {

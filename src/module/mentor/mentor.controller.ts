@@ -14,4 +14,9 @@ const registerMentor = catchAsync(async (req, res) => {
   });
 });
 
+const verifyMentor = catchAsync(async (req, res) => {
+  const documents = req.file;
+  const result = await mentorService.verifyMentor(req.body, documents);
+});
+
 export const mentorController = { registerMentor };
