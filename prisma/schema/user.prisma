@@ -8,10 +8,10 @@ model User {
   emailVerified      Boolean      @default(false)
   status             UserStatus   @default(ACTIVE)
   needPasswordChange Boolean      @default(false)
-  imageUrl           String       @default("")
-  imagePublicId      String       @default("")
+  imageUrl           Json?       
   isDeleted          Boolean      @default(false)
   deletedAt          DateTime?
+  role               Role         @default(STUDENT)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
