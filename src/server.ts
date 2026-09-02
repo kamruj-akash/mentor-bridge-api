@@ -1,4 +1,5 @@
 import app from "./app";
+import envConfig from "./config/env";
 import { redisClient } from "./config/redis";
 
 const PORT = process.env.PORT || 4000;
@@ -11,16 +12,19 @@ async function server() {
       console.log(`Server is running on port http://localhost:${PORT}`);
     });
 
-    const shutdown = async () => {
-      httpServer.close();
-      await redisClient.quit();
-      process.exit(0);
-    };
+    if (envConfig.node_env !== "development") {
+      const shutdown = async () => {
+        httpServer.close();
+        await redisClient.quit();
+        process.exit(0);
+      };
 
-    process.on("SIGINT", shutdown);
-    process.on("SIGTERM", shutdown);
+      process.on("SIGINT", shutdown);
+      process.on("SIGTERM", shutdown);
+    }
   } catch (error) {
     console.error("Error in main function:", error);
+    await redisClient.quit();
     process.exit(1);
   }
 }

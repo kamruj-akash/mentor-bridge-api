@@ -6,3 +6,23 @@ export interface IRegisterUser {
   password: string;
   role?: Role;
 }
+
+export interface IVerifyRegOtp {
+  email: string;
+  otp: string;
+}
+
+export interface ILoginUser {
+  email: string;
+  password: string;
+}
+
+export interface IGLogin {
+  idToken: string;
+}
+
+export interface IForgetPasswordVerifyOtp {
+  email: string;
+  newPassword: string;
+  otp: string;
+}
