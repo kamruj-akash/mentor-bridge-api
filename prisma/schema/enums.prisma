@@ -1,0 +1,36 @@
+enum AuthProvider {
+    CREDENTIAL
+    GOOGLE
+}
+
+enum UserStatus {
+    ACTIVE
+    BLOCK
+}
+
+enum Role {
+  STUDENT
+  MENTOR
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  INITIATED
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum EscrowStatus {
+  HELD
+  RELEASED_TO_MENTOR
+  REFUNDED_TO_STUDENT
+}
