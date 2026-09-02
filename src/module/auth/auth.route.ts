@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { Role } from "../../../prisma/src/generated/prisma/enums";
+import { auth } from "../../middleware/authCheck";
 import { dataValidationZod } from "../../middleware/validation";
 import { authController } from "./auth.controller";
 import {
@@ -16,26 +18,35 @@ router.post(
   dataValidationZod(RegisterUserZod),
   authController.registerUser,
 );
+
 router.post(
   "/verify-register",
   dataValidationZod(VerifyRegOtpZod),
   authController.verifyRegOtp,
 );
+
 router.post(
   "/forget-password",
   dataValidationZod(ForgetPasswordZod),
   authController.forgetPassword,
 );
+
 router.post(
   "/verify-forget-password-otp",
   dataValidationZod(ForgetPasswordVerifyOtpZod),
   authController.verifyForgetPasswordOtp,
 );
+
 router.post(
   "/login",
   dataValidationZod(LoginUserZod),
   authController.loginUser,
 );
-router.get("/me", authController.getMe);
+
+router.get(
+  "/me",
+  auth(Role.STUDENT, Role.ADMIN, Role.STUDENT),
+  authController.getMe,
+);
 
 export const AuthRoute = router;

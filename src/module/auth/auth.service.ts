@@ -1,11 +1,12 @@
 import bcrypt from "bcryptjs";
 import httpStatus from "http-status";
-import jwt from "jsonwebtoken";
+import { type SignOptions } from "jsonwebtoken";
 import { Role } from "../../../prisma/src/generated/prisma/enums";
 import envConfig from "../../config/env";
 import { redisClient } from "../../config/redis";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
+import { jwtUtils } from "../../utils/jwt";
 import type {
   IForgetPasswordVerifyOtp,
   ILoginUser,
@@ -206,13 +207,17 @@ const loginUser = async (payload: ILoginUser) => {
     role: user.role,
   };
 
-  const refreshToken = jwt.sign(jwtPayload, envConfig.jwt_refresh_secret, {
-    expiresIn: Number(envConfig.jwt_refresh_expires_in),
-  });
+  const refreshToken = jwtUtils.createToken(
+    jwtPayload,
+    envConfig.jwt_refresh_secret,
+    envConfig.jwt_refresh_expires_in as SignOptions,
+  );
 
-  const accessToken = jwt.sign(jwtPayload, envConfig.jwt_access_secret, {
-    expiresIn: Number(envConfig.jwt_access_expires_in),
-  });
+  const accessToken = jwtUtils.createToken(
+    jwtPayload,
+    envConfig.jwt_access_secret,
+    envConfig.jwt_access_expires_in as SignOptions,
+  );
 
   return { refreshToken, accessToken };
 };

@@ -12,6 +12,7 @@ model User {
   isDeleted          Boolean      @default(false)
   deletedAt          DateTime?
   role               Role         @default(STUDENT)
+  phoneNo             String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
