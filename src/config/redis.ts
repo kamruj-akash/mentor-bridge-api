@@ -1,22 +1,11 @@
-import { RedisClient } from "bun";
+import { createClient } from "redis";
+import envConfig from "./env";
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
-
-export const redis = new RedisClient(REDIS_URL);
-
-redis.onconnect = () => {
-  console.log("Redis connected");
-};
-
-redis.onclose = (error) => {
-  console.error("Redis connection closed:", error?.message ?? error);
-};
-
-export async function connectRedis() {
-  await redis.connect();
-  return redis;
-}
-
-export async function disconnectRedis() {
-  redis.close();
-}
+export const redisClient = createClient({
+  username: envConfig.redis_user,
+  password: envConfig.redis_pass,
+  socket: {
+    host: envConfig.redis_host,
+    port: Number(envConfig.redis_port),
+  },
+});

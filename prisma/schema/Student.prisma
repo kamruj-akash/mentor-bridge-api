@@ -1,0 +1,10 @@
+model Student {
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution String?
+  targetExam  String?
+  //   bookings       SessionBooking[]
+
+  @@map("students")
+}

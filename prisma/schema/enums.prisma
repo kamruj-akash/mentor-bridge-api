@@ -1,11 +1,11 @@
 enum AuthProvider {
-    CREDENTIAL
-    GOOGLE
+  CREDENTIAL
+  GOOGLE
 }
 
 enum UserStatus {
-    ACTIVE
-    BLOCK
+  ACTIVE
+  BLOCK
 }
 
 enum Role {

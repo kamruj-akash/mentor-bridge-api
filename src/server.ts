@@ -1,11 +1,11 @@
 import app from "./app";
-import { connectRedis, disconnectRedis } from "./config/redis";
+import { redisClient } from "./config/redis";
 
 const PORT = process.env.PORT || 4000;
 
 async function server() {
   try {
-    await connectRedis();
+    await redisClient.connect();
 
     const httpServer = app.listen(PORT, () => {
       console.log(`Server is running on port http://localhost:${PORT}`);
@@ -13,7 +13,7 @@ async function server() {
 
     const shutdown = async () => {
       httpServer.close();
-      await disconnectRedis();
+      await redisClient.quit();
       process.exit(0);
     };
 
