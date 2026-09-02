@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-import type { JwtPayload } from "jsonwebtoken";
+import type { JwtPayload, SignOptions } from "jsonwebtoken";
 import { UserStatus, type Role } from "../../prisma/src/generated/prisma/enums";
 import envConfig from "../config/env";
 import { prisma } from "../lib/prisma";
@@ -29,17 +29,46 @@ declare global {
 export const auth = (...requiredRoles: Role[]) => {
   return catchAsync(
     async (req: Request, _res: Response, next: NextFunction) => {
-      const token = req.cookies?.accessToken
+      let token = req.cookies?.accessToken
         ? req.cookies.accessToken
         : req.headers.authorization?.startsWith("Bearer ")
           ? req.headers.authorization?.split(" ")[1]
           : req.headers.authorization;
+      const refreshToken = req.cookies.refreshToken;
 
       if (!token) {
-        throw new AppError(
-          httpStatus.UNAUTHORIZED,
-          "You are not logged in. Please log in to access this resource.",
+        if (!refreshToken) {
+          throw new AppError(
+            httpStatus.UNAUTHORIZED,
+            "You are not logged in. Please log in to access this resource.",
+          );
+        }
+        const verifyRefreshToken = jwtUtils.verifyToken(
+          refreshToken,
+          envConfig.jwt_refresh_secret,
         );
+
+        if (!verifyRefreshToken.success) {
+          throw new AppError(httpStatus.UNAUTHORIZED, verifyRefreshToken.error);
+        }
+
+        const jwtPayload = verifyRefreshToken.data as JwtPayload;
+        const { iat, exp, ...cleanPayload } = jwtPayload;
+
+        const newAccessToken = jwtUtils.createToken(
+          cleanPayload,
+          envConfig.jwt_access_secret,
+          envConfig.jwt_access_expires_in as SignOptions,
+        );
+
+        _res.cookie("accessToken", newAccessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "production",
+          sameSite: "none",
+          maxAge: 15 * 60 * 1000, // 15 minutes
+        });
+
+        token = newAccessToken;
       }
 
       const verifiedToken = jwtUtils.verifyToken(
