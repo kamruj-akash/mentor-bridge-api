@@ -11,6 +11,9 @@ model Expert {
   walletBalance Float   @default(0.0)
   verificationStatus ExpertVerificationStatus @default(PENDING)
   rejectionReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   @@index([university, isVerified, verificationStatus])
   @@map("experts")

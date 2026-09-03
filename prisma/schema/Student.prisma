@@ -6,5 +6,8 @@ model Student {
   academicLevel String?
   //   assignments    Assignment[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("students")
 }

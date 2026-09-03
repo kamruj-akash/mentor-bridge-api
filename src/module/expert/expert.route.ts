@@ -19,5 +19,6 @@ router.post(
   upload.fields([{ name: "documents", maxCount: 5 }]),
   expertController.studentRegisterExpert,
 );
+router.get("/get-all", auth(Role.ADMIN), expertController.getAllExperts);
 
 export const ExpertRoute = router;

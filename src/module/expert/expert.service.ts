@@ -5,7 +5,9 @@ import {
   ExpertVerificationStatus,
   Role,
 } from "../../../prisma/src/generated/prisma/enums";
+import type { ExpertWhereInput } from "../../../prisma/src/generated/prisma/models";
 import { redisClient } from "../../config/redis";
+import type { IQuery } from "../../interface";
 import cloudinary from "../../lib/cloudinary";
 import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/authCheck";
@@ -142,6 +144,7 @@ const verifyExpert = async (
       password: true,
     },
     include: {
+      user: { omit: { password: true } },
       expert: true,
     },
   });
@@ -150,90 +153,6 @@ const verifyExpert = async (
   await redisClient.del(otpKey);
 
   return user;
-};
-
-const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
-  let { expertId, status, reason } = payload;
-  status = status.toUpperCase();
-  if (!status || !expertId) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "Expert ID and status are required",
-    );
-  }
-  if (user.role !== Role.ADMIN) {
-    throw new AppError(
-      httpStatus.FORBIDDEN,
-      "You are not authorized to approve expert",
-    );
-  }
-
-  if (
-    status !== ExpertVerificationStatus.APPROVE &&
-    status !== ExpertVerificationStatus.REJECT
-  ) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "Invalid status, must be either APPROVE or REJECT",
-    );
-  }
-  const isExpertExist = await prisma.expert.findUnique({
-    where: { id: expertId },
-    include: {
-      user: true,
-    },
-  });
-
-  if (!isExpertExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "Expert not found");
-  }
-  if (isExpertExist.verificationStatus !== ExpertVerificationStatus.PENDING) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "Expert is already verified or rejected",
-    );
-  }
-
-  if (status === ExpertVerificationStatus.REJECT && !reason) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "Reason is required when rejecting an expert",
-    );
-  }
-
-  const updatedExpertTx = await prisma.$transaction(async (tx) => {
-    if (
-      isExpertExist.user.role === Role.STUDENT &&
-      status === ExpertVerificationStatus.REJECT
-    ) {
-      await tx.student.delete({
-        where: { userId: isExpertExist.userId },
-      });
-    }
-
-    if (status === ExpertVerificationStatus.REJECT) {
-      const updatedExpert = await tx.expert.update({
-        where: { id: expertId },
-        data: {
-          isVerified: false,
-          verificationStatus: ExpertVerificationStatus.REJECT,
-          rejectionReason: reason || "No reason provided",
-        },
-      });
-      return updatedExpert;
-    }
-
-    if (status === ExpertVerificationStatus.APPROVE) {
-      const updatedExpert = await tx.expert.update({
-        where: { id: expertId },
-        data: {
-          isVerified: true,
-          verificationStatus: ExpertVerificationStatus.APPROVE,
-        },
-      });
-      return updatedExpert;
-    }
-  });
 };
 
 const studentRegisterExpert = async (
@@ -275,6 +194,7 @@ const studentRegisterExpert = async (
       });
     }),
   );
+
   if (uploadedDocuments.length === 0) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -288,6 +208,7 @@ const studentRegisterExpert = async (
       department,
       ratePerAssignment,
       bio: bio || null,
+      isVerified: false,
       verificationStatus: ExpertVerificationStatus.PENDING,
       documents: uploadedDocuments.map((doc) => ({
         url: doc.secure_url,
@@ -298,9 +219,155 @@ const studentRegisterExpert = async (
   return registeredExpert;
 };
 
+const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
+  let { expertId, status, reason } = payload;
+  status = status.toUpperCase();
+  if (!status || !expertId) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Expert ID and status are required",
+    );
+  }
+  if (user.role !== Role.ADMIN) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to approve expert",
+    );
+  }
+
+  if (
+    status !== ExpertVerificationStatus.APPROVE &&
+    status !== ExpertVerificationStatus.REJECT
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Invalid status, must be either APPROVE or REJECT",
+    );
+  }
+  const isExpertExist = await prisma.expert.findUnique({
+    where: { id: expertId },
+    include: {
+      user: { omit: { password: true } },
+    },
+  });
+
+  if (!isExpertExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Expert not found");
+  }
+  if (isExpertExist.verificationStatus !== ExpertVerificationStatus.PENDING) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Expert is already verified or rejected",
+    );
+  }
+
+  if (status === ExpertVerificationStatus.REJECT && !reason) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Reason is required when rejecting an expert",
+    );
+  }
+
+  const updatedExpert = await prisma.$transaction(async (tx) => {
+    if (status === ExpertVerificationStatus.REJECT) {
+      return tx.expert.update({
+        where: { id: expertId },
+        data: {
+          isVerified: false,
+          verificationStatus: ExpertVerificationStatus.REJECT,
+          rejectionReason: reason || "No reason provided",
+        },
+      });
+    }
+
+    const expert = await tx.expert.update({
+      where: { id: expertId },
+      data: {
+        isVerified: true,
+        verificationStatus: ExpertVerificationStatus.APPROVE,
+      },
+    });
+
+    await tx.user.update({
+      where: { id: isExpertExist.userId },
+      data: { role: Role.EXPERT },
+    });
+
+    await tx.student.delete({
+      where: { userId: isExpertExist.userId },
+    });
+
+    return expert;
+  });
+
+  return updatedExpert;
+};
+
+const SORTABLE_FIELDS = [
+  "ratePerAssignment",
+  "university",
+  "department",
+  "walletBalance",
+];
+
+const getAllExperts = async (query: IQuery, user: RequestUser) => {
+  const { sortBy, sortOrder, searchTerm } = query;
+  const status = query.status && query.status.toUpperCase();
+
+  const page = Math.max(1, Number(query.page) || 1);
+  const limit = Math.min(100, Math.max(1, Number(query.limit) || 10));
+  const order = String(sortOrder).toLowerCase() === "asc" ? "asc" : "desc";
+
+  const ANDConditions: ExpertWhereInput[] = [
+    { verificationStatus: status ?? ExpertVerificationStatus.PENDING },
+  ];
+
+  if (searchTerm) {
+    ANDConditions.push({
+      OR: [
+        { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+        { user: { email: { contains: searchTerm, mode: "insensitive" } } },
+      ],
+    });
+  }
+
+  const experts = await prisma.expert.findMany({
+    where: { AND: ANDConditions },
+    select: {
+      id: true,
+      isVerified: true,
+      ratePerAssignment: true,
+      verificationStatus: true,
+      user: { select: { id: true, name: true, email: true } },
+    },
+    // include: { user: { select: { id: true, name: true, email: true } } },
+
+    orderBy: SORTABLE_FIELDS.includes(sortBy as string)
+      ? { [sortBy as string]: order }
+      : { user: { createdAt: order } },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  const totalExperts = await prisma.expert.count({
+    where: { AND: ANDConditions },
+  });
+
+  return {
+    experts,
+    meta: {
+      page,
+      limit,
+      totalExperts,
+      totalPages: Math.ceil(totalExperts / limit),
+    },
+  };
+};
+
 export const expertService = {
   registerExpert,
   verifyExpert,
   approveExpert,
   studentRegisterExpert,
+  getAllExperts,
 };
