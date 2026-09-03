@@ -303,20 +303,13 @@ const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
   return updatedExpert;
 };
 
-const SORTABLE_FIELDS = [
-  "ratePerAssignment",
-  "university",
-  "department",
-  "walletBalance",
-];
-
 const getAllExperts = async (query: IQuery, user: RequestUser) => {
-  const { sortBy, sortOrder, searchTerm } = query;
   const status = query.status && query.status.toUpperCase();
-
-  const page = Math.max(1, Number(query.page) || 1);
-  const limit = Math.min(100, Math.max(1, Number(query.limit) || 10));
-  const order = String(sortOrder).toLowerCase() === "asc" ? "asc" : "desc";
+  const searchTerm = query.searchTerm || "";
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const sortBy = query.sortBy || "createdAt";
+  const sortOrder = query.sortOrder || "asc";
 
   const ANDConditions: ExpertWhereInput[] = [
     { verificationStatus: status ?? ExpertVerificationStatus.PENDING },
@@ -340,11 +333,9 @@ const getAllExperts = async (query: IQuery, user: RequestUser) => {
       verificationStatus: true,
       user: { select: { id: true, name: true, email: true } },
     },
-    // include: { user: { select: { id: true, name: true, email: true } } },
-
-    orderBy: SORTABLE_FIELDS.includes(sortBy as string)
-      ? { [sortBy as string]: order }
-      : { user: { createdAt: order } },
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
     skip: (page - 1) * limit,
     take: limit,
   });
