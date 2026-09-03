@@ -46,4 +46,27 @@ const approveExpert = catchAsync(async (req, res) => {
   });
 });
 
-export const expertController = { registerExpert, verifyExpert, approveExpert };
+const studentRegisterExpert = catchAsync(async (req, res) => {
+  const files = req.files as Record<string, Express.Multer.File[]>;
+  const documents = files?.documents?.map((file: any) => file) ?? [];
+  const payload = req.body;
+  const user = req.user as RequestUser;
+  const result = await expertService.studentRegisterExpert(
+    payload,
+    documents,
+    user,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Expert registered successfully, please wait for approval!",
+    data: result,
+  });
+});
+
+export const expertController = {
+  registerExpert,
+  verifyExpert,
+  approveExpert,
+  studentRegisterExpert,
+};

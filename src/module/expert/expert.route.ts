@@ -13,5 +13,11 @@ router.post(
   expertController.verifyExpert,
 );
 router.post("/approve", auth(Role.ADMIN), expertController.approveExpert);
+router.post(
+  "/student-register",
+  auth(Role.STUDENT),
+  upload.fields([{ name: "documents", maxCount: 5 }]),
+  expertController.studentRegisterExpert,
+);
 
 export const ExpertRoute = router;

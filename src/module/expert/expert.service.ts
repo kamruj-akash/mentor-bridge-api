@@ -13,6 +13,7 @@ import { AppError } from "../../utils/AppError";
 import type {
   IApproveExpert,
   IRegisterExpert,
+  IStudentRegisterExpert,
   IVerifyExpert,
 } from "./expert.interface";
 
@@ -221,8 +222,71 @@ const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
   }
 };
 
+const studentRegisterExpert = async (
+  payload: IStudentRegisterExpert,
+  documents: Express.Multer.File[],
+  user: RequestUser,
+) => {
+  const { university, department, ratePerAssignment, bio } = payload;
+  const isUserExist = await prisma.user.findUnique({
+    where: { id: user.userId, role: Role.STUDENT },
+  });
+  if (isUserExist && isUserExist?.role !== Role.STUDENT) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to register as an expert",
+    );
+  }
+
+  const uploadedDocuments = await Promise.all(
+    documents.map((doc) => {
+      return new Promise<UploadApiResponse>((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { resource_type: "auto", folder: "expert-documents" },
+            (error, result) => {
+              if (error) {
+                return reject(error);
+              }
+              if (!result) {
+                throw new AppError(
+                  httpStatus.INTERNAL_SERVER_ERROR,
+                  "Failed to upload document",
+                );
+              }
+              resolve(result);
+            },
+          )
+          .end(doc.buffer);
+      });
+    }),
+  );
+  if (uploadedDocuments.length === 0) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "At least one document is required for verification",
+    );
+  }
+  const registeredExpert = await prisma.expert.create({
+    data: {
+      userId: user.userId,
+      university,
+      department,
+      ratePerAssignment,
+      bio: bio || null,
+      verificationStatus: ExpertVerificationStatus.PENDING,
+      documents: uploadedDocuments.map((doc) => ({
+        url: doc.secure_url,
+        publicId: doc.public_id,
+      })),
+    },
+  });
+  return registeredExpert;
+};
+
 export const expertService = {
   registerExpert,
   verifyExpert,
   approveExpert,
+  studentRegisterExpert,
 };

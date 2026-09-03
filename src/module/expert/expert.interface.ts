@@ -18,3 +18,10 @@ export interface IApproveExpert {
   reason?: string;
   expertId: string;
 }
+
+export interface IStudentRegisterExpert {
+  university: string;
+  department: string;
+  ratePerAssignment: number;
+  bio?: string;
+}
