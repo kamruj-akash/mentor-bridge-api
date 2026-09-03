@@ -12,3 +12,9 @@ export interface IVerifyMentor {
   hourlyRate: number;
   bio: string;
 }
+
+export interface IApproveMentor {
+  status: string;
+  reason?: string;
+  mentorId: string;
+}

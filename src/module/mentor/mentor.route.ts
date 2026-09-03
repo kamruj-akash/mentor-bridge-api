@@ -12,10 +12,6 @@ router.post(
   upload.fields([{ name: "documents", maxCount: 5 }]),
   mentorController.verifyMentor,
 );
-router.post(
-  "/approve/:mentorId",
-  auth(Role.ADMIN),
-  mentorController.approveMentor,
-);
+router.post("/approve", auth(Role.ADMIN), mentorController.approveMentor);
 
 export const MentorRoute = router;

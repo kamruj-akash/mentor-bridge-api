@@ -31,9 +31,13 @@ const verifyMentor = catchAsync(async (req, res) => {
 });
 
 const approveMentor = catchAsync(async (req, res) => {
-  const { mentorId } = req.params as { mentorId: string };
+  const payload = req.body as {
+    status: string;
+    reason?: string;
+    mentorId: string;
+  };
   const user = req.user as RequestUser;
-  await mentorService.approveMentor(mentorId, user);
+  await mentorService.approveMentor(payload, user);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

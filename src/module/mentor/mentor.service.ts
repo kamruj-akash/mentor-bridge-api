@@ -10,7 +10,11 @@ import cloudinary from "../../lib/cloudinary";
 import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/authCheck";
 import { AppError } from "../../utils/AppError";
-import type { IRegisterMentor, IVerifyMentor } from "./mentor.interface";
+import type {
+  IApproveMentor,
+  IRegisterMentor,
+  IVerifyMentor,
+} from "./mentor.interface";
 
 const generateOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
@@ -147,7 +151,31 @@ const verifyMentor = async (
   return user;
 };
 
-const approveMentor = async (mentorId: string, user: RequestUser) => {
+const approveMentor = async (payload: IApproveMentor, user: RequestUser) => {
+  let { mentorId, status, reason } = payload;
+  status = status.toUpperCase();
+  if (!status || !mentorId) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Mentor ID and status are required",
+    );
+  }
+  if (user.role !== Role.ADMIN) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to approve mentor",
+    );
+  }
+
+  if (
+    status !== MentorVerificationStatus.APPROVE &&
+    status !== MentorVerificationStatus.REJECT
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Invalid status, must be either APPROVE or REJECT",
+    );
+  }
   const isMentorExist = await prisma.mentor.findUnique({
     where: { id: mentorId },
   });
@@ -161,21 +189,36 @@ const approveMentor = async (mentorId: string, user: RequestUser) => {
       "Mentor is already verified or rejected",
     );
   }
-  if (user.role !== Role.ADMIN) {
+
+  if (status === MentorVerificationStatus.REJECT && !reason) {
     throw new AppError(
-      httpStatus.FORBIDDEN,
-      "You are not authorized to approve mentor",
+      httpStatus.BAD_REQUEST,
+      "Reason is required when rejecting a mentor",
     );
   }
-  const updatedMentor = await prisma.mentor.update({
-    where: { id: mentorId },
-    data: {
-      isVerified: true,
-      verificationStatus: MentorVerificationStatus.APPROVE,
-    },
-  });
 
-  return updatedMentor;
+  if (status === MentorVerificationStatus.REJECT) {
+    const updatedMentor = await prisma.mentor.update({
+      where: { id: mentorId },
+      data: {
+        isVerified: false,
+        verificationStatus: MentorVerificationStatus.REJECT,
+        rejectionReason: reason || "No reason provided",
+      },
+    });
+    return updatedMentor;
+  }
+
+  if (status === MentorVerificationStatus.APPROVE) {
+    const updatedMentor = await prisma.mentor.update({
+      where: { id: mentorId },
+      data: {
+        isVerified: true,
+        verificationStatus: MentorVerificationStatus.APPROVE,
+      },
+    });
+    return updatedMentor;
+  }
 };
 
 export const mentorService = {

@@ -91,8 +91,9 @@ export const MentorScalarFieldEnum = {
   bio: 'bio',
   hourlyRate: 'hourlyRate',
   isVerified: 'isVerified',
+  walletBalance: 'walletBalance',
   verificationStatus: 'verificationStatus',
-  walletBalance: 'walletBalance'
+  rejectionReason: 'rejectionReason'
 } as const
 
 export type MentorScalarFieldEnum = (typeof MentorScalarFieldEnum)[keyof typeof MentorScalarFieldEnum]

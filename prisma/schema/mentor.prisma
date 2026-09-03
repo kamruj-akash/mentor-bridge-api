@@ -8,8 +8,10 @@ model Mentor {
   bio           String?
   hourlyRate    Float
   isVerified    Boolean @default(false)
-  verificationStatus MentorVerificationStatus
   walletBalance Float   @default(0.0)
+  verificationStatus MentorVerificationStatus @default(PENDING)
+  rejectionReason String?
+  
 
   //   slots          AvailabilitySlot[]
   //   expertises     MentorExpertise[]
