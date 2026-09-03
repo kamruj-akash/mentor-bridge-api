@@ -15,8 +15,17 @@ const registerMentor = catchAsync(async (req, res) => {
 });
 
 const verifyMentor = catchAsync(async (req, res) => {
-  const documents = req.file;
+  const files = req.files as Record<string, Express.Multer.File[]>;
+  const documents = files?.documents?.map((file: any) => file);
+
   const result = await mentorService.verifyMentor(req.body, documents);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Mentor verified successfully",
+    data: null,
+  });
 });
 
-export const mentorController = { registerMentor };
+export const mentorController = { registerMentor, verifyMentor };

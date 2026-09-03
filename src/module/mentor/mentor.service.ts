@@ -47,7 +47,7 @@ const registerMentor = async (payload: IRegisterMentor) => {
 
 const verifyMentor = async (
   payload: IVerifyMentor,
-  documents: Express.Multer.File,
+  documents: Express.Multer.File[],
 ) => {
   const { email: otpEmail, otp } = payload;
   const userKey = `mentorRegister:${otpEmail}`;
