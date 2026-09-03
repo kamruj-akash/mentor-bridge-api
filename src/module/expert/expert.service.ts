@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import type { UploadApiResponse } from "cloudinary";
 import httpStatus from "http-status";
 import {
-  MentorVerificationStatus,
+  ExpertVerificationStatus,
   Role,
 } from "../../../prisma/src/generated/prisma/enums";
 import { redisClient } from "../../config/redis";
@@ -11,14 +11,14 @@ import { prisma } from "../../lib/prisma";
 import type { RequestUser } from "../../middleware/authCheck";
 import { AppError } from "../../utils/AppError";
 import type {
-  IApproveMentor,
-  IRegisterMentor,
-  IVerifyMentor,
-} from "./mentor.interface";
+  IApproveExpert,
+  IRegisterExpert,
+  IVerifyExpert,
+} from "./expert.interface";
 
 const generateOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
-const registerMentor = async (payload: IRegisterMentor) => {
+const registerExpert = async (payload: IRegisterExpert) => {
   const { name, email, password: payloadPass } = payload;
   const isUserExist = await prisma.user.findUnique({
     where: { email },
@@ -30,8 +30,8 @@ const registerMentor = async (payload: IRegisterMentor) => {
       "User already exists, user another email!",
     );
   }
-  const userKey = `mentorRegister:${email}`;
-  const otpKey = `mentorRegisterOtp:${email}`;
+  const userKey = `expertRegister:${email}`;
+  const otpKey = `expertRegisterOtp:${email}`;
   const storedUser = await redisClient.set(
     userKey,
     JSON.stringify({
@@ -55,13 +55,13 @@ const registerMentor = async (payload: IRegisterMentor) => {
   return;
 };
 
-const verifyMentor = async (
-  payload: IVerifyMentor,
+const verifyExpert = async (
+  payload: IVerifyExpert,
   documents: Express.Multer.File[],
 ) => {
   const { email: otpEmail, otp } = payload;
-  const userKey = `mentorRegister:${otpEmail}`;
-  const otpKey = `mentorRegisterOtp:${otpEmail}`;
+  const userKey = `expertRegister:${otpEmail}`;
+  const otpKey = `expertRegisterOtp:${otpEmail}`;
   const storedUser = await redisClient.get(userKey);
   const storedOtp = await redisClient.get(otpKey);
 
@@ -95,7 +95,7 @@ const verifyMentor = async (
           .upload_stream(
             {
               resource_type: "auto",
-              folder: "mentor-documents",
+              folder: "expert-documents",
             },
             async (error, result) => {
               if (error) {
@@ -120,19 +120,19 @@ const verifyMentor = async (
       name,
       email,
       password,
-      role: Role.MENTOR,
+      role: Role.EXPERT,
       emailVerified: true,
-      mentor: {
+      expert: {
         create: {
           documents: uploadedDocument.map((doc) => ({
             url: doc.secure_url,
             publicId: doc.public_id,
           })),
           department: payload.department,
-          hourlyRate: payload.hourlyRate,
+          ratePerAssignment: payload.ratePerAssignment,
           university: payload.university,
           isVerified: false,
-          verificationStatus: MentorVerificationStatus.PENDING,
+          verificationStatus: ExpertVerificationStatus.PENDING,
           bio: payload?.bio || null,
         },
       },
@@ -141,7 +141,7 @@ const verifyMentor = async (
       password: true,
     },
     include: {
-      mentor: true,
+      expert: true,
     },
   });
 
@@ -151,78 +151,78 @@ const verifyMentor = async (
   return user;
 };
 
-const approveMentor = async (payload: IApproveMentor, user: RequestUser) => {
-  let { mentorId, status, reason } = payload;
+const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
+  let { expertId, status, reason } = payload;
   status = status.toUpperCase();
-  if (!status || !mentorId) {
+  if (!status || !expertId) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Mentor ID and status are required",
+      "Expert ID and status are required",
     );
   }
   if (user.role !== Role.ADMIN) {
     throw new AppError(
       httpStatus.FORBIDDEN,
-      "You are not authorized to approve mentor",
+      "You are not authorized to approve expert",
     );
   }
 
   if (
-    status !== MentorVerificationStatus.APPROVE &&
-    status !== MentorVerificationStatus.REJECT
+    status !== ExpertVerificationStatus.APPROVE &&
+    status !== ExpertVerificationStatus.REJECT
   ) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       "Invalid status, must be either APPROVE or REJECT",
     );
   }
-  const isMentorExist = await prisma.mentor.findUnique({
-    where: { id: mentorId },
+  const isExpertExist = await prisma.expert.findUnique({
+    where: { id: expertId },
   });
 
-  if (!isMentorExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "Mentor not found");
+  if (!isExpertExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Expert not found");
   }
-  if (isMentorExist.verificationStatus !== MentorVerificationStatus.PENDING) {
+  if (isExpertExist.verificationStatus !== ExpertVerificationStatus.PENDING) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Mentor is already verified or rejected",
+      "Expert is already verified or rejected",
     );
   }
 
-  if (status === MentorVerificationStatus.REJECT && !reason) {
+  if (status === ExpertVerificationStatus.REJECT && !reason) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Reason is required when rejecting a mentor",
+      "Reason is required when rejecting an expert",
     );
   }
 
-  if (status === MentorVerificationStatus.REJECT) {
-    const updatedMentor = await prisma.mentor.update({
-      where: { id: mentorId },
+  if (status === ExpertVerificationStatus.REJECT) {
+    const updatedExpert = await prisma.expert.update({
+      where: { id: expertId },
       data: {
         isVerified: false,
-        verificationStatus: MentorVerificationStatus.REJECT,
+        verificationStatus: ExpertVerificationStatus.REJECT,
         rejectionReason: reason || "No reason provided",
       },
     });
-    return updatedMentor;
+    return updatedExpert;
   }
 
-  if (status === MentorVerificationStatus.APPROVE) {
-    const updatedMentor = await prisma.mentor.update({
-      where: { id: mentorId },
+  if (status === ExpertVerificationStatus.APPROVE) {
+    const updatedExpert = await prisma.expert.update({
+      where: { id: expertId },
       data: {
         isVerified: true,
-        verificationStatus: MentorVerificationStatus.APPROVE,
+        verificationStatus: ExpertVerificationStatus.APPROVE,
       },
     });
-    return updatedMentor;
+    return updatedExpert;
   }
 };
 
-export const mentorService = {
-  registerMentor,
-  verifyMentor,
-  approveMentor,
+export const expertService = {
+  registerExpert,
+  verifyExpert,
+  approveExpert,
 };

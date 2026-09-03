@@ -1,20 +1,20 @@
-export interface IRegisterMentor {
+export interface IRegisterExpert {
   name: string;
   email: string;
   password: string;
 }
 
-export interface IVerifyMentor {
+export interface IVerifyExpert {
   email: string;
   otp: string;
   university: string;
   department: string;
-  hourlyRate: number;
+  ratePerAssignment: number;
   bio: string;
 }
 
-export interface IApproveMentor {
+export interface IApproveExpert {
   status: string;
   reason?: string;
-  mentorId: string;
+  expertId: string;
 }

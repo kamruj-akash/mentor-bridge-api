@@ -398,7 +398,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Student: 'Student',
-  Mentor: 'Mentor',
+  Expert: 'Expert',
   User: 'User'
 } as const
 
@@ -415,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "student" | "mentor" | "user"
+    modelProps: "student" | "expert" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -493,77 +493,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Mentor: {
-      payload: Prisma.$MentorPayload<ExtArgs>
-      fields: Prisma.MentorFieldRefs
+    Expert: {
+      payload: Prisma.$ExpertPayload<ExtArgs>
+      fields: Prisma.ExpertFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.MentorFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload> | null
+          args: Prisma.ExpertFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.MentorFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         findFirst: {
-          args: Prisma.MentorFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload> | null
+          args: Prisma.ExpertFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.MentorFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         findMany: {
-          args: Prisma.MentorFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>[]
+          args: Prisma.ExpertFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>[]
         }
         create: {
-          args: Prisma.MentorCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         createMany: {
-          args: Prisma.MentorCreateManyArgs<ExtArgs>
+          args: Prisma.ExpertCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.MentorCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>[]
+          args: Prisma.ExpertCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>[]
         }
         delete: {
-          args: Prisma.MentorDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         update: {
-          args: Prisma.MentorUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         deleteMany: {
-          args: Prisma.MentorDeleteManyArgs<ExtArgs>
+          args: Prisma.ExpertDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.MentorUpdateManyArgs<ExtArgs>
+          args: Prisma.ExpertUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.MentorUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>[]
+          args: Prisma.ExpertUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>[]
         }
         upsert: {
-          args: Prisma.MentorUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$MentorPayload>
+          args: Prisma.ExpertUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExpertPayload>
         }
         aggregate: {
-          args: Prisma.MentorAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateMentor>
+          args: Prisma.ExpertAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExpert>
         }
         groupBy: {
-          args: Prisma.MentorGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.MentorGroupByOutputType>[]
+          args: Prisma.ExpertGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExpertGroupByOutputType>[]
         }
         count: {
-          args: Prisma.MentorCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.MentorCountAggregateOutputType> | number
+          args: Prisma.ExpertCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExpertCountAggregateOutputType> | number
         }
       }
     }
@@ -684,27 +684,27 @@ export const StudentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   institution: 'institution',
-  targetExam: 'targetExam'
+  academicLevel: 'academicLevel'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
 
 
-export const MentorScalarFieldEnum = {
+export const ExpertScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   university: 'university',
   department: 'department',
   documents: 'documents',
   bio: 'bio',
-  hourlyRate: 'hourlyRate',
+  ratePerAssignment: 'ratePerAssignment',
   isVerified: 'isVerified',
   walletBalance: 'walletBalance',
   verificationStatus: 'verificationStatus',
   rejectionReason: 'rejectionReason'
 } as const
 
-export type MentorScalarFieldEnum = (typeof MentorScalarFieldEnum)[keyof typeof MentorScalarFieldEnum]
+export type ExpertScalarFieldEnum = (typeof ExpertScalarFieldEnum)[keyof typeof ExpertScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -826,16 +826,16 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'MentorVerificationStatus'
+ * Reference to a field of type 'ExpertVerificationStatus'
  */
-export type EnumMentorVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MentorVerificationStatus'>
+export type EnumExpertVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpertVerificationStatus'>
     
 
 
 /**
- * Reference to a field of type 'MentorVerificationStatus[]'
+ * Reference to a field of type 'ExpertVerificationStatus[]'
  */
-export type ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MentorVerificationStatus[]'>
+export type ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExpertVerificationStatus[]'>
     
 
 
@@ -1067,7 +1067,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   student?: Prisma.StudentOmit
-  mentor?: Prisma.MentorOmit
+  expert?: Prisma.ExpertOmit
   user?: Prisma.UserOmit
 }
 

@@ -101,11 +101,11 @@ export type BoolFilter<$PrismaModel = never> = {
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-export type EnumMentorVerificationStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.MentorVerificationStatus | Prisma.EnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel> | $Enums.MentorVerificationStatus
+export type EnumExpertVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExpertVerificationStatus | Prisma.EnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel> | $Enums.ExpertVerificationStatus
 }
 
 export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -132,14 +132,14 @@ export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
-export type EnumMentorVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MentorVerificationStatus | Prisma.EnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMentorVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.MentorVerificationStatus
+export type EnumExpertVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExpertVerificationStatus | Prisma.EnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExpertVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExpertVerificationStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel>
 }
 
 export type EnumAuthProviderFilter<$PrismaModel = never> = {
@@ -394,11 +394,11 @@ export type NestedBoolFilter<$PrismaModel = never> = {
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-export type NestedEnumMentorVerificationStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.MentorVerificationStatus | Prisma.EnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel> | $Enums.MentorVerificationStatus
+export type NestedEnumExpertVerificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExpertVerificationStatus | Prisma.EnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel> | $Enums.ExpertVerificationStatus
 }
 
 export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -425,14 +425,14 @@ export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
-export type NestedEnumMentorVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MentorVerificationStatus | Prisma.EnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MentorVerificationStatus[] | Prisma.ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMentorVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.MentorVerificationStatus
+export type NestedEnumExpertVerificationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExpertVerificationStatus | Prisma.EnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExpertVerificationStatus[] | Prisma.ListEnumExpertVerificationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExpertVerificationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExpertVerificationStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMentorVerificationStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExpertVerificationStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumAuthProviderFilter<$PrismaModel = never> = {

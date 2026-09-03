@@ -1,5 +1,5 @@
 {
-  "name": "init",
+  "name": "assignment-bridge-api",
   "module": "index.ts",
   "type": "module",
   "private": true,

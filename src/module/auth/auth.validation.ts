@@ -7,7 +7,7 @@ export const RegisterUserZod = z.object({
     .string()
     .min(6, "Password must be at least 6 characters")
     .max(64, "Password must be at most 64 characters"),
-  role: z.enum(["STUDENT", "MENTOR", "ADMIN"], "Invalid role").optional(),
+  role: z.enum(["STUDENT", "EXPERT", "ADMIN"], "Invalid role").optional(),
 });
 
 export const VerifyRegOtpZod = z.object({

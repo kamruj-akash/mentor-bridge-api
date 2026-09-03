@@ -9,6 +9,6 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Student.ts'
-export type * from './models/Mentor.ts'
+export type * from './models/Expert.ts'
 export type * from './models/User.ts'
 export type * from './commonInputTypes.ts'

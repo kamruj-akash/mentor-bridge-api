@@ -10,11 +10,11 @@ enum UserStatus {
 
 enum Role {
   STUDENT
-  MENTOR
+  EXPERT
   ADMIN
 }
 
-enum BookingStatus {
+enum AssignmentStatus {
   PENDING_PAYMENT
   CONFIRMED
   COMPLETED
@@ -31,11 +31,11 @@ enum PaymentStatus {
 
 enum EscrowStatus {
   HELD
-  RELEASED_TO_MENTOR
+  RELEASED_TO_EXPERT
   REFUNDED_TO_STUDENT
 }
 
-enum MentorVerificationStatus {
+enum ExpertVerificationStatus {
   PENDING
   APPROVE
   REJECT

@@ -1,0 +1,865 @@
+{
+  "info": {
+    "_postman_id": "a55e9b1c-3f42-4d7a-9c18-7b0d2e6f4a10",
+    "name": "Assignment Bridge API",
+    "description": "REST API for **Assignment Bridge** - students post assignments and get help from verified experts.\n\n### Roles\n`STUDENT` | `EXPERT` | `ADMIN`\n\n### Auth\nOn `POST /auth/login` the server sets `accessToken` (15m) and `refreshToken` (7d) as httpOnly cookies **and** returns both in the response body. Protected routes accept either the cookie or an `Authorization: Bearer <token>` header.\n\nThe login request has a test script that stores the tokens into the collection variables, so `Get Me` and the admin routes work right after you log in.\n\n### Variables\n| variable | default |\n| --- | --- |\n| `serverUrl` | `http://localhost:4000` |\n| `baseUrl` | `{{serverUrl}}/api/v1` |\n| `accessToken` | filled by the login test script |\n| `refreshToken` | filled by the login test script |\n| `expertId` | id of the `experts` row you want to approve/reject |\n\n### Error shape\nEvery failure goes through the global error handler:\n```json\n{\n  \"success\": false,\n  \"statusCode\": 400,\n  \"name\": \"Error\",\n  \"message\": \"...\",\n  \"error\": { },\n  \"stack\": \"...\"\n}\n```\n`name`, `error` and `stack` are only populated when `NODE_ENV=development`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "serverUrl",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "{{serverUrl}}/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "studentEmail",
+      "value": "student@example.com",
+      "type": "string"
+    },
+    {
+      "key": "expertEmail",
+      "value": "expert@example.com",
+      "type": "string"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@example.com",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "secret123",
+      "type": "string"
+    },
+    {
+      "key": "expertId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "description": "Server liveness.",
+      "item": [
+        {
+          "name": "Root",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{serverUrl}}/",
+              "host": [
+                "{{serverUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Returns `{ \"message\": \"Hello Assignment Bridge V1.0!\" }` with `200`. Use it to confirm the server and Redis connection came up."
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{serverUrl}}/",
+                  "host": [
+                    "{{serverUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"Hello Assignment Bridge V1.0!\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "description": "Student signup, login and password reset. All bodies are validated with zod, so a bad field returns `400` with the zod issue list in `message`.",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rakib Hasan\",\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Step 1 of signup. Nothing is written to Postgres yet - the hashed user and a 6-digit OTP are parked in Redis under `newUser:<email>` and `registerOtp:<email>` for 1 hour. Finish with `Verify Register OTP`.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `name` | string | required, 3-255 chars |\n| `email` | string | required, valid email, lowercased server-side |\n| `password` | string | required, 6-64 chars |\n| `role` | enum | optional - `STUDENT` \\| `EXPERT` \\| `ADMIN` |\n\n**Note:** `role` passes validation but the service ignores it and always creates a `STUDENT`. Experts sign up through `Expert > Register Expert` instead.\n\n**Errors**\n- `400` email already registered (`\"User already exists, please login\"`)\n- `400` email belongs to a Google account\n- `500` Redis write failed"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Rakib Hasan\",\n  \"email\": \"student@example.com\",\n  \"password\": \"secret123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"User registered successfully. Please check your email for OTP.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Register OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"otp\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-register"
+              ]
+            },
+            "description": "Step 2 of signup. Consumes the OTP, creates the `users` row with `emailVerified: true`, `role: STUDENT`, and an attached `students` row (`institution: \"\"`, `academicLevel: \"\"`). Both Redis keys are deleted afterwards.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `email` | string | required, valid email |\n| `otp` | string | required, exactly 6 chars |\n\n**Returns** the created user (password omitted) with its nested `student`.\n\n**Errors**\n- `400` OTP expired / not found\n- `400` invalid OTP\n- `400` cached user data expired"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"student@example.com\",\n  \"otp\": \"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "verify-register"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"User verified successfully.\",\n  \"data\": {\n    \"id\": \"3f0a1b2c-4d5e-6f70-8192-a3b4c5d6e7f8\",\n    \"name\": \"Rakib Hasan\",\n    \"email\": \"student@example.com\",\n    \"googleId\": null,\n    \"authProvider\": \"CREDENTIAL\",\n    \"emailVerified\": true,\n    \"status\": \"ACTIVE\",\n    \"needPasswordChange\": false,\n    \"imageUrl\": null,\n    \"isDeleted\": false,\n    \"deletedAt\": null,\n    \"role\": \"STUDENT\",\n    \"phoneNo\": null,\n    \"createdAt\": \"2026-09-03T12:30:00.000Z\",\n    \"updatedAt\": \"2026-09-03T12:30:00.000Z\",\n    \"student\": {\n      \"id\": \"9c8b7a65-4321-4fed-cba9-876543210fed\",\n      \"userId\": \"3f0a1b2c-4d5e-6f70-8192-a3b4c5d6e7f8\",\n      \"institution\": \"\",\n      \"academicLevel\": \"\"\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Store the tokens so the protected requests in this collection just work.",
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  const data = body && body.data;",
+                  "  if (data && data.accessToken) {",
+                  "    pm.collectionVariables.set(\"accessToken\", data.accessToken);",
+                  "    pm.collectionVariables.set(\"refreshToken\", data.refreshToken);",
+                  "    console.log(\"accessToken saved to collection variables\");",
+                  "  }",
+                  "}",
+                  "",
+                  "pm.test(\"logged in\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.collectionVariables.get(\"accessToken\")).to.be.a(\"string\").and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Works for every role - the JWT carries `{ userId, name, email, role }`.\n\nSets two httpOnly cookies (`accessToken` 15m, `refreshToken` 7d) and also returns them in `data`. The attached test script copies them into the `accessToken` / `refreshToken` collection variables.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `email` | string | required, valid email |\n| `password` | string | required, 6-64 chars |\n\n**Errors**\n- `400` user does not exist\n- `400` account is Google-only and has no password\n- `400` wrong password"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"student@example.com\",\n  \"password\": \"secret123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"User logged in successfully.\",\n  \"data\": {\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "**Protected** - `STUDENT`, `EXPERT` or `ADMIN`.\n\nReturns the full user row (password omitted) with both the `student` and `expert` relations included; the one that does not apply to the caller comes back `null`.\n\nToken resolution order in the auth middleware:\n1. `accessToken` cookie\n2. `Authorization: Bearer <token>`\n3. raw `Authorization` header value\n\nIf the access token is missing but a valid `refreshToken` cookie is present, the middleware silently mints a fresh access token and sets the cookie on the response.\n\n**Errors**\n- `401` no token at all, or the token failed verification\n- `403` role not allowed / account is `BLOCK`ed\n- `404` token is valid but the user row is gone"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"User info retrieved successfully.\",\n  \"data\": {\n    \"id\": \"3f0a1b2c-4d5e-6f70-8192-a3b4c5d6e7f8\",\n    \"name\": \"Rakib Hasan\",\n    \"email\": \"student@example.com\",\n    \"role\": \"STUDENT\",\n    \"status\": \"ACTIVE\",\n    \"emailVerified\": true,\n    \"phoneNo\": null,\n    \"imageUrl\": null,\n    \"createdAt\": \"2026-09-03T12:30:00.000Z\",\n    \"updatedAt\": \"2026-09-03T12:30:00.000Z\",\n    \"student\": {\n      \"id\": \"9c8b7a65-4321-4fed-cba9-876543210fed\",\n      \"userId\": \"3f0a1b2c-4d5e-6f70-8192-a3b4c5d6e7f8\",\n      \"institution\": \"\",\n      \"academicLevel\": \"\"\n    },\n    \"expert\": null\n  }\n}"
+            },
+            {
+              "name": "401 Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"statusCode\": 401,\n  \"name\": \"Error\",\n  \"message\": \"You are not logged in. Please log in to access this resource.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Forget Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forget-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forget-password"
+              ]
+            },
+            "description": "Stores a 6-digit OTP at `forgetPasswordOtp:<lowercased email>` in Redis for 5 minutes.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `email` | string | required, valid email |\n\n**Errors**\n- `400` user does not exist\n- `500` Redis write failed"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"student@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/forget-password",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "forget-password"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Password reset email sent successfully.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Forget Password OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"newPassword\": \"newsecret123\",\n  \"otp\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-forget-password-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-forget-password-otp"
+              ]
+            },
+            "description": "Consumes the reset OTP and re-hashes the password.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `email` | string | required, valid email |\n| `newPassword` | string | required, 6-64 chars |\n| `otp` | string | required, exactly 6 chars |\n\n> **Known issues in the current implementation** (documented, not fixed):\n> 1. The service first requires a `newUser:<email>` Redis key, which only exists during a pending *registration* - so this endpoint returns `400 \"User data has expired\"` for any normal reset.\n> 2. The OTP lookup uses the raw `payload.email` while `Forget Password` wrote the key with a lowercased email, so a mixed-case address misses the key.\n\n**Errors**\n- `400` cached user data expired (see note 1)\n- `400` OTP expired\n- `400` invalid OTP"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"student@example.com\",\n  \"newPassword\": \"newsecret123\",\n  \"otp\": \"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/verify-forget-password-otp",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "verify-forget-password-otp"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Password reset successfully.\",\n  \"data\": {\n    \"id\": \"3f0a1b2c-4d5e-6f70-8192-a3b4c5d6e7f8\",\n    \"email\": \"student@example.com\",\n    \"name\": \"Rakib Hasan\",\n    \"role\": \"STUDENT\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Expert",
+      "description": "Expert onboarding and admin verification. An expert is a `users` row with `role: EXPERT` plus an `experts` row holding their academic details, uploaded documents and `verificationStatus`.\n\n`verificationStatus` starts at `PENDING` and an admin moves it to `APPROVE` or `REJECT` exactly once.",
+      "item": [
+        {
+          "name": "Register Expert",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Nusrat Jahan\",\n  \"email\": \"{{expertEmail}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "register"
+              ]
+            },
+            "description": "Step 1 of expert onboarding. Nothing hits Postgres yet - the hashed user goes to `expertRegister:<email>` and a 6-digit OTP to `expertRegisterOtp:<email>`, both for 1 hour. Finish with `Verify Expert`.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `name` | string | required |\n| `email` | string | required |\n| `password` | string | required |\n\n**Note:** this route has no zod middleware, so field rules are not enforced server-side - the email is also used verbatim (not lowercased), unlike the student flow.\n\n**Errors**\n- `409` email already registered\n- `500` Redis write failed"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Dr. Nusrat Jahan\",\n  \"email\": \"expert@example.com\",\n  \"password\": \"secret123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/expert/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "expert",
+                    "register"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Expert registered successfully, please check your email for OTP\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Expert",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "body",
+                  "value": "{\n  \"email\": \"{{expertEmail}}\",\n  \"otp\": \"123456\",\n  \"university\": \"University of Dhaka\",\n  \"department\": \"Computer Science & Engineering\",\n  \"ratePerAssignment\": 1500,\n  \"bio\": \"CSE graduate, 5 years of experience helping with data structures and algorithms assignments.\"\n}",
+                  "type": "text",
+                  "description": "**Required.** A JSON *string* - the server does `JSON.parse(req.body.body)`. Do not send these as separate form fields.\n\n| field | type | notes |\n| --- | --- | --- |\n| `email` | string | must match the address used at register |\n| `otp` | string | 6 digits |\n| `university` | string | required |\n| `department` | string | required |\n| `ratePerAssignment` | number | required, price per assignment |\n| `bio` | string | optional, stored as `null` when empty |"
+                },
+                {
+                  "key": "documents",
+                  "type": "file",
+                  "src": [],
+                  "description": "Up to **5** files (degree certificate, ID, transcript...). Held in memory by multer, then streamed to Cloudinary under the `expert-documents` folder with `resource_type: auto`. Each upload is persisted on the expert row as `{ url, publicId }`."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "verify"
+              ]
+            },
+            "description": "Step 2 of expert onboarding - **`multipart/form-data`**, not JSON.\n\nLet Postman set the `Content-Type` boundary itself; do not add the header manually.\n\nConsumes the OTP, uploads the documents to Cloudinary, then creates the `users` row (`role: EXPERT`, `emailVerified: true`) with its `experts` row at `isVerified: false` / `verificationStatus: PENDING`. Both Redis keys are deleted afterwards.\n\nThe expert cannot take work until an admin runs `Approve / Reject Expert` - grab the returned `expert.id` into the `expertId` collection variable for that call.\n\n**Errors**\n- `400` OTP expired or registration not found\n- `400` invalid OTP\n- `409` email got registered in the meantime\n- `500` Cloudinary upload failed"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "body",
+                      "value": "{\"email\":\"expert@example.com\",\"otp\":\"123456\",\"university\":\"University of Dhaka\",\"department\":\"Computer Science & Engineering\",\"ratePerAssignment\":1500,\"bio\":\"CSE graduate.\"}",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/expert/verify",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "expert",
+                    "verify"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Expert verified successfully\",\n  \"data\": {\n    \"id\": \"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d\",\n    \"name\": \"Dr. Nusrat Jahan\",\n    \"email\": \"expert@example.com\",\n    \"role\": \"EXPERT\",\n    \"emailVerified\": true,\n    \"status\": \"ACTIVE\",\n    \"createdAt\": \"2026-09-03T12:45:00.000Z\",\n    \"updatedAt\": \"2026-09-03T12:45:00.000Z\",\n    \"expert\": {\n      \"id\": \"7d8e9f0a-1b2c-4d3e-9f8a-7b6c5d4e3f2a\",\n      \"userId\": \"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d\",\n      \"university\": \"University of Dhaka\",\n      \"department\": \"Computer Science & Engineering\",\n      \"documents\": [\n        {\n          \"url\": \"https://res.cloudinary.com/demo/image/upload/v1/expert-documents/abc123.pdf\",\n          \"publicId\": \"expert-documents/abc123\"\n        }\n      ],\n      \"bio\": \"CSE graduate.\",\n      \"ratePerAssignment\": 1500,\n      \"isVerified\": false,\n      \"walletBalance\": 0,\n      \"verificationStatus\": \"PENDING\",\n      \"rejectionReason\": null\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Approve / Reject Expert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expertId\": \"{{expertId}}\",\n  \"status\": \"APPROVE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "approve"
+              ]
+            },
+            "description": "**Protected - `ADMIN` only.** Log in as an admin first so the test script fills `accessToken`.\n\nOne endpoint handles both decisions via `status`.\n\n**Body**\n| field | type | rules |\n| --- | --- | --- |\n| `expertId` | string | required - the `experts.id` (not `users.id`) |\n| `status` | string | required - `APPROVE` or `REJECT`, uppercased server-side so `approve` also works |\n| `reason` | string | **required when `status` is `REJECT`**, ignored otherwise |\n\n- `APPROVE` -> `isVerified: true`, `verificationStatus: APPROVE`\n- `REJECT` -> `isVerified: false`, `verificationStatus: REJECT`, `rejectionReason: <reason>`\n\nTo reject, send:\n```json\n{\n  \"expertId\": \"{{expertId}}\",\n  \"status\": \"REJECT\",\n  \"reason\": \"Uploaded certificate is not readable.\"\n}\n```\n\n**Note:** the decision is one-shot - an expert already `APPROVE`d or `REJECT`ed returns `400`, there is no re-review endpoint. Also, the response `data` is always `null`; re-read the expert through `Get Me` as that user to confirm.\n\n**Errors**\n- `400` missing `expertId` / `status`, invalid `status`, missing `reason` on reject, or already decided\n- `401` not logged in\n- `403` caller is not an `ADMIN`\n- `404` expert not found"
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expertId\": \"7d8e9f0a-1b2c-4d3e-9f8a-7b6c5d4e3f2a\",\n  \"status\": \"APPROVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/expert/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "expert",
+                    "approve"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Expert approved successfully\",\n  \"data\": null\n}"
+            },
+            {
+              "name": "403 Forbidden",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expertId\": \"7d8e9f0a-1b2c-4d3e-9f8a-7b6c5d4e3f2a\",\n  \"status\": \"APPROVE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/expert/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "expert",
+                    "approve"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": false,\n  \"statusCode\": 403,\n  \"name\": \"Error\",\n  \"message\": \"Forbidden. You don't have permission to access this resource.\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

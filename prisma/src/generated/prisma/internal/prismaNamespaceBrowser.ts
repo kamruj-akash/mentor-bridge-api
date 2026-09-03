@@ -52,7 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Student: 'Student',
-  Mentor: 'Mentor',
+  Expert: 'Expert',
   User: 'User'
 } as const
 
@@ -76,27 +76,27 @@ export const StudentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   institution: 'institution',
-  targetExam: 'targetExam'
+  academicLevel: 'academicLevel'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
 
 
-export const MentorScalarFieldEnum = {
+export const ExpertScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   university: 'university',
   department: 'department',
   documents: 'documents',
   bio: 'bio',
-  hourlyRate: 'hourlyRate',
+  ratePerAssignment: 'ratePerAssignment',
   isVerified: 'isVerified',
   walletBalance: 'walletBalance',
   verificationStatus: 'verificationStatus',
   rejectionReason: 'rejectionReason'
 } as const
 
-export type MentorScalarFieldEnum = (typeof MentorScalarFieldEnum)[keyof typeof MentorScalarFieldEnum]
+export type ExpertScalarFieldEnum = (typeof ExpertScalarFieldEnum)[keyof typeof ExpertScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

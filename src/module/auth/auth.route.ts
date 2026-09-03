@@ -45,7 +45,7 @@ router.post(
 
 router.get(
   "/me",
-  auth(Role.STUDENT, Role.ADMIN, Role.STUDENT),
+  auth(Role.STUDENT, Role.EXPERT, Role.ADMIN),
   authController.getMe,
 );
 

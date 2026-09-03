@@ -92,7 +92,7 @@ const verifyRegOtp = async (payload: IVerifyRegOtp) => {
       student: {
         create: {
           institution: "",
-          targetExam: "",
+          academicLevel: "",
         },
       },
     },
@@ -139,13 +139,6 @@ const forgetPassword = async (userEmail: string) => {
 const verifyForgetPasswordOtp = async (payload: IForgetPasswordVerifyOtp) => {
   const { newPassword, otp } = payload;
   const email = payload.email.trim().toLowerCase();
-  const userData = await redisClient.get(`newUser:${email}`);
-  if (!userData) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "User data has expired, please try again",
-    );
-  }
   const storedOtp = await redisClient.get(`forgetPasswordOtp:${payload.email}`);
   if (!storedOtp) {
     throw new AppError(
@@ -228,7 +221,7 @@ const getMe = async (user: any) => {
     omit: { password: true },
     include: {
       student: true,
-      mentor: true,
+      expert: true,
     },
   });
 

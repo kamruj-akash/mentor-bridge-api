@@ -19,7 +19,7 @@ model User {
 
   // ref
   student Student?
-  mentor  Mentor?
+  expert  Expert?
 
   @@index([email])
   @@map("users")

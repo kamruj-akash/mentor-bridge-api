@@ -27,14 +27,14 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 export const Role = {
   STUDENT: 'STUDENT',
-  MENTOR: 'MENTOR',
+  EXPERT: 'EXPERT',
   ADMIN: 'ADMIN'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
 
 
-export const BookingStatus = {
+export const AssignmentStatus = {
   PENDING_PAYMENT: 'PENDING_PAYMENT',
   CONFIRMED: 'CONFIRMED',
   COMPLETED: 'COMPLETED',
@@ -42,7 +42,7 @@ export const BookingStatus = {
   REFUNDED: 'REFUNDED'
 } as const
 
-export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+export type AssignmentStatus = (typeof AssignmentStatus)[keyof typeof AssignmentStatus]
 
 
 export const PaymentStatus = {
@@ -57,17 +57,17 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 export const EscrowStatus = {
   HELD: 'HELD',
-  RELEASED_TO_MENTOR: 'RELEASED_TO_MENTOR',
+  RELEASED_TO_EXPERT: 'RELEASED_TO_EXPERT',
   REFUNDED_TO_STUDENT: 'REFUNDED_TO_STUDENT'
 } as const
 
 export type EscrowStatus = (typeof EscrowStatus)[keyof typeof EscrowStatus]
 
 
-export const MentorVerificationStatus = {
+export const ExpertVerificationStatus = {
   PENDING: 'PENDING',
   APPROVE: 'APPROVE',
   REJECT: 'REJECT'
 } as const
 
-export type MentorVerificationStatus = (typeof MentorVerificationStatus)[keyof typeof MentorVerificationStatus]
+export type ExpertVerificationStatus = (typeof ExpertVerificationStatus)[keyof typeof ExpertVerificationStatus]

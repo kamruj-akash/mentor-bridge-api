@@ -2,48 +2,48 @@ import httpStatus from "http-status";
 import type { RequestUser } from "../../middleware/authCheck";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { mentorService } from "./mentor.service";
+import { expertService } from "./expert.service";
 
-const registerMentor = catchAsync(async (req, res) => {
-  await mentorService.registerMentor(req.body);
-  //   res.redirect("/mentor/verify-otp");
+const registerExpert = catchAsync(async (req, res) => {
+  await expertService.registerExpert(req.body);
+  //   res.redirect("/expert/verify-otp");
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Mentor registered successfully, please check your email for OTP",
+    message: "Expert registered successfully, please check your email for OTP",
     data: null,
   });
 });
 
-const verifyMentor = catchAsync(async (req, res) => {
+const verifyExpert = catchAsync(async (req, res) => {
   const files = req.files as Record<string, Express.Multer.File[]>;
   const documents = files?.documents?.map((file: any) => file) ?? [];
-  const result = await mentorService.verifyMentor(
+  const result = await expertService.verifyExpert(
     JSON.parse(req.body.body),
     documents,
   );
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Mentor verified successfully",
+    message: "Expert verified successfully",
     data: result,
   });
 });
 
-const approveMentor = catchAsync(async (req, res) => {
+const approveExpert = catchAsync(async (req, res) => {
   const payload = req.body as {
     status: string;
     reason?: string;
-    mentorId: string;
+    expertId: string;
   };
   const user = req.user as RequestUser;
-  await mentorService.approveMentor(payload, user);
+  await expertService.approveExpert(payload, user);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: "Mentor approved successfully",
+    message: "Expert approved successfully",
     data: null,
   });
 });
 
-export const mentorController = { registerMentor, verifyMentor, approveMentor };
+export const expertController = { registerExpert, verifyExpert, approveExpert };

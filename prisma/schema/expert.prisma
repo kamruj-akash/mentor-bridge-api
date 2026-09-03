@@ -1,4 +1,4 @@
-model Mentor {
+model Expert {
   id            String  @id @default(uuid())
   userId        String  @unique
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -6,17 +6,12 @@ model Mentor {
   department    String
   documents     Json[]
   bio           String?
-  hourlyRate    Float
+  ratePerAssignment Float
   isVerified    Boolean @default(false)
   walletBalance Float   @default(0.0)
-  verificationStatus MentorVerificationStatus @default(PENDING)
+  verificationStatus ExpertVerificationStatus @default(PENDING)
   rejectionReason String?
   
-
-  //   slots          AvailabilitySlot[]
-  //   expertises     MentorExpertise[]
-  //   reviews        Review[]
-
   @@index([university, isVerified, verificationStatus])
-  @@map("mentors")
+  @@map("experts")
 }

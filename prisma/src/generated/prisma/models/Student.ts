@@ -28,21 +28,21 @@ export type StudentMinAggregateOutputType = {
   id: string | null
   userId: string | null
   institution: string | null
-  targetExam: string | null
+  academicLevel: string | null
 }
 
 export type StudentMaxAggregateOutputType = {
   id: string | null
   userId: string | null
   institution: string | null
-  targetExam: string | null
+  academicLevel: string | null
 }
 
 export type StudentCountAggregateOutputType = {
   id: number
   userId: number
   institution: number
-  targetExam: number
+  academicLevel: number
   _all: number
 }
 
@@ -51,21 +51,21 @@ export type StudentMinAggregateInputType = {
   id?: true
   userId?: true
   institution?: true
-  targetExam?: true
+  academicLevel?: true
 }
 
 export type StudentMaxAggregateInputType = {
   id?: true
   userId?: true
   institution?: true
-  targetExam?: true
+  academicLevel?: true
 }
 
 export type StudentCountAggregateInputType = {
   id?: true
   userId?: true
   institution?: true
-  targetExam?: true
+  academicLevel?: true
   _all?: true
 }
 
@@ -145,7 +145,7 @@ export type StudentGroupByOutputType = {
   id: string
   userId: string
   institution: string | null
-  targetExam: string | null
+  academicLevel: string | null
   _count: StudentCountAggregateOutputType | null
   _min: StudentMinAggregateOutputType | null
   _max: StudentMaxAggregateOutputType | null
@@ -173,7 +173,7 @@ export type StudentWhereInput = {
   id?: Prisma.StringFilter<"Student"> | string
   userId?: Prisma.StringFilter<"Student"> | string
   institution?: Prisma.StringNullableFilter<"Student"> | string | null
-  targetExam?: Prisma.StringNullableFilter<"Student"> | string | null
+  academicLevel?: Prisma.StringNullableFilter<"Student"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -181,7 +181,7 @@ export type StudentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   institution?: Prisma.SortOrderInput | Prisma.SortOrder
-  targetExam?: Prisma.SortOrderInput | Prisma.SortOrder
+  academicLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -192,7 +192,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.StudentWhereInput[]
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   institution?: Prisma.StringNullableFilter<"Student"> | string | null
-  targetExam?: Prisma.StringNullableFilter<"Student"> | string | null
+  academicLevel?: Prisma.StringNullableFilter<"Student"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -200,7 +200,7 @@ export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   institution?: Prisma.SortOrderInput | Prisma.SortOrder
-  targetExam?: Prisma.SortOrderInput | Prisma.SortOrder
+  academicLevel?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
   _min?: Prisma.StudentMinOrderByAggregateInput
@@ -213,13 +213,13 @@ export type StudentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Student"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Student"> | string
   institution?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
-  targetExam?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  academicLevel?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
 }
 
 export type StudentCreateInput = {
   id?: string
   institution?: string | null
-  targetExam?: string | null
+  academicLevel?: string | null
   user: Prisma.UserCreateNestedOneWithoutStudentInput
 }
 
@@ -227,13 +227,13 @@ export type StudentUncheckedCreateInput = {
   id?: string
   userId: string
   institution?: string | null
-  targetExam?: string | null
+  academicLevel?: string | null
 }
 
 export type StudentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutStudentNestedInput
 }
 
@@ -241,48 +241,48 @@ export type StudentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentCreateManyInput = {
   id?: string
   userId: string
   institution?: string | null
-  targetExam?: string | null
+  academicLevel?: string | null
 }
 
 export type StudentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   institution?: Prisma.SortOrder
-  targetExam?: Prisma.SortOrder
+  academicLevel?: Prisma.SortOrder
 }
 
 export type StudentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   institution?: Prisma.SortOrder
-  targetExam?: Prisma.SortOrder
+  academicLevel?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   institution?: Prisma.SortOrder
-  targetExam?: Prisma.SortOrder
+  academicLevel?: Prisma.SortOrder
 }
 
 export type StudentNullableScalarRelationFilter = {
@@ -333,13 +333,13 @@ export type StudentUncheckedUpdateOneWithoutUserNestedInput = {
 export type StudentCreateWithoutUserInput = {
   id?: string
   institution?: string | null
-  targetExam?: string | null
+  academicLevel?: string | null
 }
 
 export type StudentUncheckedCreateWithoutUserInput = {
   id?: string
   institution?: string | null
-  targetExam?: string | null
+  academicLevel?: string | null
 }
 
 export type StudentCreateOrConnectWithoutUserInput = {
@@ -361,13 +361,13 @@ export type StudentUpdateToOneWithWhereWithoutUserInput = {
 export type StudentUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StudentUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  targetExam?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  academicLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -376,7 +376,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   userId?: boolean
   institution?: boolean
-  targetExam?: boolean
+  academicLevel?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -384,7 +384,7 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   userId?: boolean
   institution?: boolean
-  targetExam?: boolean
+  academicLevel?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -392,7 +392,7 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   userId?: boolean
   institution?: boolean
-  targetExam?: boolean
+  academicLevel?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -400,10 +400,10 @@ export type StudentSelectScalar = {
   id?: boolean
   userId?: boolean
   institution?: boolean
-  targetExam?: boolean
+  academicLevel?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "institution" | "targetExam", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "institution" | "academicLevel", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -423,7 +423,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     userId: string
     institution: string | null
-    targetExam: string | null
+    academicLevel: string | null
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -851,7 +851,7 @@ export interface StudentFieldRefs {
   readonly id: Prisma.FieldRef<"Student", 'String'>
   readonly userId: Prisma.FieldRef<"Student", 'String'>
   readonly institution: Prisma.FieldRef<"Student", 'String'>
-  readonly targetExam: Prisma.FieldRef<"Student", 'String'>
+  readonly academicLevel: Prisma.FieldRef<"Student", 'String'>
 }
     
 

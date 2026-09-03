@@ -267,7 +267,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
-  mentor?: Prisma.XOR<Prisma.MentorNullableScalarRelationFilter, Prisma.MentorWhereInput> | null
+  expert?: Prisma.XOR<Prisma.ExpertNullableScalarRelationFilter, Prisma.ExpertWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -288,7 +288,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
-  mentor?: Prisma.MentorOrderByWithRelationInput
+  expert?: Prisma.ExpertOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -312,7 +312,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
-  mentor?: Prisma.XOR<Prisma.MentorNullableScalarRelationFilter, Prisma.MentorWhereInput> | null
+  expert?: Prisma.XOR<Prisma.ExpertNullableScalarRelationFilter, Prisma.ExpertWhereInput> | null
 }, "id" | "email" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
@@ -377,7 +377,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
-  mentor?: Prisma.MentorCreateNestedOneWithoutUserInput
+  expert?: Prisma.ExpertCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -398,7 +398,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
-  mentor?: Prisma.MentorUncheckedCreateNestedOneWithoutUserInput
+  expert?: Prisma.ExpertUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -419,7 +419,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
-  mentor?: Prisma.MentorUpdateOneWithoutUserNestedInput
+  expert?: Prisma.ExpertUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -440,7 +440,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
-  mentor?: Prisma.MentorUncheckedUpdateOneWithoutUserNestedInput
+  expert?: Prisma.ExpertUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -574,18 +574,18 @@ export type UserUpdateOneRequiredWithoutStudentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStudentInput, Prisma.UserUpdateWithoutStudentInput>, Prisma.UserUncheckedUpdateWithoutStudentInput>
 }
 
-export type UserCreateNestedOneWithoutMentorInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutMentorInput, Prisma.UserUncheckedCreateWithoutMentorInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMentorInput
+export type UserCreateNestedOneWithoutExpertInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExpertInput, Prisma.UserUncheckedCreateWithoutExpertInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExpertInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutMentorNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutMentorInput, Prisma.UserUncheckedCreateWithoutMentorInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMentorInput
-  upsert?: Prisma.UserUpsertWithoutMentorInput
+export type UserUpdateOneRequiredWithoutExpertNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExpertInput, Prisma.UserUncheckedCreateWithoutExpertInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExpertInput
+  upsert?: Prisma.UserUpsertWithoutExpertInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMentorInput, Prisma.UserUpdateWithoutMentorInput>, Prisma.UserUncheckedUpdateWithoutMentorInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExpertInput, Prisma.UserUpdateWithoutExpertInput>, Prisma.UserUncheckedUpdateWithoutExpertInput>
 }
 
 export type EnumAuthProviderFieldUpdateOperationsInput = {
@@ -625,7 +625,7 @@ export type UserCreateWithoutStudentInput = {
   phoneNo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  mentor?: Prisma.MentorCreateNestedOneWithoutUserInput
+  expert?: Prisma.ExpertCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStudentInput = {
@@ -645,7 +645,7 @@ export type UserUncheckedCreateWithoutStudentInput = {
   phoneNo?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  mentor?: Prisma.MentorUncheckedCreateNestedOneWithoutUserInput
+  expert?: Prisma.ExpertUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStudentInput = {
@@ -681,7 +681,7 @@ export type UserUpdateWithoutStudentInput = {
   phoneNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  mentor?: Prisma.MentorUpdateOneWithoutUserNestedInput
+  expert?: Prisma.ExpertUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentInput = {
@@ -701,10 +701,10 @@ export type UserUncheckedUpdateWithoutStudentInput = {
   phoneNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  mentor?: Prisma.MentorUncheckedUpdateOneWithoutUserNestedInput
+  expert?: Prisma.ExpertUncheckedUpdateOneWithoutUserNestedInput
 }
 
-export type UserCreateWithoutMentorInput = {
+export type UserCreateWithoutExpertInput = {
   id?: string
   name: string
   email: string
@@ -724,7 +724,7 @@ export type UserCreateWithoutMentorInput = {
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutMentorInput = {
+export type UserUncheckedCreateWithoutExpertInput = {
   id?: string
   name: string
   email: string
@@ -744,23 +744,23 @@ export type UserUncheckedCreateWithoutMentorInput = {
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutMentorInput = {
+export type UserCreateOrConnectWithoutExpertInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutMentorInput, Prisma.UserUncheckedCreateWithoutMentorInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExpertInput, Prisma.UserUncheckedCreateWithoutExpertInput>
 }
 
-export type UserUpsertWithoutMentorInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutMentorInput, Prisma.UserUncheckedUpdateWithoutMentorInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutMentorInput, Prisma.UserUncheckedCreateWithoutMentorInput>
+export type UserUpsertWithoutExpertInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutExpertInput, Prisma.UserUncheckedUpdateWithoutExpertInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExpertInput, Prisma.UserUncheckedCreateWithoutExpertInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutMentorInput = {
+export type UserUpdateToOneWithWhereWithoutExpertInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutMentorInput, Prisma.UserUncheckedUpdateWithoutMentorInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutExpertInput, Prisma.UserUncheckedUpdateWithoutExpertInput>
 }
 
-export type UserUpdateWithoutMentorInput = {
+export type UserUpdateWithoutExpertInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -780,7 +780,7 @@ export type UserUpdateWithoutMentorInput = {
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutMentorInput = {
+export type UserUncheckedUpdateWithoutExpertInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -820,7 +820,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
-  mentor?: boolean | Prisma.User$mentorArgs<ExtArgs>
+  expert?: boolean | Prisma.User$expertArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -883,7 +883,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "googleId" | "authProvider" | "emailVerified" | "status" | "needPasswordChange" | "imageUrl" | "isDeleted" | "deletedAt" | "role" | "phoneNo" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
-  mentor?: boolean | Prisma.User$mentorArgs<ExtArgs>
+  expert?: boolean | Prisma.User$expertArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -892,7 +892,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     student: Prisma.$StudentPayload<ExtArgs> | null
-    mentor: Prisma.$MentorPayload<ExtArgs> | null
+    expert: Prisma.$ExpertPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1306,7 +1306,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   student<T extends Prisma.User$studentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studentArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  mentor<T extends Prisma.User$mentorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mentorArgs<ExtArgs>>): Prisma.Prisma__MentorClient<runtime.Types.Result.GetResult<Prisma.$MentorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  expert<T extends Prisma.User$expertArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$expertArgs<ExtArgs>>): Prisma.Prisma__ExpertClient<runtime.Types.Result.GetResult<Prisma.$ExpertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1764,22 +1764,22 @@ export type User$studentArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
- * User.mentor
+ * User.expert
  */
-export type User$mentorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$expertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Mentor
+   * Select specific fields to fetch from the Expert
    */
-  select?: Prisma.MentorSelect<ExtArgs> | null
+  select?: Prisma.ExpertSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Mentor
+   * Omit specific fields from the Expert
    */
-  omit?: Prisma.MentorOmit<ExtArgs> | null
+  omit?: Prisma.ExpertOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MentorInclude<ExtArgs> | null
-  where?: Prisma.MentorWhereInput
+  include?: Prisma.ExpertInclude<ExtArgs> | null
+  where?: Prisma.ExpertWhereInput
 }
 
 /**
