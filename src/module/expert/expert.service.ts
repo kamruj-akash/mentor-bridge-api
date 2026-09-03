@@ -179,6 +179,9 @@ const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
   }
   const isExpertExist = await prisma.expert.findUnique({
     where: { id: expertId },
+    include: {
+      user: true,
+    },
   });
 
   if (!isExpertExist) {
@@ -198,28 +201,39 @@ const approveExpert = async (payload: IApproveExpert, user: RequestUser) => {
     );
   }
 
-  if (status === ExpertVerificationStatus.REJECT) {
-    const updatedExpert = await prisma.expert.update({
-      where: { id: expertId },
-      data: {
-        isVerified: false,
-        verificationStatus: ExpertVerificationStatus.REJECT,
-        rejectionReason: reason || "No reason provided",
-      },
-    });
-    return updatedExpert;
-  }
+  const updatedExpertTx = await prisma.$transaction(async (tx) => {
+    if (
+      isExpertExist.user.role === Role.STUDENT &&
+      status === ExpertVerificationStatus.REJECT
+    ) {
+      await tx.student.delete({
+        where: { userId: isExpertExist.userId },
+      });
+    }
 
-  if (status === ExpertVerificationStatus.APPROVE) {
-    const updatedExpert = await prisma.expert.update({
-      where: { id: expertId },
-      data: {
-        isVerified: true,
-        verificationStatus: ExpertVerificationStatus.APPROVE,
-      },
-    });
-    return updatedExpert;
-  }
+    if (status === ExpertVerificationStatus.REJECT) {
+      const updatedExpert = await tx.expert.update({
+        where: { id: expertId },
+        data: {
+          isVerified: false,
+          verificationStatus: ExpertVerificationStatus.REJECT,
+          rejectionReason: reason || "No reason provided",
+        },
+      });
+      return updatedExpert;
+    }
+
+    if (status === ExpertVerificationStatus.APPROVE) {
+      const updatedExpert = await tx.expert.update({
+        where: { id: expertId },
+        data: {
+          isVerified: true,
+          verificationStatus: ExpertVerificationStatus.APPROVE,
+        },
+      });
+      return updatedExpert;
+    }
+  });
 };
 
 const studentRegisterExpert = async (
