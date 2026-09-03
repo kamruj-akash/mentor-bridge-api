@@ -47,6 +47,8 @@ export type ExpertMinAggregateOutputType = {
   walletBalance: number | null
   verificationStatus: $Enums.ExpertVerificationStatus | null
   rejectionReason: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExpertMaxAggregateOutputType = {
@@ -60,6 +62,8 @@ export type ExpertMaxAggregateOutputType = {
   walletBalance: number | null
   verificationStatus: $Enums.ExpertVerificationStatus | null
   rejectionReason: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ExpertCountAggregateOutputType = {
@@ -74,6 +78,8 @@ export type ExpertCountAggregateOutputType = {
   walletBalance: number
   verificationStatus: number
   rejectionReason: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -99,6 +105,8 @@ export type ExpertMinAggregateInputType = {
   walletBalance?: true
   verificationStatus?: true
   rejectionReason?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExpertMaxAggregateInputType = {
@@ -112,6 +120,8 @@ export type ExpertMaxAggregateInputType = {
   walletBalance?: true
   verificationStatus?: true
   rejectionReason?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ExpertCountAggregateInputType = {
@@ -126,6 +136,8 @@ export type ExpertCountAggregateInputType = {
   walletBalance?: true
   verificationStatus?: true
   rejectionReason?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -227,6 +239,8 @@ export type ExpertGroupByOutputType = {
   walletBalance: number
   verificationStatus: $Enums.ExpertVerificationStatus
   rejectionReason: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: ExpertCountAggregateOutputType | null
   _avg: ExpertAvgAggregateOutputType | null
   _sum: ExpertSumAggregateOutputType | null
@@ -264,6 +278,8 @@ export type ExpertWhereInput = {
   walletBalance?: Prisma.FloatFilter<"Expert"> | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableFilter<"Expert"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -279,6 +295,8 @@ export type ExpertOrderByWithRelationInput = {
   walletBalance?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -297,6 +315,8 @@ export type ExpertWhereUniqueInput = Prisma.AtLeast<{
   walletBalance?: Prisma.FloatFilter<"Expert"> | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableFilter<"Expert"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -312,6 +332,8 @@ export type ExpertOrderByWithAggregationInput = {
   walletBalance?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ExpertCountOrderByAggregateInput
   _avg?: Prisma.ExpertAvgOrderByAggregateInput
   _max?: Prisma.ExpertMaxOrderByAggregateInput
@@ -334,6 +356,8 @@ export type ExpertScalarWhereWithAggregatesInput = {
   walletBalance?: Prisma.FloatWithAggregatesFilter<"Expert"> | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusWithAggregatesFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Expert"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Expert"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Expert"> | Date | string
 }
 
 export type ExpertCreateInput = {
@@ -347,6 +371,8 @@ export type ExpertCreateInput = {
   walletBalance?: number
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutExpertInput
 }
 
@@ -362,6 +388,8 @@ export type ExpertUncheckedCreateInput = {
   walletBalance?: number
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExpertUpdateInput = {
@@ -375,6 +403,8 @@ export type ExpertUpdateInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutExpertNestedInput
 }
 
@@ -390,6 +420,8 @@ export type ExpertUncheckedUpdateInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExpertCreateManyInput = {
@@ -404,6 +436,8 @@ export type ExpertCreateManyInput = {
   walletBalance?: number
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExpertUpdateManyMutationInput = {
@@ -417,6 +451,8 @@ export type ExpertUpdateManyMutationInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExpertUncheckedUpdateManyInput = {
@@ -431,6 +467,8 @@ export type ExpertUncheckedUpdateManyInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type JsonNullableListFilter<$PrismaModel = never> =
@@ -460,6 +498,8 @@ export type ExpertCountOrderByAggregateInput = {
   walletBalance?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExpertAvgOrderByAggregateInput = {
@@ -478,6 +518,8 @@ export type ExpertMaxOrderByAggregateInput = {
   walletBalance?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExpertMinOrderByAggregateInput = {
@@ -491,6 +533,8 @@ export type ExpertMinOrderByAggregateInput = {
   walletBalance?: Prisma.SortOrder
   verificationStatus?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ExpertSumOrderByAggregateInput = {
@@ -571,6 +615,8 @@ export type ExpertCreateWithoutUserInput = {
   walletBalance?: number
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExpertUncheckedCreateWithoutUserInput = {
@@ -584,6 +630,8 @@ export type ExpertUncheckedCreateWithoutUserInput = {
   walletBalance?: number
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ExpertCreateOrConnectWithoutUserInput = {
@@ -613,6 +661,8 @@ export type ExpertUpdateWithoutUserInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExpertUncheckedUpdateWithoutUserInput = {
@@ -626,6 +676,8 @@ export type ExpertUncheckedUpdateWithoutUserInput = {
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -642,6 +694,8 @@ export type ExpertSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   walletBalance?: boolean
   verificationStatus?: boolean
   rejectionReason?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["expert"]>
 
@@ -657,6 +711,8 @@ export type ExpertSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   walletBalance?: boolean
   verificationStatus?: boolean
   rejectionReason?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["expert"]>
 
@@ -672,6 +728,8 @@ export type ExpertSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   walletBalance?: boolean
   verificationStatus?: boolean
   rejectionReason?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["expert"]>
 
@@ -687,9 +745,11 @@ export type ExpertSelectScalar = {
   walletBalance?: boolean
   verificationStatus?: boolean
   rejectionReason?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ExpertOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "university" | "department" | "documents" | "bio" | "ratePerAssignment" | "isVerified" | "walletBalance" | "verificationStatus" | "rejectionReason", ExtArgs["result"]["expert"]>
+export type ExpertOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "university" | "department" | "documents" | "bio" | "ratePerAssignment" | "isVerified" | "walletBalance" | "verificationStatus" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["expert"]>
 export type ExpertInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -717,6 +777,8 @@ export type $ExpertPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     walletBalance: number
     verificationStatus: $Enums.ExpertVerificationStatus
     rejectionReason: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["expert"]>
   composites: {}
 }
@@ -1152,6 +1214,8 @@ export interface ExpertFieldRefs {
   readonly walletBalance: Prisma.FieldRef<"Expert", 'Float'>
   readonly verificationStatus: Prisma.FieldRef<"Expert", 'ExpertVerificationStatus'>
   readonly rejectionReason: Prisma.FieldRef<"Expert", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Expert", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Expert", 'DateTime'>
 }
     
 
