@@ -62,3 +62,12 @@ export const EscrowStatus = {
 } as const
 
 export type EscrowStatus = (typeof EscrowStatus)[keyof typeof EscrowStatus]
+
+
+export const MentorVerificationStatus = {
+  PENDING: 'PENDING',
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT'
+} as const
+
+export type MentorVerificationStatus = (typeof MentorVerificationStatus)[keyof typeof MentorVerificationStatus]

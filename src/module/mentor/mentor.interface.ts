@@ -7,4 +7,8 @@ export interface IRegisterMentor {
 export interface IVerifyMentor {
   email: string;
   otp: string;
+  university: string;
+  department: string;
+  hourlyRate: number;
+  bio: string;
 }

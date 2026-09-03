@@ -91,6 +91,7 @@ export const MentorScalarFieldEnum = {
   bio: 'bio',
   hourlyRate: 'hourlyRate',
   isVerified: 'isVerified',
+  verificationStatus: 'verificationStatus',
   walletBalance: 'walletBalance'
 } as const
 

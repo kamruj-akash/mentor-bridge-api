@@ -34,3 +34,9 @@ enum EscrowStatus {
   RELEASED_TO_MENTOR
   REFUNDED_TO_STUDENT
 }
+
+enum MentorVerificationStatus {
+  PENDING
+  APPROVE
+  REJECT
+}

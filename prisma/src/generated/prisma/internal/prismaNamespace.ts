@@ -699,6 +699,7 @@ export const MentorScalarFieldEnum = {
   bio: 'bio',
   hourlyRate: 'hourlyRate',
   isVerified: 'isVerified',
+  verificationStatus: 'verificationStatus',
   walletBalance: 'walletBalance'
 } as const
 
@@ -820,6 +821,20 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'MentorVerificationStatus'
+ */
+export type EnumMentorVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MentorVerificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'MentorVerificationStatus[]'
+ */
+export type ListEnumMentorVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MentorVerificationStatus[]'>
     
 
 

@@ -44,6 +44,7 @@ export type MentorMinAggregateOutputType = {
   bio: string | null
   hourlyRate: number | null
   isVerified: boolean | null
+  verificationStatus: $Enums.MentorVerificationStatus | null
   walletBalance: number | null
 }
 
@@ -55,6 +56,7 @@ export type MentorMaxAggregateOutputType = {
   bio: string | null
   hourlyRate: number | null
   isVerified: boolean | null
+  verificationStatus: $Enums.MentorVerificationStatus | null
   walletBalance: number | null
 }
 
@@ -67,6 +69,7 @@ export type MentorCountAggregateOutputType = {
   bio: number
   hourlyRate: number
   isVerified: number
+  verificationStatus: number
   walletBalance: number
   _all: number
 }
@@ -90,6 +93,7 @@ export type MentorMinAggregateInputType = {
   bio?: true
   hourlyRate?: true
   isVerified?: true
+  verificationStatus?: true
   walletBalance?: true
 }
 
@@ -101,6 +105,7 @@ export type MentorMaxAggregateInputType = {
   bio?: true
   hourlyRate?: true
   isVerified?: true
+  verificationStatus?: true
   walletBalance?: true
 }
 
@@ -113,6 +118,7 @@ export type MentorCountAggregateInputType = {
   bio?: true
   hourlyRate?: true
   isVerified?: true
+  verificationStatus?: true
   walletBalance?: true
   _all?: true
 }
@@ -212,6 +218,7 @@ export type MentorGroupByOutputType = {
   bio: string | null
   hourlyRate: number
   isVerified: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance: number
   _count: MentorCountAggregateOutputType | null
   _avg: MentorAvgAggregateOutputType | null
@@ -247,6 +254,7 @@ export type MentorWhereInput = {
   bio?: Prisma.StringNullableFilter<"Mentor"> | string | null
   hourlyRate?: Prisma.FloatFilter<"Mentor"> | number
   isVerified?: Prisma.BoolFilter<"Mentor"> | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFilter<"Mentor"> | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFilter<"Mentor"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -260,6 +268,7 @@ export type MentorOrderByWithRelationInput = {
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   hourlyRate?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
   walletBalance?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -276,6 +285,7 @@ export type MentorWhereUniqueInput = Prisma.AtLeast<{
   bio?: Prisma.StringNullableFilter<"Mentor"> | string | null
   hourlyRate?: Prisma.FloatFilter<"Mentor"> | number
   isVerified?: Prisma.BoolFilter<"Mentor"> | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFilter<"Mentor"> | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFilter<"Mentor"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
@@ -289,6 +299,7 @@ export type MentorOrderByWithAggregationInput = {
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   hourlyRate?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
   walletBalance?: Prisma.SortOrder
   _count?: Prisma.MentorCountOrderByAggregateInput
   _avg?: Prisma.MentorAvgOrderByAggregateInput
@@ -309,6 +320,7 @@ export type MentorScalarWhereWithAggregatesInput = {
   bio?: Prisma.StringNullableWithAggregatesFilter<"Mentor"> | string | null
   hourlyRate?: Prisma.FloatWithAggregatesFilter<"Mentor"> | number
   isVerified?: Prisma.BoolWithAggregatesFilter<"Mentor"> | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusWithAggregatesFilter<"Mentor"> | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatWithAggregatesFilter<"Mentor"> | number
 }
 
@@ -320,6 +332,7 @@ export type MentorCreateInput = {
   bio?: string | null
   hourlyRate: number
   isVerified?: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance?: number
   user: Prisma.UserCreateNestedOneWithoutMentorInput
 }
@@ -333,6 +346,7 @@ export type MentorUncheckedCreateInput = {
   bio?: string | null
   hourlyRate: number
   isVerified?: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance?: number
 }
 
@@ -344,6 +358,7 @@ export type MentorUpdateInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutMentorNestedInput
 }
@@ -357,6 +372,7 @@ export type MentorUncheckedUpdateInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
@@ -369,6 +385,7 @@ export type MentorCreateManyInput = {
   bio?: string | null
   hourlyRate: number
   isVerified?: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance?: number
 }
 
@@ -380,6 +397,7 @@ export type MentorUpdateManyMutationInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
@@ -392,6 +410,7 @@ export type MentorUncheckedUpdateManyInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
@@ -419,6 +438,7 @@ export type MentorCountOrderByAggregateInput = {
   bio?: Prisma.SortOrder
   hourlyRate?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
   walletBalance?: Prisma.SortOrder
 }
 
@@ -435,6 +455,7 @@ export type MentorMaxOrderByAggregateInput = {
   bio?: Prisma.SortOrder
   hourlyRate?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
   walletBalance?: Prisma.SortOrder
 }
 
@@ -446,6 +467,7 @@ export type MentorMinOrderByAggregateInput = {
   bio?: Prisma.SortOrder
   hourlyRate?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  verificationStatus?: Prisma.SortOrder
   walletBalance?: Prisma.SortOrder
 }
 
@@ -478,6 +500,10 @@ export type FloatFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type EnumMentorVerificationStatusFieldUpdateOperationsInput = {
+  set?: $Enums.MentorVerificationStatus
 }
 
 export type MentorCreateNestedOneWithoutUserInput = {
@@ -520,6 +546,7 @@ export type MentorCreateWithoutUserInput = {
   bio?: string | null
   hourlyRate: number
   isVerified?: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance?: number
 }
 
@@ -531,6 +558,7 @@ export type MentorUncheckedCreateWithoutUserInput = {
   bio?: string | null
   hourlyRate: number
   isVerified?: boolean
+  verificationStatus: $Enums.MentorVerificationStatus
   walletBalance?: number
 }
 
@@ -558,6 +586,7 @@ export type MentorUpdateWithoutUserInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
@@ -569,6 +598,7 @@ export type MentorUncheckedUpdateWithoutUserInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   hourlyRate?: Prisma.FloatFieldUpdateOperationsInput | number
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  verificationStatus?: Prisma.EnumMentorVerificationStatusFieldUpdateOperationsInput | $Enums.MentorVerificationStatus
   walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
@@ -583,6 +613,7 @@ export type MentorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   bio?: boolean
   hourlyRate?: boolean
   isVerified?: boolean
+  verificationStatus?: boolean
   walletBalance?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentor"]>
@@ -596,6 +627,7 @@ export type MentorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   bio?: boolean
   hourlyRate?: boolean
   isVerified?: boolean
+  verificationStatus?: boolean
   walletBalance?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentor"]>
@@ -609,6 +641,7 @@ export type MentorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   bio?: boolean
   hourlyRate?: boolean
   isVerified?: boolean
+  verificationStatus?: boolean
   walletBalance?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mentor"]>
@@ -622,10 +655,11 @@ export type MentorSelectScalar = {
   bio?: boolean
   hourlyRate?: boolean
   isVerified?: boolean
+  verificationStatus?: boolean
   walletBalance?: boolean
 }
 
-export type MentorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "university" | "department" | "documents" | "bio" | "hourlyRate" | "isVerified" | "walletBalance", ExtArgs["result"]["mentor"]>
+export type MentorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "university" | "department" | "documents" | "bio" | "hourlyRate" | "isVerified" | "verificationStatus" | "walletBalance", ExtArgs["result"]["mentor"]>
 export type MentorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -650,6 +684,7 @@ export type $MentorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     bio: string | null
     hourlyRate: number
     isVerified: boolean
+    verificationStatus: $Enums.MentorVerificationStatus
     walletBalance: number
   }, ExtArgs["result"]["mentor"]>
   composites: {}
@@ -1083,6 +1118,7 @@ export interface MentorFieldRefs {
   readonly bio: Prisma.FieldRef<"Mentor", 'String'>
   readonly hourlyRate: Prisma.FieldRef<"Mentor", 'Float'>
   readonly isVerified: Prisma.FieldRef<"Mentor", 'Boolean'>
+  readonly verificationStatus: Prisma.FieldRef<"Mentor", 'MentorVerificationStatus'>
   readonly walletBalance: Prisma.FieldRef<"Mentor", 'Float'>
 }
     

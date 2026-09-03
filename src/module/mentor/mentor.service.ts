@@ -1,8 +1,14 @@
 import bcrypt from "bcryptjs";
+import type { UploadApiResponse } from "cloudinary";
 import httpStatus from "http-status";
-import { Role } from "../../../prisma/src/generated/prisma/enums";
+import {
+  MentorVerificationStatus,
+  Role,
+} from "../../../prisma/src/generated/prisma/enums";
 import { redisClient } from "../../config/redis";
+import cloudinary from "../../lib/cloudinary";
 import { prisma } from "../../lib/prisma";
+import type { RequestUser } from "../../middleware/authCheck";
 import { AppError } from "../../utils/AppError";
 import type { IRegisterMentor, IVerifyMentor } from "./mentor.interface";
 
@@ -78,7 +84,32 @@ const verifyMentor = async (
     );
   }
 
-  // const uploadedDocument = await r2
+  const uploadedDocument = await Promise.all(
+    documents.map((document) => {
+      return new Promise<UploadApiResponse>((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              resource_type: "auto",
+              folder: "mentor-documents",
+            },
+            async (error, result) => {
+              if (error) {
+                return reject(error);
+              }
+              if (!result) {
+                throw new AppError(
+                  httpStatus.INTERNAL_SERVER_ERROR,
+                  "Failed to upload document",
+                );
+              }
+              resolve(result);
+            },
+          )
+          .end(document.buffer);
+      });
+    }),
+  );
 
   const user = await prisma.user.create({
     data: {
@@ -87,7 +118,26 @@ const verifyMentor = async (
       password,
       role: Role.MENTOR,
       emailVerified: true,
-      mentor: {},
+      mentor: {
+        create: {
+          documents: uploadedDocument.map((doc) => ({
+            url: doc.secure_url,
+            publicId: doc.public_id,
+          })),
+          department: payload.department,
+          hourlyRate: payload.hourlyRate,
+          university: payload.university,
+          isVerified: false,
+          verificationStatus: MentorVerificationStatus.PENDING,
+          bio: payload?.bio || null,
+        },
+      },
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      mentor: true,
     },
   });
 
@@ -97,7 +147,39 @@ const verifyMentor = async (
   return user;
 };
 
+const approveMentor = async (mentorId: string, user: RequestUser) => {
+  const isMentorExist = await prisma.mentor.findUnique({
+    where: { id: mentorId },
+  });
+
+  if (!isMentorExist) {
+    throw new AppError(httpStatus.NOT_FOUND, "Mentor not found");
+  }
+  if (isMentorExist.verificationStatus !== MentorVerificationStatus.PENDING) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Mentor is already verified or rejected",
+    );
+  }
+  if (user.role !== Role.ADMIN) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to approve mentor",
+    );
+  }
+  const updatedMentor = await prisma.mentor.update({
+    where: { id: mentorId },
+    data: {
+      isVerified: true,
+      verificationStatus: MentorVerificationStatus.APPROVE,
+    },
+  });
+
+  return updatedMentor;
+};
+
 export const mentorService = {
   registerMentor,
   verifyMentor,
+  approveMentor,
 };

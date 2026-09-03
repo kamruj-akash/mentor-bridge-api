@@ -8,12 +8,13 @@ model Mentor {
   bio           String?
   hourlyRate    Float
   isVerified    Boolean @default(false)
+  verificationStatus MentorVerificationStatus
   walletBalance Float   @default(0.0)
 
   //   slots          AvailabilitySlot[]
   //   expertises     MentorExpertise[]
   //   reviews        Review[]
 
-  @@index([university, isVerified])
+  @@index([university, isVerified, verificationStatus])
   @@map("mentors")
 }
