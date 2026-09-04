@@ -87,6 +87,29 @@ const googleLogin = catchAsync(async (req, res) => {
   });
 });
 
+const refreshToken = catchAsync(async (req, res) => {
+  const result = await authService.refreshToken(req.cookies.refreshToken);
+  res.cookie("accessToken", result.accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== "production",
+    sameSite: "none",
+    maxAge: 60 * 15, // 15 minutes
+  });
+  res.cookie("refreshToken", result.refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== "production",
+    sameSite: "none",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Access token refreshed successfully.",
+    data: result,
+  });
+});
+
 export const authController = {
   registerUser,
   verifyRegOtp,
@@ -95,4 +118,5 @@ export const authController = {
   loginUser,
   getMe,
   googleLogin,
+  refreshToken,
 };

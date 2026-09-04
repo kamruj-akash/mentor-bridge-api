@@ -48,6 +48,9 @@ router.get(
   auth(Role.STUDENT, Role.EXPERT, Role.ADMIN),
   authController.getMe,
 );
+
 router.post("/google-login", authController.googleLogin);
+
+router.post("/refresh-token", authController.refreshToken);
 
 export const AuthRoute = router;
