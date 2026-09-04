@@ -19,10 +19,7 @@ const registerExpert = catchAsync(async (req, res) => {
 const verifyExpert = catchAsync(async (req, res) => {
   const files = req.files as Record<string, Express.Multer.File[]>;
   const documents = files?.documents?.map((file: any) => file) ?? [];
-  const result = await expertService.verifyExpert(
-    JSON.parse(req.body.body),
-    documents,
-  );
+  const result = await expertService.verifyExpert(req.body, documents);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -50,10 +47,9 @@ const approveExpert = catchAsync(async (req, res) => {
 const studentRegisterExpert = catchAsync(async (req, res) => {
   const files = req.files as Record<string, Express.Multer.File[]>;
   const documents = files?.documents?.map((file: any) => file) ?? [];
-  const payload = req.body.body;
   const user = req.user as RequestUser;
   const result = await expertService.studentRegisterExpert(
-    JSON.parse(payload),
+    req.body,
     documents,
     user,
   );

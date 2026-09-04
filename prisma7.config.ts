@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
 // The Prisma CLI evaluates this config in its own Node-based loader, which does

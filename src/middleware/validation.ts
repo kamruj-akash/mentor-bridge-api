@@ -18,3 +18,54 @@ export const dataValidationZod = (zodSchema: z.ZodObject) => {
     next();
   });
 };
+
+/**
+ * For multipart/form-data routes where the JSON payload is sent as a
+ * stringified `body` field alongside the uploaded files. Must run *after*
+ * multer, since `req.body` is only populated once multer has parsed the form.
+ */
+export const multipartDataValidationZod = (zodSchema: z.ZodObject) => {
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const rawPayload = (req.body ?? {}).body;
+    if (typeof rawPayload !== "string") {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "A `body` field containing the JSON payload is required",
+      );
+    }
+
+    let parsedPayload: unknown;
+    try {
+      parsedPayload = JSON.parse(rawPayload);
+    } catch {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "The `body` field must contain valid JSON",
+      );
+    }
+
+    const result = zodSchema.safeParse(parsedPayload);
+    if (!result.success) {
+      throw new AppError(httpStatus.BAD_REQUEST, result.error.message);
+    }
+    req.body = result.data;
+    next();
+  });
+};
+
+export const queryValidationZod = (zodSchema: z.ZodObject) => {
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = zodSchema.safeParse(req.query ?? {});
+    if (!result.success) {
+      throw new AppError(httpStatus.BAD_REQUEST, result.error.message);
+    }
+    // `req.query` is a getter on the Express 5 prototype, so it cannot be
+    // assigned to directly - shadow it with an own property instead.
+    Object.defineProperty(req, "query", {
+      value: result.data,
+      writable: true,
+      configurable: true,
+    });
+    next();
+  });
+};
