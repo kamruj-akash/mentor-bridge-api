@@ -118,7 +118,19 @@ const getOpenAssignments = async (query: IQuery) => {
     },
   };
 };
+
+const getAssignmentById = async (assignmentId: string) => {
+  const assignment = await prisma.assignment.findUnique({
+    where: { id: assignmentId },
+  });
+  if (!assignment) {
+    throw new AppError(httpStatus.NOT_FOUND, "Assignment not found");
+  }
+  return assignment;
+};
+
 export const assignmentService = {
   createAssignment,
   getOpenAssignments,
+  getAssignmentById,
 };

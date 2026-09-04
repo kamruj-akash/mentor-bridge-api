@@ -36,7 +36,7 @@ export type AssignmentBidSumAggregateOutputType = {
 
 export type AssignmentBidMinAggregateOutputType = {
   id: string | null
-  taskId: string | null
+  assignmentId: string | null
   expertId: string | null
   proposedAmount: number | null
   estimatedDelivery: Date | null
@@ -48,7 +48,7 @@ export type AssignmentBidMinAggregateOutputType = {
 
 export type AssignmentBidMaxAggregateOutputType = {
   id: string | null
-  taskId: string | null
+  assignmentId: string | null
   expertId: string | null
   proposedAmount: number | null
   estimatedDelivery: Date | null
@@ -60,7 +60,7 @@ export type AssignmentBidMaxAggregateOutputType = {
 
 export type AssignmentBidCountAggregateOutputType = {
   id: number
-  taskId: number
+  assignmentId: number
   expertId: number
   proposedAmount: number
   estimatedDelivery: number
@@ -82,7 +82,7 @@ export type AssignmentBidSumAggregateInputType = {
 
 export type AssignmentBidMinAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   expertId?: true
   proposedAmount?: true
   estimatedDelivery?: true
@@ -94,7 +94,7 @@ export type AssignmentBidMinAggregateInputType = {
 
 export type AssignmentBidMaxAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   expertId?: true
   proposedAmount?: true
   estimatedDelivery?: true
@@ -106,7 +106,7 @@ export type AssignmentBidMaxAggregateInputType = {
 
 export type AssignmentBidCountAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   expertId?: true
   proposedAmount?: true
   estimatedDelivery?: true
@@ -205,7 +205,7 @@ export type AssignmentBidGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type AssignmentBidGroupByOutputType = {
   id: string
-  taskId: string
+  assignmentId: string
   expertId: string
   proposedAmount: number
   estimatedDelivery: Date
@@ -240,7 +240,7 @@ export type AssignmentBidWhereInput = {
   OR?: Prisma.AssignmentBidWhereInput[]
   NOT?: Prisma.AssignmentBidWhereInput | Prisma.AssignmentBidWhereInput[]
   id?: Prisma.StringFilter<"AssignmentBid"> | string
-  taskId?: Prisma.StringFilter<"AssignmentBid"> | string
+  assignmentId?: Prisma.StringFilter<"AssignmentBid"> | string
   expertId?: Prisma.StringFilter<"AssignmentBid"> | string
   proposedAmount?: Prisma.FloatFilter<"AssignmentBid"> | number
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
@@ -248,13 +248,13 @@ export type AssignmentBidWhereInput = {
   status?: Prisma.EnumBidStatusFilter<"AssignmentBid"> | $Enums.BidStatus
   createdAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
   expert?: Prisma.XOR<Prisma.ExpertScalarRelationFilter, Prisma.ExpertWhereInput>
 }
 
 export type AssignmentBidOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   expertId?: Prisma.SortOrder
   proposedAmount?: Prisma.SortOrder
   estimatedDelivery?: Prisma.SortOrder
@@ -262,17 +262,17 @@ export type AssignmentBidOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  task?: Prisma.AssignmentOrderByWithRelationInput
+  assignment?: Prisma.AssignmentOrderByWithRelationInput
   expert?: Prisma.ExpertOrderByWithRelationInput
 }
 
 export type AssignmentBidWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  taskId_expertId?: Prisma.AssignmentBidTaskIdExpertIdCompoundUniqueInput
+  assignmentId_expertId?: Prisma.AssignmentBidAssignmentIdExpertIdCompoundUniqueInput
   AND?: Prisma.AssignmentBidWhereInput | Prisma.AssignmentBidWhereInput[]
   OR?: Prisma.AssignmentBidWhereInput[]
   NOT?: Prisma.AssignmentBidWhereInput | Prisma.AssignmentBidWhereInput[]
-  taskId?: Prisma.StringFilter<"AssignmentBid"> | string
+  assignmentId?: Prisma.StringFilter<"AssignmentBid"> | string
   expertId?: Prisma.StringFilter<"AssignmentBid"> | string
   proposedAmount?: Prisma.FloatFilter<"AssignmentBid"> | number
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
@@ -280,13 +280,13 @@ export type AssignmentBidWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumBidStatusFilter<"AssignmentBid"> | $Enums.BidStatus
   createdAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
   expert?: Prisma.XOR<Prisma.ExpertScalarRelationFilter, Prisma.ExpertWhereInput>
-}, "id" | "taskId_expertId">
+}, "id" | "assignmentId_expertId">
 
 export type AssignmentBidOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   expertId?: Prisma.SortOrder
   proposedAmount?: Prisma.SortOrder
   estimatedDelivery?: Prisma.SortOrder
@@ -306,7 +306,7 @@ export type AssignmentBidScalarWhereWithAggregatesInput = {
   OR?: Prisma.AssignmentBidScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AssignmentBidScalarWhereWithAggregatesInput | Prisma.AssignmentBidScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"AssignmentBid"> | string
-  taskId?: Prisma.StringWithAggregatesFilter<"AssignmentBid"> | string
+  assignmentId?: Prisma.StringWithAggregatesFilter<"AssignmentBid"> | string
   expertId?: Prisma.StringWithAggregatesFilter<"AssignmentBid"> | string
   proposedAmount?: Prisma.FloatWithAggregatesFilter<"AssignmentBid"> | number
   estimatedDelivery?: Prisma.DateTimeWithAggregatesFilter<"AssignmentBid"> | Date | string
@@ -324,13 +324,13 @@ export type AssignmentBidCreateInput = {
   status?: $Enums.BidStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  task: Prisma.AssignmentCreateNestedOneWithoutBidsInput
+  assignment: Prisma.AssignmentCreateNestedOneWithoutBidsInput
   expert: Prisma.ExpertCreateNestedOneWithoutAssignmentBidsInput
 }
 
 export type AssignmentBidUncheckedCreateInput = {
   id?: string
-  taskId: string
+  assignmentId: string
   expertId: string
   proposedAmount: number
   estimatedDelivery: Date | string
@@ -348,13 +348,13 @@ export type AssignmentBidUpdateInput = {
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  task?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
+  assignment?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
   expert?: Prisma.ExpertUpdateOneRequiredWithoutAssignmentBidsNestedInput
 }
 
 export type AssignmentBidUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   expertId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -366,7 +366,7 @@ export type AssignmentBidUncheckedUpdateInput = {
 
 export type AssignmentBidCreateManyInput = {
   id?: string
-  taskId: string
+  assignmentId: string
   expertId: string
   proposedAmount: number
   estimatedDelivery: Date | string
@@ -388,7 +388,7 @@ export type AssignmentBidUpdateManyMutationInput = {
 
 export type AssignmentBidUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   expertId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -408,14 +408,14 @@ export type AssignmentBidOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type AssignmentBidTaskIdExpertIdCompoundUniqueInput = {
-  taskId: string
+export type AssignmentBidAssignmentIdExpertIdCompoundUniqueInput = {
+  assignmentId: string
   expertId: string
 }
 
 export type AssignmentBidCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   expertId?: Prisma.SortOrder
   proposedAmount?: Prisma.SortOrder
   estimatedDelivery?: Prisma.SortOrder
@@ -431,7 +431,7 @@ export type AssignmentBidAvgOrderByAggregateInput = {
 
 export type AssignmentBidMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   expertId?: Prisma.SortOrder
   proposedAmount?: Prisma.SortOrder
   estimatedDelivery?: Prisma.SortOrder
@@ -443,7 +443,7 @@ export type AssignmentBidMaxOrderByAggregateInput = {
 
 export type AssignmentBidMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   expertId?: Prisma.SortOrder
   proposedAmount?: Prisma.SortOrder
   estimatedDelivery?: Prisma.SortOrder
@@ -457,45 +457,45 @@ export type AssignmentBidSumOrderByAggregateInput = {
   proposedAmount?: Prisma.SortOrder
 }
 
-export type AssignmentBidCreateNestedManyWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput> | Prisma.AssignmentBidCreateWithoutTaskInput[] | Prisma.AssignmentBidUncheckedCreateWithoutTaskInput[]
-  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutTaskInput | Prisma.AssignmentBidCreateOrConnectWithoutTaskInput[]
-  createMany?: Prisma.AssignmentBidCreateManyTaskInputEnvelope
+export type AssignmentBidCreateNestedManyWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput> | Prisma.AssignmentBidCreateWithoutAssignmentInput[] | Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput[]
+  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput | Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput[]
+  createMany?: Prisma.AssignmentBidCreateManyAssignmentInputEnvelope
   connect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
 }
 
-export type AssignmentBidUncheckedCreateNestedManyWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput> | Prisma.AssignmentBidCreateWithoutTaskInput[] | Prisma.AssignmentBidUncheckedCreateWithoutTaskInput[]
-  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutTaskInput | Prisma.AssignmentBidCreateOrConnectWithoutTaskInput[]
-  createMany?: Prisma.AssignmentBidCreateManyTaskInputEnvelope
+export type AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput> | Prisma.AssignmentBidCreateWithoutAssignmentInput[] | Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput[]
+  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput | Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput[]
+  createMany?: Prisma.AssignmentBidCreateManyAssignmentInputEnvelope
   connect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
 }
 
-export type AssignmentBidUpdateManyWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput> | Prisma.AssignmentBidCreateWithoutTaskInput[] | Prisma.AssignmentBidUncheckedCreateWithoutTaskInput[]
-  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutTaskInput | Prisma.AssignmentBidCreateOrConnectWithoutTaskInput[]
-  upsert?: Prisma.AssignmentBidUpsertWithWhereUniqueWithoutTaskInput | Prisma.AssignmentBidUpsertWithWhereUniqueWithoutTaskInput[]
-  createMany?: Prisma.AssignmentBidCreateManyTaskInputEnvelope
+export type AssignmentBidUpdateManyWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput> | Prisma.AssignmentBidCreateWithoutAssignmentInput[] | Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput[]
+  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput | Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput[]
+  upsert?: Prisma.AssignmentBidUpsertWithWhereUniqueWithoutAssignmentInput | Prisma.AssignmentBidUpsertWithWhereUniqueWithoutAssignmentInput[]
+  createMany?: Prisma.AssignmentBidCreateManyAssignmentInputEnvelope
   set?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   disconnect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   delete?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   connect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
-  update?: Prisma.AssignmentBidUpdateWithWhereUniqueWithoutTaskInput | Prisma.AssignmentBidUpdateWithWhereUniqueWithoutTaskInput[]
-  updateMany?: Prisma.AssignmentBidUpdateManyWithWhereWithoutTaskInput | Prisma.AssignmentBidUpdateManyWithWhereWithoutTaskInput[]
+  update?: Prisma.AssignmentBidUpdateWithWhereUniqueWithoutAssignmentInput | Prisma.AssignmentBidUpdateWithWhereUniqueWithoutAssignmentInput[]
+  updateMany?: Prisma.AssignmentBidUpdateManyWithWhereWithoutAssignmentInput | Prisma.AssignmentBidUpdateManyWithWhereWithoutAssignmentInput[]
   deleteMany?: Prisma.AssignmentBidScalarWhereInput | Prisma.AssignmentBidScalarWhereInput[]
 }
 
-export type AssignmentBidUncheckedUpdateManyWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput> | Prisma.AssignmentBidCreateWithoutTaskInput[] | Prisma.AssignmentBidUncheckedCreateWithoutTaskInput[]
-  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutTaskInput | Prisma.AssignmentBidCreateOrConnectWithoutTaskInput[]
-  upsert?: Prisma.AssignmentBidUpsertWithWhereUniqueWithoutTaskInput | Prisma.AssignmentBidUpsertWithWhereUniqueWithoutTaskInput[]
-  createMany?: Prisma.AssignmentBidCreateManyTaskInputEnvelope
+export type AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput> | Prisma.AssignmentBidCreateWithoutAssignmentInput[] | Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput[]
+  connectOrCreate?: Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput | Prisma.AssignmentBidCreateOrConnectWithoutAssignmentInput[]
+  upsert?: Prisma.AssignmentBidUpsertWithWhereUniqueWithoutAssignmentInput | Prisma.AssignmentBidUpsertWithWhereUniqueWithoutAssignmentInput[]
+  createMany?: Prisma.AssignmentBidCreateManyAssignmentInputEnvelope
   set?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   disconnect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   delete?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
   connect?: Prisma.AssignmentBidWhereUniqueInput | Prisma.AssignmentBidWhereUniqueInput[]
-  update?: Prisma.AssignmentBidUpdateWithWhereUniqueWithoutTaskInput | Prisma.AssignmentBidUpdateWithWhereUniqueWithoutTaskInput[]
-  updateMany?: Prisma.AssignmentBidUpdateManyWithWhereWithoutTaskInput | Prisma.AssignmentBidUpdateManyWithWhereWithoutTaskInput[]
+  update?: Prisma.AssignmentBidUpdateWithWhereUniqueWithoutAssignmentInput | Prisma.AssignmentBidUpdateWithWhereUniqueWithoutAssignmentInput[]
+  updateMany?: Prisma.AssignmentBidUpdateManyWithWhereWithoutAssignmentInput | Prisma.AssignmentBidUpdateManyWithWhereWithoutAssignmentInput[]
   deleteMany?: Prisma.AssignmentBidScalarWhereInput | Prisma.AssignmentBidScalarWhereInput[]
 }
 
@@ -545,7 +545,7 @@ export type AssignmentBidUncheckedUpdateManyWithoutExpertNestedInput = {
   deleteMany?: Prisma.AssignmentBidScalarWhereInput | Prisma.AssignmentBidScalarWhereInput[]
 }
 
-export type AssignmentBidCreateWithoutTaskInput = {
+export type AssignmentBidCreateWithoutAssignmentInput = {
   id?: string
   proposedAmount: number
   estimatedDelivery: Date | string
@@ -556,7 +556,7 @@ export type AssignmentBidCreateWithoutTaskInput = {
   expert: Prisma.ExpertCreateNestedOneWithoutAssignmentBidsInput
 }
 
-export type AssignmentBidUncheckedCreateWithoutTaskInput = {
+export type AssignmentBidUncheckedCreateWithoutAssignmentInput = {
   id?: string
   expertId: string
   proposedAmount: number
@@ -567,30 +567,30 @@ export type AssignmentBidUncheckedCreateWithoutTaskInput = {
   updatedAt?: Date | string
 }
 
-export type AssignmentBidCreateOrConnectWithoutTaskInput = {
+export type AssignmentBidCreateOrConnectWithoutAssignmentInput = {
   where: Prisma.AssignmentBidWhereUniqueInput
-  create: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput>
+  create: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput>
 }
 
-export type AssignmentBidCreateManyTaskInputEnvelope = {
-  data: Prisma.AssignmentBidCreateManyTaskInput | Prisma.AssignmentBidCreateManyTaskInput[]
+export type AssignmentBidCreateManyAssignmentInputEnvelope = {
+  data: Prisma.AssignmentBidCreateManyAssignmentInput | Prisma.AssignmentBidCreateManyAssignmentInput[]
   skipDuplicates?: boolean
 }
 
-export type AssignmentBidUpsertWithWhereUniqueWithoutTaskInput = {
+export type AssignmentBidUpsertWithWhereUniqueWithoutAssignmentInput = {
   where: Prisma.AssignmentBidWhereUniqueInput
-  update: Prisma.XOR<Prisma.AssignmentBidUpdateWithoutTaskInput, Prisma.AssignmentBidUncheckedUpdateWithoutTaskInput>
-  create: Prisma.XOR<Prisma.AssignmentBidCreateWithoutTaskInput, Prisma.AssignmentBidUncheckedCreateWithoutTaskInput>
+  update: Prisma.XOR<Prisma.AssignmentBidUpdateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedUpdateWithoutAssignmentInput>
+  create: Prisma.XOR<Prisma.AssignmentBidCreateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedCreateWithoutAssignmentInput>
 }
 
-export type AssignmentBidUpdateWithWhereUniqueWithoutTaskInput = {
+export type AssignmentBidUpdateWithWhereUniqueWithoutAssignmentInput = {
   where: Prisma.AssignmentBidWhereUniqueInput
-  data: Prisma.XOR<Prisma.AssignmentBidUpdateWithoutTaskInput, Prisma.AssignmentBidUncheckedUpdateWithoutTaskInput>
+  data: Prisma.XOR<Prisma.AssignmentBidUpdateWithoutAssignmentInput, Prisma.AssignmentBidUncheckedUpdateWithoutAssignmentInput>
 }
 
-export type AssignmentBidUpdateManyWithWhereWithoutTaskInput = {
+export type AssignmentBidUpdateManyWithWhereWithoutAssignmentInput = {
   where: Prisma.AssignmentBidScalarWhereInput
-  data: Prisma.XOR<Prisma.AssignmentBidUpdateManyMutationInput, Prisma.AssignmentBidUncheckedUpdateManyWithoutTaskInput>
+  data: Prisma.XOR<Prisma.AssignmentBidUpdateManyMutationInput, Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentInput>
 }
 
 export type AssignmentBidScalarWhereInput = {
@@ -598,7 +598,7 @@ export type AssignmentBidScalarWhereInput = {
   OR?: Prisma.AssignmentBidScalarWhereInput[]
   NOT?: Prisma.AssignmentBidScalarWhereInput | Prisma.AssignmentBidScalarWhereInput[]
   id?: Prisma.StringFilter<"AssignmentBid"> | string
-  taskId?: Prisma.StringFilter<"AssignmentBid"> | string
+  assignmentId?: Prisma.StringFilter<"AssignmentBid"> | string
   expertId?: Prisma.StringFilter<"AssignmentBid"> | string
   proposedAmount?: Prisma.FloatFilter<"AssignmentBid"> | number
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
@@ -616,12 +616,12 @@ export type AssignmentBidCreateWithoutExpertInput = {
   status?: $Enums.BidStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  task: Prisma.AssignmentCreateNestedOneWithoutBidsInput
+  assignment: Prisma.AssignmentCreateNestedOneWithoutBidsInput
 }
 
 export type AssignmentBidUncheckedCreateWithoutExpertInput = {
   id?: string
-  taskId: string
+  assignmentId: string
   proposedAmount: number
   estimatedDelivery: Date | string
   coverNote: string
@@ -656,7 +656,7 @@ export type AssignmentBidUpdateManyWithWhereWithoutExpertInput = {
   data: Prisma.XOR<Prisma.AssignmentBidUpdateManyMutationInput, Prisma.AssignmentBidUncheckedUpdateManyWithoutExpertInput>
 }
 
-export type AssignmentBidCreateManyTaskInput = {
+export type AssignmentBidCreateManyAssignmentInput = {
   id?: string
   expertId: string
   proposedAmount: number
@@ -667,7 +667,7 @@ export type AssignmentBidCreateManyTaskInput = {
   updatedAt?: Date | string
 }
 
-export type AssignmentBidUpdateWithoutTaskInput = {
+export type AssignmentBidUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -678,7 +678,7 @@ export type AssignmentBidUpdateWithoutTaskInput = {
   expert?: Prisma.ExpertUpdateOneRequiredWithoutAssignmentBidsNestedInput
 }
 
-export type AssignmentBidUncheckedUpdateWithoutTaskInput = {
+export type AssignmentBidUncheckedUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   expertId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -689,7 +689,7 @@ export type AssignmentBidUncheckedUpdateWithoutTaskInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AssignmentBidUncheckedUpdateManyWithoutTaskInput = {
+export type AssignmentBidUncheckedUpdateManyWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   expertId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -702,7 +702,7 @@ export type AssignmentBidUncheckedUpdateManyWithoutTaskInput = {
 
 export type AssignmentBidCreateManyExpertInput = {
   id?: string
-  taskId: string
+  assignmentId: string
   proposedAmount: number
   estimatedDelivery: Date | string
   coverNote: string
@@ -719,12 +719,12 @@ export type AssignmentBidUpdateWithoutExpertInput = {
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  task?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
+  assignment?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
 }
 
 export type AssignmentBidUncheckedUpdateWithoutExpertInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
@@ -735,7 +735,7 @@ export type AssignmentBidUncheckedUpdateWithoutExpertInput = {
 
 export type AssignmentBidUncheckedUpdateManyWithoutExpertInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
   proposedAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
@@ -748,7 +748,7 @@ export type AssignmentBidUncheckedUpdateManyWithoutExpertInput = {
 
 export type AssignmentBidSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   expertId?: boolean
   proposedAmount?: boolean
   estimatedDelivery?: boolean
@@ -756,13 +756,13 @@ export type AssignmentBidSelect<ExtArgs extends runtime.Types.Extensions.Interna
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignmentBid"]>
 
 export type AssignmentBidSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   expertId?: boolean
   proposedAmount?: boolean
   estimatedDelivery?: boolean
@@ -770,13 +770,13 @@ export type AssignmentBidSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignmentBid"]>
 
 export type AssignmentBidSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   expertId?: boolean
   proposedAmount?: boolean
   estimatedDelivery?: boolean
@@ -784,13 +784,13 @@ export type AssignmentBidSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignmentBid"]>
 
 export type AssignmentBidSelectScalar = {
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   expertId?: boolean
   proposedAmount?: boolean
   estimatedDelivery?: boolean
@@ -800,29 +800,29 @@ export type AssignmentBidSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AssignmentBidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "taskId" | "expertId" | "proposedAmount" | "estimatedDelivery" | "coverNote" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["assignmentBid"]>
+export type AssignmentBidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "expertId" | "proposedAmount" | "estimatedDelivery" | "coverNote" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["assignmentBid"]>
 export type AssignmentBidInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }
 export type AssignmentBidIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }
 export type AssignmentBidIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
 }
 
 export type $AssignmentBidPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AssignmentBid"
   objects: {
-    task: Prisma.$AssignmentPayload<ExtArgs>
+    assignment: Prisma.$AssignmentPayload<ExtArgs>
     expert: Prisma.$ExpertPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    taskId: string
+    assignmentId: string
     expertId: string
     proposedAmount: number
     estimatedDelivery: Date
@@ -1224,7 +1224,7 @@ readonly fields: AssignmentBidFieldRefs;
  */
 export interface Prisma__AssignmentBidClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  task<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignment<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   expert<T extends Prisma.ExpertDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExpertDefaultArgs<ExtArgs>>): Prisma.Prisma__ExpertClient<runtime.Types.Result.GetResult<Prisma.$ExpertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1256,7 +1256,7 @@ export interface Prisma__AssignmentBidClient<T, Null = never, ExtArgs extends ru
  */
 export interface AssignmentBidFieldRefs {
   readonly id: Prisma.FieldRef<"AssignmentBid", 'String'>
-  readonly taskId: Prisma.FieldRef<"AssignmentBid", 'String'>
+  readonly assignmentId: Prisma.FieldRef<"AssignmentBid", 'String'>
   readonly expertId: Prisma.FieldRef<"AssignmentBid", 'String'>
   readonly proposedAmount: Prisma.FieldRef<"AssignmentBid", 'Float'>
   readonly estimatedDelivery: Prisma.FieldRef<"AssignmentBid", 'DateTime'>

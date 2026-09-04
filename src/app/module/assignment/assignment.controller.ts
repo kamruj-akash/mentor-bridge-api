@@ -34,7 +34,21 @@ const getOpenAssignments = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAssignmentById = catchAsync(async (req: Request, res: Response) => {
+  const { assignmentId } = req.params;
+  const assignment = await assignmentService.getAssignmentById(
+    assignmentId as string,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Assignment retrieved successfully",
+    data: assignment,
+  });
+});
+
 export const assignmentController = {
   createAssignment,
   getOpenAssignments,
+  getAssignmentById,
 };

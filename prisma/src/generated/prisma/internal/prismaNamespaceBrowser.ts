@@ -97,7 +97,7 @@ export type AssignmentScalarFieldEnum = (typeof AssignmentScalarFieldEnum)[keyof
 
 export const AssignmentBidScalarFieldEnum = {
   id: 'id',
-  taskId: 'taskId',
+  assignmentId: 'assignmentId',
   expertId: 'expertId',
   proposedAmount: 'proposedAmount',
   estimatedDelivery: 'estimatedDelivery',
@@ -146,10 +146,9 @@ export type ExpertScalarFieldEnum = (typeof ExpertScalarFieldEnum)[keyof typeof 
 
 export const PaymentScalarFieldEnum = {
   id: 'id',
-  taskId: 'taskId',
+  assignmentId: 'assignmentId',
   transactionId: 'transactionId',
   amount: 'amount',
-  gateway: 'gateway',
   status: 'status',
   paymentGateway: 'paymentGateway',
   merchantInvoiceNumber: 'merchantInvoiceNumber',

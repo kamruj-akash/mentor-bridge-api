@@ -8,6 +8,7 @@ import { CreateAssignmentZod } from "./assignment.validations";
 
 const router = Router();
 
+// all routes are prefixed with /api/v1/assignment
 router.post(
   "/create",
   upload.single("attachment"),
@@ -15,6 +16,8 @@ router.post(
   multipartDataValidationZod(CreateAssignmentZod),
   assignmentController.createAssignment,
 );
+
 router.get("/all-open", assignmentController.getOpenAssignments);
+router.get("/:assignmentId", assignmentController.getAssignmentById);
 
 export const AssignmentRoutes = router;

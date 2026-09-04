@@ -21,5 +21,3 @@ export const CreateAssignmentZod = z.object({
       message: "Deadline must be in the future",
     }),
 });
-
-export type TCreateAssignment = z.infer<typeof CreateAssignmentZod>;

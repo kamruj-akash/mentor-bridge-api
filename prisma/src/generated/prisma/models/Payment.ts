@@ -36,12 +36,11 @@ export type PaymentSumAggregateOutputType = {
 
 export type PaymentMinAggregateOutputType = {
   id: string | null
-  taskId: string | null
+  assignmentId: string | null
   transactionId: string | null
   amount: number | null
-  gateway: $Enums.PaymentGateway | null
   status: $Enums.PaymentStatus | null
-  paymentGateway: string | null
+  paymentGateway: $Enums.PaymentGateway | null
   merchantInvoiceNumber: string | null
   bkashPaymentId: string | null
   bkashTrxId: string | null
@@ -53,12 +52,11 @@ export type PaymentMinAggregateOutputType = {
 
 export type PaymentMaxAggregateOutputType = {
   id: string | null
-  taskId: string | null
+  assignmentId: string | null
   transactionId: string | null
   amount: number | null
-  gateway: $Enums.PaymentGateway | null
   status: $Enums.PaymentStatus | null
-  paymentGateway: string | null
+  paymentGateway: $Enums.PaymentGateway | null
   merchantInvoiceNumber: string | null
   bkashPaymentId: string | null
   bkashTrxId: string | null
@@ -70,10 +68,9 @@ export type PaymentMaxAggregateOutputType = {
 
 export type PaymentCountAggregateOutputType = {
   id: number
-  taskId: number
+  assignmentId: number
   transactionId: number
   amount: number
-  gateway: number
   status: number
   paymentGateway: number
   merchantInvoiceNumber: number
@@ -98,10 +95,9 @@ export type PaymentSumAggregateInputType = {
 
 export type PaymentMinAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   transactionId?: true
   amount?: true
-  gateway?: true
   status?: true
   paymentGateway?: true
   merchantInvoiceNumber?: true
@@ -115,10 +111,9 @@ export type PaymentMinAggregateInputType = {
 
 export type PaymentMaxAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   transactionId?: true
   amount?: true
-  gateway?: true
   status?: true
   paymentGateway?: true
   merchantInvoiceNumber?: true
@@ -132,10 +127,9 @@ export type PaymentMaxAggregateInputType = {
 
 export type PaymentCountAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   transactionId?: true
   amount?: true
-  gateway?: true
   status?: true
   paymentGateway?: true
   merchantInvoiceNumber?: true
@@ -237,13 +231,12 @@ export type PaymentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type PaymentGroupByOutputType = {
   id: string
-  taskId: string
-  transactionId: string
+  assignmentId: string
+  transactionId: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status: $Enums.PaymentStatus
-  paymentGateway: string
-  merchantInvoiceNumber: string
+  paymentGateway: $Enums.PaymentGateway
+  merchantInvoiceNumber: string | null
   bkashPaymentId: string | null
   bkashTrxId: string | null
   payerReference: string | null
@@ -278,13 +271,12 @@ export type PaymentWhereInput = {
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   id?: Prisma.StringFilter<"Payment"> | string
-  taskId?: Prisma.StringFilter<"Payment"> | string
-  transactionId?: Prisma.StringFilter<"Payment"> | string
+  assignmentId?: Prisma.StringFilter<"Payment"> | string
+  transactionId?: Prisma.StringNullableFilter<"Payment"> | string | null
   amount?: Prisma.FloatFilter<"Payment"> | number
-  gateway?: Prisma.EnumPaymentGatewayFilter<"Payment"> | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFilter<"Payment"> | string
-  merchantInvoiceNumber?: Prisma.StringFilter<"Payment"> | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFilter<"Payment"> | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.StringNullableFilter<"Payment"> | string | null
   bkashPaymentId?: Prisma.StringNullableFilter<"Payment"> | string | null
   bkashTrxId?: Prisma.StringNullableFilter<"Payment"> | string | null
   payerReference?: Prisma.StringNullableFilter<"Payment"> | string | null
@@ -292,18 +284,17 @@ export type PaymentWhereInput = {
   gatewayResponse?: Prisma.JsonNullableFilter<"Payment">
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
 }
 
 export type PaymentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
-  transactionId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
-  gateway?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentGateway?: Prisma.SortOrder
-  merchantInvoiceNumber?: Prisma.SortOrder
+  merchantInvoiceNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   bkashPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   bkashTrxId?: Prisma.SortOrderInput | Prisma.SortOrder
   payerReference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -311,12 +302,12 @@ export type PaymentOrderByWithRelationInput = {
   gatewayResponse?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  task?: Prisma.AssignmentOrderByWithRelationInput
+  assignment?: Prisma.AssignmentOrderByWithRelationInput
 }
 
 export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  taskId?: string
+  assignmentId?: string
   transactionId?: string
   merchantInvoiceNumber?: string
   bkashPaymentId?: string
@@ -325,26 +316,24 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   amount?: Prisma.FloatFilter<"Payment"> | number
-  gateway?: Prisma.EnumPaymentGatewayFilter<"Payment"> | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFilter<"Payment"> | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFilter<"Payment"> | $Enums.PaymentGateway
   payerReference?: Prisma.StringNullableFilter<"Payment"> | string | null
   paidAt?: Prisma.StringNullableFilter<"Payment"> | string | null
   gatewayResponse?: Prisma.JsonNullableFilter<"Payment">
   createdAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payment"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
-}, "id" | "taskId" | "transactionId" | "merchantInvoiceNumber" | "bkashPaymentId" | "bkashTrxId">
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+}, "id" | "assignmentId" | "transactionId" | "merchantInvoiceNumber" | "bkashPaymentId" | "bkashTrxId">
 
 export type PaymentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
-  transactionId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
-  gateway?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentGateway?: Prisma.SortOrder
-  merchantInvoiceNumber?: Prisma.SortOrder
+  merchantInvoiceNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   bkashPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   bkashTrxId?: Prisma.SortOrderInput | Prisma.SortOrder
   payerReference?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -364,13 +353,12 @@ export type PaymentScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  taskId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  transactionId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
+  assignmentId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
+  transactionId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   amount?: Prisma.FloatWithAggregatesFilter<"Payment"> | number
-  gateway?: Prisma.EnumPaymentGatewayWithAggregatesFilter<"Payment"> | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  merchantInvoiceNumber?: Prisma.StringWithAggregatesFilter<"Payment"> | string
+  paymentGateway?: Prisma.EnumPaymentGatewayWithAggregatesFilter<"Payment"> | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   bkashPaymentId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   bkashTrxId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
   payerReference?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
@@ -382,12 +370,11 @@ export type PaymentScalarWhereWithAggregatesInput = {
 
 export type PaymentCreateInput = {
   id?: string
-  transactionId: string
+  transactionId?: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status?: $Enums.PaymentStatus
-  paymentGateway?: string
-  merchantInvoiceNumber: string
+  paymentGateway?: $Enums.PaymentGateway
+  merchantInvoiceNumber?: string | null
   bkashPaymentId?: string | null
   bkashTrxId?: string | null
   payerReference?: string | null
@@ -395,18 +382,17 @@ export type PaymentCreateInput = {
   gatewayResponse?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  task: Prisma.AssignmentCreateNestedOneWithoutPaymentInput
+  assignment: Prisma.AssignmentCreateNestedOneWithoutPaymentInput
 }
 
 export type PaymentUncheckedCreateInput = {
   id?: string
-  taskId: string
-  transactionId: string
+  assignmentId: string
+  transactionId?: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status?: $Enums.PaymentStatus
-  paymentGateway?: string
-  merchantInvoiceNumber: string
+  paymentGateway?: $Enums.PaymentGateway
+  merchantInvoiceNumber?: string | null
   bkashPaymentId?: string | null
   bkashTrxId?: string | null
   payerReference?: string | null
@@ -418,12 +404,11 @@ export type PaymentUncheckedCreateInput = {
 
 export type PaymentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -431,18 +416,17 @@ export type PaymentUpdateInput = {
   gatewayResponse?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  task?: Prisma.AssignmentUpdateOneRequiredWithoutPaymentNestedInput
+  assignment?: Prisma.AssignmentUpdateOneRequiredWithoutPaymentNestedInput
 }
 
 export type PaymentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -454,13 +438,12 @@ export type PaymentUncheckedUpdateInput = {
 
 export type PaymentCreateManyInput = {
   id?: string
-  taskId: string
-  transactionId: string
+  assignmentId: string
+  transactionId?: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status?: $Enums.PaymentStatus
-  paymentGateway?: string
-  merchantInvoiceNumber: string
+  paymentGateway?: $Enums.PaymentGateway
+  merchantInvoiceNumber?: string | null
   bkashPaymentId?: string | null
   bkashTrxId?: string | null
   payerReference?: string | null
@@ -472,12 +455,11 @@ export type PaymentCreateManyInput = {
 
 export type PaymentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -489,13 +471,12 @@ export type PaymentUpdateManyMutationInput = {
 
 export type PaymentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -512,10 +493,9 @@ export type PaymentNullableScalarRelationFilter = {
 
 export type PaymentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  gateway?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentGateway?: Prisma.SortOrder
   merchantInvoiceNumber?: Prisma.SortOrder
@@ -534,10 +514,9 @@ export type PaymentAvgOrderByAggregateInput = {
 
 export type PaymentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  gateway?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentGateway?: Prisma.SortOrder
   merchantInvoiceNumber?: Prisma.SortOrder
@@ -551,10 +530,9 @@ export type PaymentMaxOrderByAggregateInput = {
 
 export type PaymentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
-  gateway?: Prisma.SortOrder
   status?: Prisma.SortOrder
   paymentGateway?: Prisma.SortOrder
   merchantInvoiceNumber?: Prisma.SortOrder
@@ -570,54 +548,53 @@ export type PaymentSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
 }
 
-export type PaymentCreateNestedOneWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutTaskInput
+export type PaymentCreateNestedOneWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutAssignmentInput
   connect?: Prisma.PaymentWhereUniqueInput
 }
 
-export type PaymentUncheckedCreateNestedOneWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutTaskInput
+export type PaymentUncheckedCreateNestedOneWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutAssignmentInput
   connect?: Prisma.PaymentWhereUniqueInput
 }
 
-export type PaymentUpdateOneWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutTaskInput
-  upsert?: Prisma.PaymentUpsertWithoutTaskInput
+export type PaymentUpdateOneWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutAssignmentInput
+  upsert?: Prisma.PaymentUpsertWithoutAssignmentInput
   disconnect?: Prisma.PaymentWhereInput | boolean
   delete?: Prisma.PaymentWhereInput | boolean
   connect?: Prisma.PaymentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutTaskInput, Prisma.PaymentUpdateWithoutTaskInput>, Prisma.PaymentUncheckedUpdateWithoutTaskInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutAssignmentInput, Prisma.PaymentUpdateWithoutAssignmentInput>, Prisma.PaymentUncheckedUpdateWithoutAssignmentInput>
 }
 
-export type PaymentUncheckedUpdateOneWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutTaskInput
-  upsert?: Prisma.PaymentUpsertWithoutTaskInput
+export type PaymentUncheckedUpdateOneWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutAssignmentInput
+  upsert?: Prisma.PaymentUpsertWithoutAssignmentInput
   disconnect?: Prisma.PaymentWhereInput | boolean
   delete?: Prisma.PaymentWhereInput | boolean
   connect?: Prisma.PaymentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutTaskInput, Prisma.PaymentUpdateWithoutTaskInput>, Prisma.PaymentUncheckedUpdateWithoutTaskInput>
-}
-
-export type EnumPaymentGatewayFieldUpdateOperationsInput = {
-  set?: $Enums.PaymentGateway
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutAssignmentInput, Prisma.PaymentUpdateWithoutAssignmentInput>, Prisma.PaymentUncheckedUpdateWithoutAssignmentInput>
 }
 
 export type EnumPaymentStatusFieldUpdateOperationsInput = {
   set?: $Enums.PaymentStatus
 }
 
-export type PaymentCreateWithoutTaskInput = {
+export type EnumPaymentGatewayFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentGateway
+}
+
+export type PaymentCreateWithoutAssignmentInput = {
   id?: string
-  transactionId: string
+  transactionId?: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status?: $Enums.PaymentStatus
-  paymentGateway?: string
-  merchantInvoiceNumber: string
+  paymentGateway?: $Enums.PaymentGateway
+  merchantInvoiceNumber?: string | null
   bkashPaymentId?: string | null
   bkashTrxId?: string | null
   payerReference?: string | null
@@ -627,14 +604,13 @@ export type PaymentCreateWithoutTaskInput = {
   updatedAt?: Date | string
 }
 
-export type PaymentUncheckedCreateWithoutTaskInput = {
+export type PaymentUncheckedCreateWithoutAssignmentInput = {
   id?: string
-  transactionId: string
+  transactionId?: string | null
   amount: number
-  gateway: $Enums.PaymentGateway
   status?: $Enums.PaymentStatus
-  paymentGateway?: string
-  merchantInvoiceNumber: string
+  paymentGateway?: $Enums.PaymentGateway
+  merchantInvoiceNumber?: string | null
   bkashPaymentId?: string | null
   bkashTrxId?: string | null
   payerReference?: string | null
@@ -644,30 +620,29 @@ export type PaymentUncheckedCreateWithoutTaskInput = {
   updatedAt?: Date | string
 }
 
-export type PaymentCreateOrConnectWithoutTaskInput = {
+export type PaymentCreateOrConnectWithoutAssignmentInput = {
   where: Prisma.PaymentWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
 }
 
-export type PaymentUpsertWithoutTaskInput = {
-  update: Prisma.XOR<Prisma.PaymentUpdateWithoutTaskInput, Prisma.PaymentUncheckedUpdateWithoutTaskInput>
-  create: Prisma.XOR<Prisma.PaymentCreateWithoutTaskInput, Prisma.PaymentUncheckedCreateWithoutTaskInput>
+export type PaymentUpsertWithoutAssignmentInput = {
+  update: Prisma.XOR<Prisma.PaymentUpdateWithoutAssignmentInput, Prisma.PaymentUncheckedUpdateWithoutAssignmentInput>
+  create: Prisma.XOR<Prisma.PaymentCreateWithoutAssignmentInput, Prisma.PaymentUncheckedCreateWithoutAssignmentInput>
   where?: Prisma.PaymentWhereInput
 }
 
-export type PaymentUpdateToOneWithWhereWithoutTaskInput = {
+export type PaymentUpdateToOneWithWhereWithoutAssignmentInput = {
   where?: Prisma.PaymentWhereInput
-  data: Prisma.XOR<Prisma.PaymentUpdateWithoutTaskInput, Prisma.PaymentUncheckedUpdateWithoutTaskInput>
+  data: Prisma.XOR<Prisma.PaymentUpdateWithoutAssignmentInput, Prisma.PaymentUncheckedUpdateWithoutAssignmentInput>
 }
 
-export type PaymentUpdateWithoutTaskInput = {
+export type PaymentUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -677,14 +652,13 @@ export type PaymentUpdateWithoutTaskInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PaymentUncheckedUpdateWithoutTaskInput = {
+export type PaymentUncheckedUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  transactionId?: Prisma.StringFieldUpdateOperationsInput | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
-  gateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
   status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-  paymentGateway?: Prisma.StringFieldUpdateOperationsInput | string
-  merchantInvoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentGateway?: Prisma.EnumPaymentGatewayFieldUpdateOperationsInput | $Enums.PaymentGateway
+  merchantInvoiceNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bkashTrxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payerReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -698,10 +672,9 @@ export type PaymentUncheckedUpdateWithoutTaskInput = {
 
 export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   transactionId?: boolean
   amount?: boolean
-  gateway?: boolean
   status?: boolean
   paymentGateway?: boolean
   merchantInvoiceNumber?: boolean
@@ -712,15 +685,14 @@ export type PaymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   gatewayResponse?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   transactionId?: boolean
   amount?: boolean
-  gateway?: boolean
   status?: boolean
   paymentGateway?: boolean
   merchantInvoiceNumber?: boolean
@@ -731,15 +703,14 @@ export type PaymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   gatewayResponse?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   transactionId?: boolean
   amount?: boolean
-  gateway?: boolean
   status?: boolean
   paymentGateway?: boolean
   merchantInvoiceNumber?: boolean
@@ -750,15 +721,14 @@ export type PaymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   gatewayResponse?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type PaymentSelectScalar = {
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   transactionId?: boolean
   amount?: boolean
-  gateway?: boolean
   status?: boolean
   paymentGateway?: boolean
   merchantInvoiceNumber?: boolean
@@ -771,31 +741,30 @@ export type PaymentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "taskId" | "transactionId" | "amount" | "gateway" | "status" | "paymentGateway" | "merchantInvoiceNumber" | "bkashPaymentId" | "bkashTrxId" | "payerReference" | "paidAt" | "gatewayResponse" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+export type PaymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "transactionId" | "amount" | "status" | "paymentGateway" | "merchantInvoiceNumber" | "bkashPaymentId" | "bkashTrxId" | "payerReference" | "paidAt" | "gatewayResponse" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
 export type PaymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 
 export type $PaymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payment"
   objects: {
-    task: Prisma.$AssignmentPayload<ExtArgs>
+    assignment: Prisma.$AssignmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    taskId: string
-    transactionId: string
+    assignmentId: string
+    transactionId: string | null
     amount: number
-    gateway: $Enums.PaymentGateway
     status: $Enums.PaymentStatus
-    paymentGateway: string
-    merchantInvoiceNumber: string
+    paymentGateway: $Enums.PaymentGateway
+    merchantInvoiceNumber: string | null
     bkashPaymentId: string | null
     bkashTrxId: string | null
     payerReference: string | null
@@ -1197,7 +1166,7 @@ readonly fields: PaymentFieldRefs;
  */
 export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  task<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignment<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1228,12 +1197,11 @@ export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface PaymentFieldRefs {
   readonly id: Prisma.FieldRef<"Payment", 'String'>
-  readonly taskId: Prisma.FieldRef<"Payment", 'String'>
+  readonly assignmentId: Prisma.FieldRef<"Payment", 'String'>
   readonly transactionId: Prisma.FieldRef<"Payment", 'String'>
   readonly amount: Prisma.FieldRef<"Payment", 'Float'>
-  readonly gateway: Prisma.FieldRef<"Payment", 'PaymentGateway'>
   readonly status: Prisma.FieldRef<"Payment", 'PaymentStatus'>
-  readonly paymentGateway: Prisma.FieldRef<"Payment", 'String'>
+  readonly paymentGateway: Prisma.FieldRef<"Payment", 'PaymentGateway'>
   readonly merchantInvoiceNumber: Prisma.FieldRef<"Payment", 'String'>
   readonly bkashPaymentId: Prisma.FieldRef<"Payment", 'String'>
   readonly bkashTrxId: Prisma.FieldRef<"Payment", 'String'>
