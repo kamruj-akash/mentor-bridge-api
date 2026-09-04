@@ -1,0 +1,808 @@
+{
+  "info": {
+    "_postman_id": "7d3f1a92-6c48-4b21-8e5d-1f90c3a7b264",
+    "name": "AssignMate API",
+    "description": "REST API for **AssignMate** (Assignment Bridge) - students post assignments, verified experts bid and deliver.\n\n### Base URL\nEvery route lives under `{{baseUrl}}` = `{{serverUrl}}/api/v1`. The health check is the one exception and sits at `{{serverUrl}}/`.\n\n### Roles\n`STUDENT` | `EXPERT` | `ADMIN`\n\n### Auth\n`POST /auth/login` sets `accessToken` (15 min) and `refreshToken` (7 days) as httpOnly cookies **and** returns both in the response body. Protected routes accept either the cookie or an `Authorization: Bearer <token>` header - the collection sends the bearer header from `{{accessToken}}`, which the login test script fills in.\n\nIf the access token has expired but the refresh cookie is still valid, the `auth` middleware silently mints a new access token and sets it as a cookie.\n\n### Suggested run order\n1. `Health / Health Check`\n2. `Auth / Register User` -> `Verify Register OTP` (paste the emailed code into `{{otp}}`)\n3. `Auth / Login` - fills `{{accessToken}}` and `{{refreshToken}}`\n4. `Expert / Register Expert` -> `Verify Expert` (multipart)\n5. Log in as an admin, then `Expert / Get All Experts` -> `Approve / Reject Expert`\n6. `Assignment / Create Assignment` -> `Get Open Assignments`\n\n### Multipart routes\n`POST /expert/verify` and `POST /expert/student-register` are `multipart/form-data`: the JSON payload goes in a single text field named `body` (stringified JSON), files go under `documents` (max 5). Leave `Content-Type` unset so Postman can add the boundary.\n\n### Variables\n| variable | default |\n| --- | --- |\n| `serverUrl` | `http://localhost:4000` |\n| `baseUrl` | `{{serverUrl}}/api/v1` |\n| `accessToken` / `refreshToken` | filled by the login test script |\n| `otp` | paste the 6-digit code from your inbox |\n| `expertId` | filled by `Get All Experts` |\n| `studentId` | uuid of a `students` row - needed by `Create Assignment` |\n| `assignmentId` | filled by `Create Assignment` |\n\n### Success shape\n```json\n{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"...\",\n  \"data\": {}\n}\n```\n\n### Error shape\n```json\n{\n  \"success\": false,\n  \"statusCode\": 400,\n  \"name\": \"Error\",\n  \"message\": \"...\",\n  \"error\": {},\n  \"stack\": \"...\"\n}\n```\n`name`, `error` and `stack` are only populated when `NODE_ENV=development`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Applies to every request in the collection.",
+          "pm.test(\"responds with JSON\", function () {",
+          "  pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"json\");",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "serverUrl",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "{{serverUrl}}/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "studentEmail",
+      "value": "student@example.com",
+      "type": "string"
+    },
+    {
+      "key": "studentPassword",
+      "value": "student123",
+      "type": "string"
+    },
+    {
+      "key": "expertEmail",
+      "value": "expert@example.com",
+      "type": "string"
+    },
+    {
+      "key": "expertPassword",
+      "value": "expert123",
+      "type": "string"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@example.com",
+      "type": "string"
+    },
+    {
+      "key": "adminPassword",
+      "value": "admin123",
+      "type": "string"
+    },
+    {
+      "key": "otp",
+      "value": "123456",
+      "type": "string"
+    },
+    {
+      "key": "googleIdToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "expertId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "studentId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "assignmentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "description": "Liveness probe mounted at the server root, outside `/api/v1`.",
+      "item": [
+        {
+          "name": "Health Check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"server is up\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{serverUrl}}/",
+              "host": [
+                "{{serverUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Returns `{ \"message\": \"Hello Assignment Bridge V1.0!\" }` with status 200 when the server is up."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "description": "Registration, OTP verification, login, password reset and token refresh.\n\n`POST /auth/login` sets `accessToken` (15m) and `refreshToken` (7d) as httpOnly cookies **and** returns them in the response body. The login test script copies both into collection variables so every protected request works right after.",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Student\",\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{studentPassword}}\",\n  \"role\": \"STUDENT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Creates a pending user and emails a 6-digit OTP.\n\n| field | rule |\n| --- | --- |\n| `name` | 3-255 chars |\n| `email` | valid email |\n| `password` | 6-64 chars |\n| `role` | optional - `STUDENT` \\| `EXPERT` \\| `ADMIN` (defaults to `STUDENT`) |\n\nThe account stays unverified until `POST /auth/verify-register` succeeds."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Register OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"otp\": \"{{otp}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-register"
+              ]
+            },
+            "description": "Confirms the 6-digit OTP that was emailed by `POST /auth/register` and activates the account.\n\nSet the `otp` collection variable to the code from your inbox before sending."
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "",
+                  "pm.test(\"login succeeded\", () => pm.expect(res.success).to.be.true);",
+                  "",
+                  "if (res?.data?.accessToken) {",
+                  "  pm.collectionVariables.set(\"accessToken\", res.data.accessToken);",
+                  "}",
+                  "if (res?.data?.refreshToken) {",
+                  "  pm.collectionVariables.set(\"refreshToken\", res.data.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"password\": \"{{studentPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in with email + password.\n\nOn success the server sets the `accessToken` / `refreshToken` cookies and returns them in `data`. The test script stores both into collection variables, so run this first when you come back to the collection."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Returns the logged-in user's profile.\n\nAllowed roles: `STUDENT`, `EXPERT`, `ADMIN`.\n\nThe `auth` middleware reads the `accessToken` cookie first and falls back to the `Authorization: Bearer <token>` header. If the access token is missing but a valid `refreshToken` cookie is present, a fresh access token is minted and set as a cookie automatically."
+          },
+          "response": []
+        },
+        {
+          "name": "Forget Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forget-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forget-password"
+              ]
+            },
+            "description": "Emails a 6-digit password-reset OTP to the address. Always responds `200` so the endpoint cannot be used to probe which emails exist."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Forget Password OTP",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{studentEmail}}\",\n  \"otp\": \"{{otp}}\",\n  \"newPassword\": \"newPass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-forget-password-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "verify-forget-password-otp"
+              ]
+            },
+            "description": "Consumes the reset OTP and sets the new password (6-64 chars). The OTP must be exactly 6 characters."
+          },
+          "response": []
+        },
+        {
+          "name": "Google Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"{{googleIdToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/google-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "google-login"
+              ]
+            },
+            "description": "Exchanges a Google **ID token** (not an access token) for an app session. The token is verified against `GOOGLE_CLIENT_ID`; the email must be verified by Google. A first-time email creates a `GOOGLE` provider user.\n\n> Note: this route has no Zod validation attached, so an invalid shape surfaces as a Google verification error rather than a 400 field error."
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "",
+                  "if (res?.data?.accessToken) {",
+                  "  pm.collectionVariables.set(\"accessToken\", res.data.accessToken);",
+                  "}",
+                  "if (res?.data?.refreshToken) {",
+                  "  pm.collectionVariables.set(\"refreshToken\", res.data.refreshToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            },
+            "description": "Reads the `refreshToken` **cookie** (not the body, not a header) and issues a new access + refresh token pair, re-setting both cookies.\n\nRun `Login` first in the same Postman session so the cookie jar holds the refresh token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Expert",
+      "description": "Expert onboarding and admin approval.\n\n**Multipart routes** (`/verify`, `/student-register`) expect the JSON payload in a single form field named `body` (stringified JSON) plus up to 5 files under `documents`. Do **not** set `Content-Type` manually - Postman adds the multipart boundary itself.",
+      "item": [
+        {
+          "name": "Register Expert",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Expert\",\n  \"email\": \"{{expertEmail}}\",\n  \"password\": \"{{expertPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "register"
+              ]
+            },
+            "description": "Creates an expert account and emails the OTP. Body: `name` (3-255), `email`, `password` (6-64).\n\nContinue with `Verify Expert` to submit credentials and documents."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Expert",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "body",
+                  "value": "{\n  \"email\": \"{{expertEmail}}\",\n  \"otp\": \"{{otp}}\",\n  \"university\": \"University of Dhaka\",\n  \"department\": \"Computer Science\",\n  \"ratePerAssignment\": 1500,\n  \"bio\": \"Final-year CS student, 3 years of tutoring experience.\"\n}",
+                  "type": "text",
+                  "description": "Stringified JSON payload - required by multipartDataValidationZod."
+                },
+                {
+                  "key": "documents",
+                  "type": "file",
+                  "src": [],
+                  "description": "Up to 5 verification documents (student ID, transcript, ...). Pick the files in Postman."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "verify"
+              ]
+            },
+            "description": "Confirms the OTP **and** submits the expert profile plus verification documents in one multipart request.\n\n`body` field (stringified JSON):\n\n| field | rule |\n| --- | --- |\n| `email` | valid email |\n| `otp` | exactly 6 chars |\n| `university` | min 2 chars |\n| `department` | min 2 chars |\n| `ratePerAssignment` | number > 0 (a JSON number, not a string) |\n| `bio` | optional, max 1000 chars |\n\n`documents`: up to 5 files, uploaded to Cloudinary. The expert lands in `PENDING` until an admin approves."
+          },
+          "response": []
+        },
+        {
+          "name": "Student Register as Expert",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "body",
+                  "value": "{\n  \"university\": \"University of Dhaka\",\n  \"department\": \"Computer Science\",\n  \"ratePerAssignment\": 1200,\n  \"bio\": \"Happy to help with data structures and algorithms.\"\n}",
+                  "type": "text",
+                  "description": "Stringified JSON payload - required by multipartDataValidationZod."
+                },
+                {
+                  "key": "documents",
+                  "type": "file",
+                  "src": [],
+                  "description": "Up to 5 verification documents."
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/student-register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "student-register"
+              ]
+            },
+            "description": "Lets an already logged-in `STUDENT` apply to become an expert. Same multipart shape as `Verify Expert` but **without** `email`/`otp` - the identity comes from the access token.\n\nRequires role: `STUDENT`."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve / Reject Expert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expertId\": \"{{expertId}}\",\n  \"status\": \"APPROVE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "approve"
+              ]
+            },
+            "description": "Admin decision on a pending expert.\n\n| field | rule |\n| --- | --- |\n| `expertId` | uuid of the `experts` row |\n| `status` | `APPROVE` or `REJECT` (case-insensitive - it is upper-cased before validation) |\n| `reason` | max 500 chars, **required when rejecting** |\n\nRequires role: `ADMIN`."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Expert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expertId\": \"{{expertId}}\",\n  \"status\": \"REJECT\",\n  \"reason\": \"Submitted documents are unreadable. Please re-upload.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/expert/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "approve"
+              ]
+            },
+            "description": "Same endpoint as above with `status: \"REJECT\"`. The `reason` field is mandatory here - omitting it fails validation with `Reason is required when rejecting an expert`."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Experts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "const first = res?.data?.data?.[0];",
+                  "",
+                  "if (first?.id) {",
+                  "  pm.collectionVariables.set(\"expertId\", first.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/expert/get-all?searchTerm=&status=PENDING&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "expert",
+                "get-all"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "",
+                  "description": "Free-text search.",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "description": "PENDING | APPROVE | REJECT"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Positive integer."
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Positive integer, max 100."
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "See the description table for allowed fields."
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "asc | desc"
+                }
+              ]
+            },
+            "description": "Paginated, searchable list of experts for the admin dashboard.\n\n| query | notes |\n| --- | --- |\n| `searchTerm` | free-text match |\n| `status` | `PENDING` \\| `APPROVE` \\| `REJECT` (upper-cased for you) |\n| `page` | positive int, default 1 |\n| `limit` | positive int, max 100, default 10 |\n| `sortBy` | `createdAt`, `updatedAt`, `university`, `department`, `ratePerAssignment`, `walletBalance`, `isVerified`, `verificationStatus` |\n| `sortOrder` | `asc` \\| `desc` |\n\nThe test script stores the first result's id into `expertId` so the approve requests are ready to send.\n\nRequires role: `ADMIN`."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignment",
+      "description": "Assignment creation and the open-assignment board.\n\n> Heads-up: `POST /assignment/create` is currently **unauthenticated** and has no Zod schema wired up, so `studentId` must be passed in the body and must reference an existing `students` row.",
+      "item": [
+        {
+          "name": "Create Assignment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "",
+                  "if (res?.data?.id) {",
+                  "  pm.collectionVariables.set(\"assignmentId\", res.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"title\": \"Discrete Math problem set 4\",\n  \"description\": \"Need worked solutions for 8 induction and graph-theory problems.\",\n  \"budget\": 2500,\n  \"deadline\": \"2026-10-15T23:59:00.000Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assignment/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignment",
+                "create"
+              ]
+            },
+            "description": "Creates an assignment in `OPEN` status.\n\n| field | notes |\n| --- | --- |\n| `studentId` | uuid of the `students` row (FK - a bad id fails at the DB layer) |\n| `title` | string |\n| `description` | string |\n| `budget` | number (Float) |\n| `deadline` | ISO-8601 date-time |\n\nThe test script saves the new id into `assignmentId`.\n\n> The controller also looks for a Cloudinary attachment under the `attachment` file field, but the route does not mount multer yet - send JSON for now."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Open Assignments",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assignment/all-open?searchTerm=&page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignment",
+                "all-open"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "",
+                  "description": "Matches title or description.",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Default 1."
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Default 10."
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "description": "Assignment column name. Default createdAt."
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "asc | desc. Default asc."
+                }
+              ]
+            },
+            "description": "Lists assignments with `status = OPEN`, paginated.\n\n| query | notes |\n| --- | --- |\n| `searchTerm` | case-insensitive match on `title` and `description` |\n| `page` | default 1 |\n| `limit` | default 10 |\n| `sortBy` | any Assignment column - default `createdAt` |\n| `sortOrder` | `asc` \\| `desc` - default `asc` |\n\nResponse: `{ data: [...], meta: { page, limit, total, totalPages } }`."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

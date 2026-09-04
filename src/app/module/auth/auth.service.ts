@@ -218,7 +218,7 @@ const loginUser = async (payload: ILoginUser) => {
     envConfig.jwt_access_expires_in as SignOptions,
   );
 
-  return { refreshToken, accessToken };
+  return { refreshToken, accessToken, role: user.role };
 };
 
 const getMe = async (user: any) => {

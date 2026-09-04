@@ -5,14 +5,22 @@ import type { AssignmentWhereInput } from "../../../../prisma/src/generated/pris
 import type { IQuery } from "../../interface";
 import cloudinary from "../../lib/cloudinary";
 import { prisma } from "../../lib/prisma";
+import type { RequestUser } from "../../middleware/authCheck";
 import { AppError } from "../../utils/AppError";
 import type { ICreateAssignment } from "./assignment.interface";
 
 const createAssignment = async (
   payload: ICreateAssignment,
   attachments?: Express.Multer.File,
+  reqUser: RequestUser,
 ) => {
-  const { studentId, title, description, budget, deadline } = payload;
+  const { title, description, budget, deadline } = payload;
+  const existUser = await prisma.user.findUnique({
+    where: { id: reqUser.userId },
+    include: {
+      student: true,
+    },
+  });
 
   let attachmentUrl: UploadApiResponse | null = null;
   if (attachments) {
@@ -45,7 +53,7 @@ const createAssignment = async (
 
   const assignment = await prisma.assignment.create({
     data: {
-      studentId,
+      studentId: existUser?.student?.id as string,
       title,
       description,
       attachmentUrl: attachmentUrl

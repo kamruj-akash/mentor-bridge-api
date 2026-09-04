@@ -9,8 +9,9 @@ const createAssignment = catchAsync(async (req: Request, res: Response) => {
   const files = req.files as Record<string, Express.Multer.File[]>;
   const attachment = files?.attachment?.[0];
   const assignment = await assignmentService.createAssignment(
-    req.body,
+    req.body.body,
     attachment,
+    req.user!,
   );
 
   sendResponse(res, {
@@ -24,7 +25,6 @@ const createAssignment = catchAsync(async (req: Request, res: Response) => {
 const getOpenAssignments = catchAsync(async (req: Request, res: Response) => {
   const query: IQuery = req.query;
   const data = await assignmentService.getOpenAssignments(query);
-
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
