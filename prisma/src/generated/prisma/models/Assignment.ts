@@ -39,10 +39,9 @@ export type AssignmentMinAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  attachmentUrl: string | null
   budget: number | null
   deadline: Date | null
-  status: $Enums.TaskStatus | null
+  status: $Enums.AssignmentStatus | null
   assignedExpertId: string | null
   submissionUrl: string | null
   createdAt: Date | null
@@ -54,10 +53,9 @@ export type AssignmentMaxAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  attachmentUrl: string | null
   budget: number | null
   deadline: Date | null
-  status: $Enums.TaskStatus | null
+  status: $Enums.AssignmentStatus | null
   assignedExpertId: string | null
   submissionUrl: string | null
   createdAt: Date | null
@@ -94,7 +92,6 @@ export type AssignmentMinAggregateInputType = {
   studentId?: true
   title?: true
   description?: true
-  attachmentUrl?: true
   budget?: true
   deadline?: true
   status?: true
@@ -109,7 +106,6 @@ export type AssignmentMaxAggregateInputType = {
   studentId?: true
   title?: true
   description?: true
-  attachmentUrl?: true
   budget?: true
   deadline?: true
   status?: true
@@ -226,10 +222,10 @@ export type AssignmentGroupByOutputType = {
   studentId: string
   title: string
   description: string
-  attachmentUrl: string | null
+  attachmentUrl: runtime.JsonValue | null
   budget: number
   deadline: Date
-  status: $Enums.TaskStatus
+  status: $Enums.AssignmentStatus
   assignedExpertId: string | null
   submissionUrl: string | null
   createdAt: Date
@@ -264,10 +260,10 @@ export type AssignmentWhereInput = {
   studentId?: Prisma.StringFilter<"Assignment"> | string
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
-  attachmentUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
+  attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
   budget?: Prisma.FloatFilter<"Assignment"> | number
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
-  status?: Prisma.EnumTaskStatusFilter<"Assignment"> | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -309,10 +305,10 @@ export type AssignmentWhereUniqueInput = Prisma.AtLeast<{
   studentId?: Prisma.StringFilter<"Assignment"> | string
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
-  attachmentUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
+  attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
   budget?: Prisma.FloatFilter<"Assignment"> | number
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
-  status?: Prisma.EnumTaskStatusFilter<"Assignment"> | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -353,10 +349,10 @@ export type AssignmentScalarWhereWithAggregatesInput = {
   studentId?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   title?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   description?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
-  attachmentUrl?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
+  attachmentUrl?: Prisma.JsonNullableWithAggregatesFilter<"Assignment">
   budget?: Prisma.FloatWithAggregatesFilter<"Assignment"> | number
   deadline?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
-  status?: Prisma.EnumTaskStatusWithAggregatesFilter<"Assignment"> | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusWithAggregatesFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
@@ -367,10 +363,10 @@ export type AssignmentCreateInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -387,10 +383,10 @@ export type AssignmentUncheckedCreateInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -405,10 +401,10 @@ export type AssignmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -425,10 +421,10 @@ export type AssignmentUncheckedUpdateInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -444,10 +440,10 @@ export type AssignmentCreateManyInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -458,10 +454,10 @@ export type AssignmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -472,10 +468,10 @@ export type AssignmentUncheckedUpdateManyInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -506,7 +502,6 @@ export type AssignmentMaxOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  attachmentUrl?: Prisma.SortOrder
   budget?: Prisma.SortOrder
   deadline?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -521,7 +516,6 @@ export type AssignmentMinOrderByAggregateInput = {
   studentId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  attachmentUrl?: Prisma.SortOrder
   budget?: Prisma.SortOrder
   deadline?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -554,10 +548,6 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -570,8 +560,12 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type EnumTaskStatusFieldUpdateOperationsInput = {
-  set?: $Enums.TaskStatus
+export type EnumAssignmentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AssignmentStatus
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type AssignmentCreateNestedOneWithoutBidsInput = {
@@ -718,10 +712,10 @@ export type AssignmentCreateWithoutBidsInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -737,10 +731,10 @@ export type AssignmentUncheckedCreateWithoutBidsInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -770,10 +764,10 @@ export type AssignmentUpdateWithoutBidsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -789,10 +783,10 @@ export type AssignmentUncheckedUpdateWithoutBidsInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -806,10 +800,10 @@ export type AssignmentCreateWithoutEscrowInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -825,10 +819,10 @@ export type AssignmentUncheckedCreateWithoutEscrowInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -858,10 +852,10 @@ export type AssignmentUpdateWithoutEscrowInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -877,10 +871,10 @@ export type AssignmentUncheckedUpdateWithoutEscrowInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -894,10 +888,10 @@ export type AssignmentCreateWithoutAssignedExpertInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -913,10 +907,10 @@ export type AssignmentUncheckedCreateWithoutAssignedExpertInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -960,10 +954,10 @@ export type AssignmentScalarWhereInput = {
   studentId?: Prisma.StringFilter<"Assignment"> | string
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
-  attachmentUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
+  attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
   budget?: Prisma.FloatFilter<"Assignment"> | number
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
-  status?: Prisma.EnumTaskStatusFilter<"Assignment"> | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
@@ -974,10 +968,10 @@ export type AssignmentCreateWithoutPaymentInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -993,10 +987,10 @@ export type AssignmentUncheckedCreateWithoutPaymentInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -1026,10 +1020,10 @@ export type AssignmentUpdateWithoutPaymentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1045,10 +1039,10 @@ export type AssignmentUncheckedUpdateWithoutPaymentInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1062,10 +1056,10 @@ export type AssignmentCreateWithoutReviewInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1081,10 +1075,10 @@ export type AssignmentUncheckedCreateWithoutReviewInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -1114,10 +1108,10 @@ export type AssignmentUpdateWithoutReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1133,10 +1127,10 @@ export type AssignmentUncheckedUpdateWithoutReviewInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1150,10 +1144,10 @@ export type AssignmentCreateWithoutStudentInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1168,10 +1162,10 @@ export type AssignmentUncheckedCreateWithoutStudentInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -1213,10 +1207,10 @@ export type AssignmentCreateManyAssignedExpertInput = {
   studentId: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1226,10 +1220,10 @@ export type AssignmentUpdateWithoutAssignedExpertInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1245,10 +1239,10 @@ export type AssignmentUncheckedUpdateWithoutAssignedExpertInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1263,10 +1257,10 @@ export type AssignmentUncheckedUpdateManyWithoutAssignedExpertInput = {
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1276,10 +1270,10 @@ export type AssignmentCreateManyStudentInput = {
   id?: string
   title: string
   description: string
-  attachmentUrl?: string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget: number
   deadline: Date | string
-  status?: $Enums.TaskStatus
+  status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
@@ -1290,10 +1284,10 @@ export type AssignmentUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1308,10 +1302,10 @@ export type AssignmentUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1326,10 +1320,10 @@ export type AssignmentUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   budget?: Prisma.FloatFieldUpdateOperationsInput | number
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1472,10 +1466,10 @@ export type $AssignmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     studentId: string
     title: string
     description: string
-    attachmentUrl: string | null
+    attachmentUrl: runtime.JsonValue | null
     budget: number
     deadline: Date
-    status: $Enums.TaskStatus
+    status: $Enums.AssignmentStatus
     assignedExpertId: string | null
     submissionUrl: string | null
     createdAt: Date
@@ -1913,10 +1907,10 @@ export interface AssignmentFieldRefs {
   readonly studentId: Prisma.FieldRef<"Assignment", 'String'>
   readonly title: Prisma.FieldRef<"Assignment", 'String'>
   readonly description: Prisma.FieldRef<"Assignment", 'String'>
-  readonly attachmentUrl: Prisma.FieldRef<"Assignment", 'String'>
+  readonly attachmentUrl: Prisma.FieldRef<"Assignment", 'Json'>
   readonly budget: Prisma.FieldRef<"Assignment", 'Float'>
   readonly deadline: Prisma.FieldRef<"Assignment", 'DateTime'>
-  readonly status: Prisma.FieldRef<"Assignment", 'TaskStatus'>
+  readonly status: Prisma.FieldRef<"Assignment", 'AssignmentStatus'>
   readonly assignedExpertId: Prisma.FieldRef<"Assignment", 'String'>
   readonly submissionUrl: Prisma.FieldRef<"Assignment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Assignment", 'DateTime'>

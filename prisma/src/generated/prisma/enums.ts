@@ -35,17 +35,6 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 
 export const AssignmentStatus = {
-  PENDING_PAYMENT: 'PENDING_PAYMENT',
-  CONFIRMED: 'CONFIRMED',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED',
-  REFUNDED: 'REFUNDED'
-} as const
-
-export type AssignmentStatus = (typeof AssignmentStatus)[keyof typeof AssignmentStatus]
-
-
-export const TaskStatus = {
   OPEN: 'OPEN',
   ASSIGNED: 'ASSIGNED',
   IN_PROGRESS: 'IN_PROGRESS',
@@ -55,7 +44,7 @@ export const TaskStatus = {
   DISPUTED: 'DISPUTED'
 } as const
 
-export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+export type AssignmentStatus = (typeof AssignmentStatus)[keyof typeof AssignmentStatus]
 
 
 export const BidStatus = {

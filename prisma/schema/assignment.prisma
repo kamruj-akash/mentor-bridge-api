@@ -5,10 +5,10 @@ model Assignment {
 
   title         String
   description   String
-  attachmentUrl String?
+  attachmentUrl Json?
   budget        Float
   deadline      DateTime
-  status        TaskStatus @default(OPEN)
+  status        AssignmentStatus @default(OPEN)
 
   assignedExpertId String?
   assignedExpert   Expert? @relation(fields: [assignedExpertId], references: [id])

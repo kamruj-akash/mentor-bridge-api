@@ -15,14 +15,6 @@ enum Role {
 }
 
 enum AssignmentStatus {
-  PENDING_PAYMENT
-  CONFIRMED
-  COMPLETED
-  CANCELLED
-  REFUNDED
-}
-
-enum TaskStatus {
   OPEN
   ASSIGNED
   IN_PROGRESS
