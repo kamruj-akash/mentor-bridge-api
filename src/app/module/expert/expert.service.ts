@@ -144,7 +144,6 @@ const verifyExpert = async (
       password: true,
     },
     include: {
-      user: { omit: { password: true } },
       expert: true,
     },
   });

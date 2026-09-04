@@ -1,17 +1,19 @@
 import type { Request, Response } from "express";
 import httpStatus from "http-status";
 import type { IQuery } from "../../interface";
+import type { RequestUser } from "../../middleware/authCheck";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { assignmentService } from "./assignment.service";
 
 const createAssignment = catchAsync(async (req: Request, res: Response) => {
-  const files = req.files as Record<string, Express.Multer.File[]>;
+  const files = req?.files as Record<string, Express.Multer.File[]>;
   const attachment = files?.attachment?.[0];
+
   const assignment = await assignmentService.createAssignment(
-    req.body.body,
+    req.body,
+    req.user as RequestUser,
     attachment,
-    req.user!,
   );
 
   sendResponse(res, {

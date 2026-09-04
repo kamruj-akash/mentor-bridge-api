@@ -11,9 +11,10 @@ import type { ICreateAssignment } from "./assignment.interface";
 
 const createAssignment = async (
   payload: ICreateAssignment,
-  attachments?: Express.Multer.File,
   reqUser: RequestUser,
+  attachments?: Express.Multer.File,
 ) => {
+  console.log(payload)
   const { title, description, budget, deadline } = payload;
   const existUser = await prisma.user.findUnique({
     where: { id: reqUser.userId },
