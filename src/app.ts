@@ -9,6 +9,7 @@ import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { AssignmentRoutes } from "./app/module/assignment/assignment.route";
 import { AuthRoute } from "./app/module/auth/auth.route";
+import { BidRoutes } from "./app/module/bid/bid.route";
 import { ExpertRoute } from "./app/module/expert/expert.route";
 
 const app: Application = express();
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/expert", ExpertRoute);
 app.use("/api/v1/assignment", AssignmentRoutes);
+app.use("/api/v1/bid", BidRoutes);
 
 // Health Check
 app.get("/", (req: Request, res: Response) => {

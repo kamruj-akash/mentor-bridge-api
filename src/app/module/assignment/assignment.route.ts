@@ -16,8 +16,12 @@ router.post(
   multipartDataValidationZod(CreateAssignmentZod),
   assignmentController.createAssignment,
 );
-
-router.get("/all-open", assignmentController.getOpenAssignments);
-router.get("/:assignmentId", assignmentController.getAssignmentById);
+router.get("/feed", assignmentController.getOpenAssignments);
+router.get("/:assignmentId/get", assignmentController.getAssignmentById);
+router.get(
+  "/my-assignments",
+  auth(Role.STUDENT),
+  assignmentController.getMyAssignments,
+);
 
 export const AssignmentRoutes = router;

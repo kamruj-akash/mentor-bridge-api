@@ -25,12 +25,13 @@ const createAssignment = catchAsync(async (req: Request, res: Response) => {
 
 const getOpenAssignments = catchAsync(async (req: Request, res: Response) => {
   const query: IQuery = req.query;
-  const data = await assignmentService.getOpenAssignments(query);
+  const result = await assignmentService.getOpenAssignments(query);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Assignments retrieved successfully",
-    data,
+    data: result.data,
+    meta: result.meta,
   });
 });
 
@@ -47,8 +48,24 @@ const getAssignmentById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyAssignments = catchAsync(async (req: Request, res: Response) => {
+  const query: IQuery = req.query;
+  const result = await assignmentService.getMyAssignments(
+    req.user as RequestUser,
+    query,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "My assignments retrieved successfully",
+    data: result.data,
+    meta: result.meta,
+  });
+});
+
 export const assignmentController = {
   createAssignment,
   getOpenAssignments,
   getAssignmentById,
+  getMyAssignments,
 };

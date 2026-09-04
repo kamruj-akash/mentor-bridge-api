@@ -129,8 +129,67 @@ const getAssignmentById = async (assignmentId: string) => {
   return assignment;
 };
 
+const getMyAssignments = async (reqUser: RequestUser, query: IQuery) => {
+  const searchTerm = query.searchTerm || "";
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const sortBy = query.sortBy || "createdAt";
+  const sortOrder = query.sortOrder || "asc";
+
+  const existUser = await prisma.user.findUnique({
+    where: { id: reqUser.userId },
+    include: {
+      student: true,
+    },
+  });
+  if (!existUser || !existUser.student) {
+    throw new AppError(httpStatus.NOT_FOUND, "Student not found");
+  }
+  const andConditions: AssignmentWhereInput[] = [
+    {
+      studentId: existUser.student.id,
+    },
+  ];
+  if (searchTerm) {
+    andConditions.push({
+      OR: [
+        { title: { contains: searchTerm, mode: "insensitive" } },
+        { description: { contains: searchTerm, mode: "insensitive" } },
+      ],
+    });
+  }
+
+  const assignments = await prisma.assignment.findMany({
+    where: {
+      AND: andConditions,
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  });
+  const total = await prisma.assignment.count({
+    where: {
+      AND: andConditions,
+    },
+  });
+
+  const totalPages = Math.ceil(total / limit);
+  return {
+    data: assignments,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages,
+    },
+  };
+};
+
 export const assignmentService = {
   createAssignment,
   getOpenAssignments,
   getAssignmentById,
+  getMyAssignments,
 };

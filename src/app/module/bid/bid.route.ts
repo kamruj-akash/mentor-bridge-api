@@ -7,10 +7,17 @@ import { BidAssignmentZod } from "./bid.validations";
 
 const router = Router();
 router.post(
-  "/bid",
+  "/make-bid",
   auth(Role.EXPERT),
   dataValidationZod(BidAssignmentZod),
   bidController.bidAssignment,
 );
+router.get(
+  "/assignment/:assignmentId",
+  auth(Role.STUDENT),
+  bidController.getBidByAssignmentId,
+);
+router.get("/my-bids", auth(Role.EXPERT), bidController.getMyBids);
+router.delete("/bids/:bidId", auth(Role.EXPERT), bidController.deleteBid);
 
-export const AssignmentBidRoutes = router;
+export const BidRoutes = router;
