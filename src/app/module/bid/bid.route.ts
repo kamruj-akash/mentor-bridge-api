@@ -18,6 +18,6 @@ router.get(
   bidController.getBidByAssignmentId,
 );
 router.get("/my-bids", auth(Role.EXPERT), bidController.getMyBids);
-router.delete("/bids/:bidId", auth(Role.EXPERT), bidController.deleteBid);
+router.delete("/:bidId/delete", auth(Role.EXPERT), bidController.deleteBid);
 
 export const BidRoutes = router;

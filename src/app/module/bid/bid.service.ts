@@ -182,21 +182,27 @@ const deleteBid = async (bidId: string, user: RequestUser) => {
     where: { id: user.userId, role: Role.EXPERT },
     include: { expert: true },
   });
+
   if (!existExpert || !existExpert.expert) {
     throw new AppError(
       httpStatus.FORBIDDEN,
       "Only experts can delete their bids",
     );
   }
+
   const bid = await prisma.assignmentBid.findUnique({
     where: { id: bidId, expertId: existExpert.expert.id },
   });
+
   if (!bid) {
     throw new AppError(httpStatus.NOT_FOUND, "Bid not found");
   }
+
   await prisma.assignmentBid.delete({
-    where: { id: bidId },
+    where: { id: bidId, expertId: existExpert.expert.id },
   });
+
+  return;
 };
 
 export const bidService = {
