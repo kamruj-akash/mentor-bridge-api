@@ -14,7 +14,6 @@ const createAssignment = async (
   reqUser: RequestUser,
   attachments?: Express.Multer.File,
 ) => {
-  console.log(payload)
   const { title, description, budget, deadline } = payload;
   const existUser = await prisma.user.findUnique({
     where: { id: reqUser.userId },

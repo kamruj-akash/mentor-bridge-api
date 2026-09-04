@@ -19,14 +19,10 @@ export const dataValidationZod = (zodSchema: z.ZodObject) => {
   });
 };
 
-/**
- * For multipart/form-data routes where the JSON payload is sent as a
- * stringified `body` field alongside the uploaded files. Must run *after*
- * multer, since `req.body` is only populated once multer has parsed the form.
- */
 export const multipartDataValidationZod = (zodSchema: z.ZodObject) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const rawPayload = (req.body ?? {}).body;
+    // console.log(rawPayload);
     if (typeof rawPayload !== "string") {
       throw new AppError(
         httpStatus.BAD_REQUEST,
@@ -59,8 +55,6 @@ export const queryValidationZod = (zodSchema: z.ZodObject) => {
     if (!result.success) {
       throw new AppError(httpStatus.BAD_REQUEST, result.error.message);
     }
-    // `req.query` is a getter on the Express 5 prototype, so it cannot be
-    // assigned to directly - shadow it with an own property instead.
     Object.defineProperty(req, "query", {
       value: result.data,
       writable: true,

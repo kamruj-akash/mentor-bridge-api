@@ -7,8 +7,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import { assignmentService } from "./assignment.service";
 
 const createAssignment = catchAsync(async (req: Request, res: Response) => {
-  const files = req?.files as Record<string, Express.Multer.File[]>;
-  const attachment = files?.attachment?.[0];
+  const attachment = req.file as Express.Multer.File | undefined;
 
   const assignment = await assignmentService.createAssignment(
     req.body,

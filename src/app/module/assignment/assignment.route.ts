@@ -10,7 +10,7 @@ const router = Router();
 
 router.post(
   "/create",
-  upload.fields([{ name: "attachment", maxCount: 1 }]),
+  upload.single("attachment"),
   auth(Role.STUDENT),
   multipartDataValidationZod(CreateAssignmentZod),
   assignmentController.createAssignment,
