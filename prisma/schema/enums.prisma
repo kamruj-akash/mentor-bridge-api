@@ -22,6 +22,22 @@ enum AssignmentStatus {
   REFUNDED
 }
 
+enum TaskStatus {
+  OPEN
+  ASSIGNED
+  IN_PROGRESS
+  UNDER_REVIEW
+  COMPLETED
+  CANCELLED
+  DISPUTED
+}
+
+enum BidStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 enum PaymentStatus {
   INITIATED
   PAID
@@ -39,4 +55,10 @@ enum ExpertVerificationStatus {
   PENDING
   APPROVE
   REJECT
+}
+
+enum PaymentGateway {
+  BKASH
+  SSLCOMMERZ
+  STRIPE
 }

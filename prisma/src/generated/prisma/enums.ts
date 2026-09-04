@@ -45,6 +45,28 @@ export const AssignmentStatus = {
 export type AssignmentStatus = (typeof AssignmentStatus)[keyof typeof AssignmentStatus]
 
 
+export const TaskStatus = {
+  OPEN: 'OPEN',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  DISPUTED: 'DISPUTED'
+} as const
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const BidStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type BidStatus = (typeof BidStatus)[keyof typeof BidStatus]
+
+
 export const PaymentStatus = {
   INITIATED: 'INITIATED',
   PAID: 'PAID',
@@ -71,3 +93,12 @@ export const ExpertVerificationStatus = {
 } as const
 
 export type ExpertVerificationStatus = (typeof ExpertVerificationStatus)[keyof typeof ExpertVerificationStatus]
+
+
+export const PaymentGateway = {
+  BKASH: 'BKASH',
+  SSLCOMMERZ: 'SSLCOMMERZ',
+  STRIPE: 'STRIPE'
+} as const
+
+export type PaymentGateway = (typeof PaymentGateway)[keyof typeof PaymentGateway]

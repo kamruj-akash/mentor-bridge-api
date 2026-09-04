@@ -1,0 +1,24 @@
+model Payment {
+  id            String         @id @default(uuid())
+
+  taskId        String         @unique
+  task          Assignment     @relation(fields: [taskId], references: [id])
+  transactionId String         @unique
+  amount        Float
+  gateway       PaymentGateway
+  status        PaymentStatus  @default(INITIATED)
+
+  // bkash
+  paymentGateway        String  @default("bkash")
+  merchantInvoiceNumber String  @unique // assignment id
+  bkashPaymentId        String? @unique
+  bkashTrxId            String? @unique
+  payerReference        String? //users email or phoneNo
+  paidAt                String?
+  gatewayResponse       Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("payments")
+}

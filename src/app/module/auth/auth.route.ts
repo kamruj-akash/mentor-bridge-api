@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Role } from "../../../prisma/src/generated/prisma/enums";
+import { Role } from "../../../../prisma/src/generated/prisma/enums";
 import { auth } from "../../middleware/authCheck";
 import { dataValidationZod } from "../../middleware/validation";
 import { authController } from "./auth.controller";
@@ -48,5 +48,6 @@ router.get(
   auth(Role.STUDENT, Role.EXPERT, Role.ADMIN),
   authController.getMe,
 );
+router.post("/google-login", authController.googleLogin);
 
 export const AuthRoute = router;

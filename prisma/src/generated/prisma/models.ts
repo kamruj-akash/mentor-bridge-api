@@ -8,7 +8,12 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Student.ts'
+export type * from './models/Assignment.ts'
+export type * from './models/AssignmentBid.ts'
+export type * from './models/Escrow.ts'
 export type * from './models/Expert.ts'
+export type * from './models/Payment.ts'
+export type * from './models/Review.ts'
+export type * from './models/Student.ts'
 export type * from './models/User.ts'
 export type * from './commonInputTypes.ts'

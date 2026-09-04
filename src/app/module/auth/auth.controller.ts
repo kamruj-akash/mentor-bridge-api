@@ -77,6 +77,16 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
+const googleLogin = catchAsync(async (req, res) => {
+  const result = await authService.googleLogin(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User logged in successfully.",
+    data: result,
+  });
+});
+
 export const authController = {
   registerUser,
   verifyRegOtp,
@@ -84,4 +94,5 @@ export const authController = {
   verifyForgetPasswordOtp,
   loginUser,
   getMe,
+  googleLogin,
 };

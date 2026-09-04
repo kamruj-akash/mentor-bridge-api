@@ -1,20 +1,23 @@
 model Expert {
-  id            String  @id @default(uuid())
-  userId        String  @unique
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  university    String
-  department    String
-  documents     Json[]
-  bio           String?
-  ratePerAssignment Float
-  isVerified    Boolean @default(false)
-  walletBalance Float   @default(0.0)
+  id                 String                   @id @default(uuid())
+  userId             String                   @unique
+  user               User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  university         String
+  department         String
+  documents          Json[]
+  bio                String?
+  ratePerAssignment  Float
+  isVerified         Boolean                  @default(false)
+  walletBalance      Float                    @default(0.0)
   verificationStatus ExpertVerificationStatus @default(PENDING)
-  rejectionReason String?
+  rejectionReason    String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  assignmentTasks Assignment[]
+  assignmentBids  AssignmentBid[]
+  reviews         Review[]
+
   @@index([university, isVerified, verificationStatus])
   @@map("experts")
 }

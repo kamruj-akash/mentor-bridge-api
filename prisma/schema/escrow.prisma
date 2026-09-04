@@ -1,0 +1,15 @@
+model Escrow {
+  id                 String       @id @default(uuid())
+  taskId             String       @unique
+  task               Assignment   @relation(fields: [taskId], references: [id])
+  totalAmount        Float
+  platformCommission Float        @default(15)
+  expertEarnings     Float        @default(85)
+  status             EscrowStatus @default(HELD)
+  disbursedAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("escrows")
+}

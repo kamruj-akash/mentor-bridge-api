@@ -281,6 +281,9 @@ export type ExpertWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  assignmentTasks?: Prisma.AssignmentListRelationFilter
+  assignmentBids?: Prisma.AssignmentBidListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
 }
 
 export type ExpertOrderByWithRelationInput = {
@@ -298,6 +301,9 @@ export type ExpertOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  assignmentTasks?: Prisma.AssignmentOrderByRelationAggregateInput
+  assignmentBids?: Prisma.AssignmentBidOrderByRelationAggregateInput
+  reviews?: Prisma.ReviewOrderByRelationAggregateInput
 }
 
 export type ExpertWhereUniqueInput = Prisma.AtLeast<{
@@ -318,6 +324,9 @@ export type ExpertWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  assignmentTasks?: Prisma.AssignmentListRelationFilter
+  assignmentBids?: Prisma.AssignmentBidListRelationFilter
+  reviews?: Prisma.ReviewListRelationFilter
 }, "id" | "userId">
 
 export type ExpertOrderByWithAggregationInput = {
@@ -374,6 +383,9 @@ export type ExpertCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutExpertInput
+  assignmentTasks?: Prisma.AssignmentCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutExpertInput
 }
 
 export type ExpertUncheckedCreateInput = {
@@ -390,6 +402,9 @@ export type ExpertUncheckedCreateInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutExpertInput
 }
 
 export type ExpertUpdateInput = {
@@ -406,6 +421,9 @@ export type ExpertUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutExpertNestedInput
+  assignmentTasks?: Prisma.AssignmentUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutExpertNestedInput
 }
 
 export type ExpertUncheckedUpdateInput = {
@@ -422,6 +440,9 @@ export type ExpertUncheckedUpdateInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutExpertNestedInput
 }
 
 export type ExpertCreateManyInput = {
@@ -469,6 +490,16 @@ export type ExpertUncheckedUpdateManyInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ExpertNullableScalarRelationFilter = {
+  is?: Prisma.ExpertWhereInput | null
+  isNot?: Prisma.ExpertWhereInput | null
+}
+
+export type ExpertScalarRelationFilter = {
+  is?: Prisma.ExpertWhereInput
+  isNot?: Prisma.ExpertWhereInput
 }
 
 export type JsonNullableListFilter<$PrismaModel = never> =
@@ -542,9 +573,34 @@ export type ExpertSumOrderByAggregateInput = {
   walletBalance?: Prisma.SortOrder
 }
 
-export type ExpertNullableScalarRelationFilter = {
-  is?: Prisma.ExpertWhereInput | null
-  isNot?: Prisma.ExpertWhereInput | null
+export type ExpertCreateNestedOneWithoutAssignmentTasksInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedCreateWithoutAssignmentTasksInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutAssignmentTasksInput
+  connect?: Prisma.ExpertWhereUniqueInput
+}
+
+export type ExpertUpdateOneWithoutAssignmentTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedCreateWithoutAssignmentTasksInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutAssignmentTasksInput
+  upsert?: Prisma.ExpertUpsertWithoutAssignmentTasksInput
+  disconnect?: Prisma.ExpertWhereInput | boolean
+  delete?: Prisma.ExpertWhereInput | boolean
+  connect?: Prisma.ExpertWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExpertUpdateToOneWithWhereWithoutAssignmentTasksInput, Prisma.ExpertUpdateWithoutAssignmentTasksInput>, Prisma.ExpertUncheckedUpdateWithoutAssignmentTasksInput>
+}
+
+export type ExpertCreateNestedOneWithoutAssignmentBidsInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedCreateWithoutAssignmentBidsInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutAssignmentBidsInput
+  connect?: Prisma.ExpertWhereUniqueInput
+}
+
+export type ExpertUpdateOneRequiredWithoutAssignmentBidsNestedInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedCreateWithoutAssignmentBidsInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutAssignmentBidsInput
+  upsert?: Prisma.ExpertUpsertWithoutAssignmentBidsInput
+  connect?: Prisma.ExpertWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExpertUpdateToOneWithWhereWithoutAssignmentBidsInput, Prisma.ExpertUpdateWithoutAssignmentBidsInput>, Prisma.ExpertUncheckedUpdateWithoutAssignmentBidsInput>
 }
 
 export type ExpertCreatedocumentsInput = {
@@ -556,20 +612,26 @@ export type ExpertUpdatedocumentsInput = {
   push?: runtime.InputJsonValue | runtime.InputJsonValue[]
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
 export type EnumExpertVerificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.ExpertVerificationStatus
+}
+
+export type ExpertCreateNestedOneWithoutReviewsInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutReviewsInput, Prisma.ExpertUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutReviewsInput
+  connect?: Prisma.ExpertWhereUniqueInput
+}
+
+export type ExpertUpdateOneRequiredWithoutReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.ExpertCreateWithoutReviewsInput, Prisma.ExpertUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.ExpertCreateOrConnectWithoutReviewsInput
+  upsert?: Prisma.ExpertUpsertWithoutReviewsInput
+  connect?: Prisma.ExpertWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExpertUpdateToOneWithWhereWithoutReviewsInput, Prisma.ExpertUpdateWithoutReviewsInput>, Prisma.ExpertUncheckedUpdateWithoutReviewsInput>
 }
 
 export type ExpertCreateNestedOneWithoutUserInput = {
@@ -604,6 +666,270 @@ export type ExpertUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ExpertUpdateToOneWithWhereWithoutUserInput, Prisma.ExpertUpdateWithoutUserInput>, Prisma.ExpertUncheckedUpdateWithoutUserInput>
 }
 
+export type ExpertCreateWithoutAssignmentTasksInput = {
+  id?: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutExpertInput
+  assignmentBids?: Prisma.AssignmentBidCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertUncheckedCreateWithoutAssignmentTasksInput = {
+  id?: string
+  userId: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignmentBids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertCreateOrConnectWithoutAssignmentTasksInput = {
+  where: Prisma.ExpertWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedCreateWithoutAssignmentTasksInput>
+}
+
+export type ExpertUpsertWithoutAssignmentTasksInput = {
+  update: Prisma.XOR<Prisma.ExpertUpdateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedUpdateWithoutAssignmentTasksInput>
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedCreateWithoutAssignmentTasksInput>
+  where?: Prisma.ExpertWhereInput
+}
+
+export type ExpertUpdateToOneWithWhereWithoutAssignmentTasksInput = {
+  where?: Prisma.ExpertWhereInput
+  data: Prisma.XOR<Prisma.ExpertUpdateWithoutAssignmentTasksInput, Prisma.ExpertUncheckedUpdateWithoutAssignmentTasksInput>
+}
+
+export type ExpertUpdateWithoutAssignmentTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutExpertNestedInput
+}
+
+export type ExpertUncheckedUpdateWithoutAssignmentTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentBids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutExpertNestedInput
+}
+
+export type ExpertCreateWithoutAssignmentBidsInput = {
+  id?: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutExpertInput
+  assignmentTasks?: Prisma.AssignmentCreateNestedManyWithoutAssignedExpertInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertUncheckedCreateWithoutAssignmentBidsInput = {
+  id?: string
+  userId: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedCreateNestedManyWithoutAssignedExpertInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertCreateOrConnectWithoutAssignmentBidsInput = {
+  where: Prisma.ExpertWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedCreateWithoutAssignmentBidsInput>
+}
+
+export type ExpertUpsertWithoutAssignmentBidsInput = {
+  update: Prisma.XOR<Prisma.ExpertUpdateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedUpdateWithoutAssignmentBidsInput>
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedCreateWithoutAssignmentBidsInput>
+  where?: Prisma.ExpertWhereInput
+}
+
+export type ExpertUpdateToOneWithWhereWithoutAssignmentBidsInput = {
+  where?: Prisma.ExpertWhereInput
+  data: Prisma.XOR<Prisma.ExpertUpdateWithoutAssignmentBidsInput, Prisma.ExpertUncheckedUpdateWithoutAssignmentBidsInput>
+}
+
+export type ExpertUpdateWithoutAssignmentBidsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutExpertNestedInput
+  assignmentTasks?: Prisma.AssignmentUpdateManyWithoutAssignedExpertNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutExpertNestedInput
+}
+
+export type ExpertUncheckedUpdateWithoutAssignmentBidsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedUpdateManyWithoutAssignedExpertNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutExpertNestedInput
+}
+
+export type ExpertCreateWithoutReviewsInput = {
+  id?: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutExpertInput
+  assignmentTasks?: Prisma.AssignmentCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertUncheckedCreateWithoutReviewsInput = {
+  id?: string
+  userId: string
+  university: string
+  department: string
+  documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
+  bio?: string | null
+  ratePerAssignment: number
+  isVerified?: boolean
+  walletBalance?: number
+  verificationStatus?: $Enums.ExpertVerificationStatus
+  rejectionReason?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutExpertInput
+}
+
+export type ExpertCreateOrConnectWithoutReviewsInput = {
+  where: Prisma.ExpertWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutReviewsInput, Prisma.ExpertUncheckedCreateWithoutReviewsInput>
+}
+
+export type ExpertUpsertWithoutReviewsInput = {
+  update: Prisma.XOR<Prisma.ExpertUpdateWithoutReviewsInput, Prisma.ExpertUncheckedUpdateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.ExpertCreateWithoutReviewsInput, Prisma.ExpertUncheckedCreateWithoutReviewsInput>
+  where?: Prisma.ExpertWhereInput
+}
+
+export type ExpertUpdateToOneWithWhereWithoutReviewsInput = {
+  where?: Prisma.ExpertWhereInput
+  data: Prisma.XOR<Prisma.ExpertUpdateWithoutReviewsInput, Prisma.ExpertUncheckedUpdateWithoutReviewsInput>
+}
+
+export type ExpertUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutExpertNestedInput
+  assignmentTasks?: Prisma.AssignmentUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUpdateManyWithoutExpertNestedInput
+}
+
+export type ExpertUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  university?: Prisma.StringFieldUpdateOperationsInput | string
+  department?: Prisma.StringFieldUpdateOperationsInput | string
+  documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutExpertNestedInput
+}
+
 export type ExpertCreateWithoutUserInput = {
   id?: string
   university: string
@@ -617,6 +943,9 @@ export type ExpertCreateWithoutUserInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignmentTasks?: Prisma.AssignmentCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutExpertInput
 }
 
 export type ExpertUncheckedCreateWithoutUserInput = {
@@ -632,6 +961,9 @@ export type ExpertUncheckedCreateWithoutUserInput = {
   rejectionReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedCreateNestedManyWithoutAssignedExpertInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutExpertInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutExpertInput
 }
 
 export type ExpertCreateOrConnectWithoutUserInput = {
@@ -663,6 +995,9 @@ export type ExpertUpdateWithoutUserInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentTasks?: Prisma.AssignmentUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutExpertNestedInput
 }
 
 export type ExpertUncheckedUpdateWithoutUserInput = {
@@ -678,8 +1013,58 @@ export type ExpertUncheckedUpdateWithoutUserInput = {
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignmentTasks?: Prisma.AssignmentUncheckedUpdateManyWithoutAssignedExpertNestedInput
+  assignmentBids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutExpertNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutExpertNestedInput
 }
 
+
+/**
+ * Count Type ExpertCountOutputType
+ */
+
+export type ExpertCountOutputType = {
+  assignmentTasks: number
+  assignmentBids: number
+  reviews: number
+}
+
+export type ExpertCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  assignmentTasks?: boolean | ExpertCountOutputTypeCountAssignmentTasksArgs
+  assignmentBids?: boolean | ExpertCountOutputTypeCountAssignmentBidsArgs
+  reviews?: boolean | ExpertCountOutputTypeCountReviewsArgs
+}
+
+/**
+ * ExpertCountOutputType without action
+ */
+export type ExpertCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExpertCountOutputType
+   */
+  select?: Prisma.ExpertCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ExpertCountOutputType without action
+ */
+export type ExpertCountOutputTypeCountAssignmentTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssignmentWhereInput
+}
+
+/**
+ * ExpertCountOutputType without action
+ */
+export type ExpertCountOutputTypeCountAssignmentBidsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AssignmentBidWhereInput
+}
+
+/**
+ * ExpertCountOutputType without action
+ */
+export type ExpertCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewWhereInput
+}
 
 
 export type ExpertSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -697,6 +1082,10 @@ export type ExpertSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  assignmentTasks?: boolean | Prisma.Expert$assignmentTasksArgs<ExtArgs>
+  assignmentBids?: boolean | Prisma.Expert$assignmentBidsArgs<ExtArgs>
+  reviews?: boolean | Prisma.Expert$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.ExpertCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["expert"]>
 
 export type ExpertSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -752,6 +1141,10 @@ export type ExpertSelectScalar = {
 export type ExpertOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "university" | "department" | "documents" | "bio" | "ratePerAssignment" | "isVerified" | "walletBalance" | "verificationStatus" | "rejectionReason" | "createdAt" | "updatedAt", ExtArgs["result"]["expert"]>
 export type ExpertInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  assignmentTasks?: boolean | Prisma.Expert$assignmentTasksArgs<ExtArgs>
+  assignmentBids?: boolean | Prisma.Expert$assignmentBidsArgs<ExtArgs>
+  reviews?: boolean | Prisma.Expert$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.ExpertCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ExpertIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -764,6 +1157,9 @@ export type $ExpertPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Expert"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    assignmentTasks: Prisma.$AssignmentPayload<ExtArgs>[]
+    assignmentBids: Prisma.$AssignmentBidPayload<ExtArgs>[]
+    reviews: Prisma.$ReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1174,6 +1570,9 @@ readonly fields: ExpertFieldRefs;
 export interface Prisma__ExpertClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignmentTasks<T extends Prisma.Expert$assignmentTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Expert$assignmentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignmentBids<T extends Prisma.Expert$assignmentBidsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Expert$assignmentBidsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentBidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviews<T extends Prisma.Expert$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Expert$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1614,6 +2013,78 @@ export type ExpertDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Experts to delete.
    */
   limit?: number
+}
+
+/**
+ * Expert.assignmentTasks
+ */
+export type Expert$assignmentTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Assignment
+   */
+  select?: Prisma.AssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Assignment
+   */
+  omit?: Prisma.AssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssignmentInclude<ExtArgs> | null
+  where?: Prisma.AssignmentWhereInput
+  orderBy?: Prisma.AssignmentOrderByWithRelationInput | Prisma.AssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.AssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssignmentScalarFieldEnum | Prisma.AssignmentScalarFieldEnum[]
+}
+
+/**
+ * Expert.assignmentBids
+ */
+export type Expert$assignmentBidsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AssignmentBid
+   */
+  select?: Prisma.AssignmentBidSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AssignmentBid
+   */
+  omit?: Prisma.AssignmentBidOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AssignmentBidInclude<ExtArgs> | null
+  where?: Prisma.AssignmentBidWhereInput
+  orderBy?: Prisma.AssignmentBidOrderByWithRelationInput | Prisma.AssignmentBidOrderByWithRelationInput[]
+  cursor?: Prisma.AssignmentBidWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AssignmentBidScalarFieldEnum | Prisma.AssignmentBidScalarFieldEnum[]
+}
+
+/**
+ * Expert.reviews
+ */
+export type Expert$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Review
+   */
+  select?: Prisma.ReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Review
+   */
+  omit?: Prisma.ReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewInclude<ExtArgs> | null
+  where?: Prisma.ReviewWhereInput
+  orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
 }
 
 /**

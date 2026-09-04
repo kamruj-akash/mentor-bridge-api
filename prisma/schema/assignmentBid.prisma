@@ -1,0 +1,19 @@
+model AssignmentBid {
+  id       String     @id @default(uuid())
+
+  taskId   String
+  task     Assignment @relation(fields: [taskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  expertId String
+  expert   Expert     @relation(fields: [expertId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  proposedAmount    Float
+  estimatedDelivery DateTime
+  coverNote         String
+  status            BidStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([taskId, expertId])
+  @@map("AssignmentBids")
+}

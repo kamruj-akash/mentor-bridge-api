@@ -4,8 +4,8 @@ import httpStatus from "http-status";
 import {
   ExpertVerificationStatus,
   Role,
-} from "../../../prisma/src/generated/prisma/enums";
-import type { ExpertWhereInput } from "../../../prisma/src/generated/prisma/models";
+} from "../../../../prisma/src/generated/prisma/enums";
+import type { ExpertWhereInput } from "../../../../prisma/src/generated/prisma/models";
 import { redisClient } from "../../config/redis";
 import type { IQuery } from "../../interface";
 import cloudinary from "../../lib/cloudinary";

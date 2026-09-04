@@ -8,11 +8,11 @@ model User {
   emailVerified      Boolean      @default(false)
   status             UserStatus   @default(ACTIVE)
   needPasswordChange Boolean      @default(false)
-  imageUrl           Json?       
+  imageUrl           Json?
   isDeleted          Boolean      @default(false)
   deletedAt          DateTime?
   role               Role         @default(STUDENT)
-  phoneNo             String?
+  phoneNo            String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -20,6 +20,7 @@ model User {
   // ref
   student Student?
   expert  Expert?
+  reviews Review[]
 
   @@index([email])
   @@map("users")

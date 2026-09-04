@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Role } from "../../../prisma/src/generated/prisma/enums";
+import { Role } from "../../../../prisma/src/generated/prisma/enums";
 import { upload } from "../../lib/multer";
 import { auth } from "../../middleware/authCheck";
 import {

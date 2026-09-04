@@ -1,9 +1,14 @@
 import bcrypt from "bcryptjs";
+import type { TokenPayload } from "google-auth-library";
 import httpStatus from "http-status";
 import { type SignOptions } from "jsonwebtoken";
-import { Role } from "../../../prisma/src/generated/prisma/enums";
+import {
+  AuthProvider,
+  Role,
+} from "../../../../prisma/src/generated/prisma/enums";
 import envConfig from "../../config/env";
 import { redisClient } from "../../config/redis";
+import { googleClient } from "../../lib/googleClient";
 import { prisma } from "../../lib/prisma";
 import { AppError } from "../../utils/AppError";
 import { jwtUtils } from "../../utils/jwt";
@@ -228,6 +233,80 @@ const getMe = async (user: any) => {
   return userData;
 };
 
+const googleLogin = async (googleIdToken: string) => {
+  let googleIdTokenPayload: TokenPayload | undefined;
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: googleIdToken,
+      audience: envConfig.gClient_id,
+    });
+    googleIdTokenPayload = ticket.getPayload();
+  } catch (error: any) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      error.message || "Invalid or expired Google Id Token!",
+    );
+  }
+
+  if (
+    !googleIdTokenPayload?.email ||
+    !googleIdTokenPayload?.email_verified ||
+    !googleIdTokenPayload?.name
+  ) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Google Id Token does not contain a verified email address!",
+    );
+  }
+  const { name, email, sub: googleId } = googleIdTokenPayload;
+  let user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        authProvider: AuthProvider.GOOGLE,
+        googleId,
+        emailVerified: true,
+        role: Role.STUDENT,
+        student: {
+          create: {
+            institution: "",
+            academicLevel: "",
+          },
+        },
+      },
+      include: {
+        student: true,
+      },
+    });
+  }
+
+  const jwtPayload = {
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
+
+  const refreshToken = jwtUtils.createToken(
+    jwtPayload,
+    envConfig.jwt_refresh_secret,
+    envConfig.jwt_refresh_expires_in as SignOptions,
+  );
+
+  const accessToken = jwtUtils.createToken(
+    jwtPayload,
+    envConfig.jwt_access_secret,
+    envConfig.jwt_access_expires_in as SignOptions,
+  );
+
+  return { refreshToken, accessToken };
+};
+
 export const authService = {
   registerUser,
   verifyRegOtp,
@@ -235,4 +314,5 @@ export const authService = {
   verifyForgetPasswordOtp,
   loginUser,
   getMe,
+  googleLogin,
 };

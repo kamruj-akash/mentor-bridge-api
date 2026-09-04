@@ -1,0 +1,27 @@
+model Assignment {
+  id        String  @id @default(uuid())
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  title         String
+  description   String
+  attachmentUrl String?
+  budget        Float
+  deadline      DateTime
+  status        TaskStatus @default(OPEN)
+
+  assignedExpertId String?
+  assignedExpert   Expert? @relation(fields: [assignedExpertId], references: [id])
+  submissionUrl    String?
+
+  bids   AssignmentBid[]
+  escrow Escrow?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payment   Payment?
+  review    Review?
+
+  @@index([studentId, title, budget])
+  @@map("assignments")
+}

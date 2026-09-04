@@ -51,8 +51,13 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Student: 'Student',
+  Assignment: 'Assignment',
+  AssignmentBid: 'AssignmentBid',
+  Escrow: 'Escrow',
   Expert: 'Expert',
+  Payment: 'Payment',
+  Review: 'Review',
+  Student: 'Student',
   User: 'User'
 } as const
 
@@ -72,16 +77,52 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const StudentScalarFieldEnum = {
+export const AssignmentScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  institution: 'institution',
-  academicLevel: 'academicLevel',
+  studentId: 'studentId',
+  title: 'title',
+  description: 'description',
+  attachmentUrl: 'attachmentUrl',
+  budget: 'budget',
+  deadline: 'deadline',
+  status: 'status',
+  assignedExpertId: 'assignedExpertId',
+  submissionUrl: 'submissionUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
+export type AssignmentScalarFieldEnum = (typeof AssignmentScalarFieldEnum)[keyof typeof AssignmentScalarFieldEnum]
+
+
+export const AssignmentBidScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  expertId: 'expertId',
+  proposedAmount: 'proposedAmount',
+  estimatedDelivery: 'estimatedDelivery',
+  coverNote: 'coverNote',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AssignmentBidScalarFieldEnum = (typeof AssignmentBidScalarFieldEnum)[keyof typeof AssignmentBidScalarFieldEnum]
+
+
+export const EscrowScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  totalAmount: 'totalAmount',
+  platformCommission: 'platformCommission',
+  expertEarnings: 'expertEarnings',
+  status: 'status',
+  disbursedAt: 'disbursedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EscrowScalarFieldEnum = (typeof EscrowScalarFieldEnum)[keyof typeof EscrowScalarFieldEnum]
 
 
 export const ExpertScalarFieldEnum = {
@@ -101,6 +142,53 @@ export const ExpertScalarFieldEnum = {
 } as const
 
 export type ExpertScalarFieldEnum = (typeof ExpertScalarFieldEnum)[keyof typeof ExpertScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  transactionId: 'transactionId',
+  amount: 'amount',
+  gateway: 'gateway',
+  status: 'status',
+  paymentGateway: 'paymentGateway',
+  merchantInvoiceNumber: 'merchantInvoiceNumber',
+  bkashPaymentId: 'bkashPaymentId',
+  bkashTrxId: 'bkashTrxId',
+  payerReference: 'payerReference',
+  paidAt: 'paidAt',
+  gatewayResponse: 'gatewayResponse',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  expertId: 'expertId',
+  studentId: 'studentId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const StudentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  institution: 'institution',
+  academicLevel: 'academicLevel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
