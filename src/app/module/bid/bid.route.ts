@@ -19,5 +19,6 @@ router.get(
 );
 router.get("/my-bids", auth(Role.EXPERT), bidController.getMyBids);
 router.delete("/:bidId/delete", auth(Role.EXPERT), bidController.deleteBid);
+router.put("/:bidId/accept", auth(Role.STUDENT), bidController.acceptBid);
 
 export const BidRoutes = router;

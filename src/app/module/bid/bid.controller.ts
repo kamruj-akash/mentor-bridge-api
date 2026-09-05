@@ -63,9 +63,23 @@ const deleteBid = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const acceptBid = catchAsync(async (req: Request, res: Response) => {
+  const result = await bidService.acceptBid(
+    req.params.bidId as string,
+    req.user as RequestUser,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Bid accepted successfully",
+    data: result,
+  });
+});
+
 export const bidController = {
   bidAssignment,
   getBidByAssignmentId,
   getMyBids,
   deleteBid,
+  acceptBid,
 };

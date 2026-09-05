@@ -12,6 +12,7 @@ model AssignmentBid {
   coverNote         String
   
   status            BidStatus @default(PENDING)
+  cancelReason String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

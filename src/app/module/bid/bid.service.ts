@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
 import {
   AssignmentStatus,
+  BidStatus,
   Role,
 } from "../../../../prisma/src/generated/prisma/enums";
 import type { IQuery } from "../../interface";
@@ -90,31 +91,38 @@ const getBidByAssignmentId = async (
     throw new AppError(httpStatus.NOT_FOUND, "Assignment not found");
   }
   const bids = await prisma.assignmentBid.findMany({
-    where: { assignmentId },
-    include: {
+    where: {
+      assignmentId,
+      status: { in: [BidStatus.PENDING, BidStatus.ACCEPTED] },
+    },
+    select: {
+      id: true,
+      proposedAmount: true,
+      estimatedDelivery: true,
+      coverNote: true,
+      status: true,
       expert: {
         select: {
-          department: true,
-          verificationStatus: true,
+          id: true,
+          userId: true,
           university: true,
-          ratePerAssignment: true,
+          department: true,
           bio: true,
           user: {
             select: {
-              id: true,
               name: true,
-              createdAt: true,
             },
           },
         },
       },
     },
-    orderBy: { [sortBy]: sortOrder },
-    skip: (page - 1) * limit,
-    take: limit,
   });
+
   const total = await prisma.assignmentBid.count({
-    where: { assignmentId },
+    where: {
+      assignmentId,
+      status: { in: [BidStatus.PENDING, BidStatus.ACCEPTED] },
+    },
   });
   const totalPages = Math.ceil(total / limit);
 
@@ -198,6 +206,13 @@ const deleteBid = async (bidId: string, user: RequestUser) => {
     throw new AppError(httpStatus.NOT_FOUND, "Bid not found");
   }
 
+  if (bid.status !== BidStatus.PENDING) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Only pending bids can be deleted!",
+    );
+  }
+
   await prisma.assignmentBid.delete({
     where: { id: bidId, expertId: existExpert.expert.id },
   });
@@ -205,9 +220,66 @@ const deleteBid = async (bidId: string, user: RequestUser) => {
   return;
 };
 
+const acceptBid = async (bidId: string, user: RequestUser) => {
+  const existUser = await prisma.user.findUnique({
+    where: { id: user.userId },
+    include: { student: true },
+  });
+
+  if (!existUser || !existUser.student) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "Only students can accept bids on assignments",
+    );
+  }
+  const bid = await prisma.assignmentBid.findUnique({
+    where: { id: bidId },
+    include: { assignment: true },
+  });
+
+  if (!bid) {
+    throw new AppError(httpStatus.NOT_FOUND, "Bid not found");
+  }
+  if (bid.assignment.studentId !== existUser.student.id) {
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      "You are not authorized to accept this bid",
+    );
+  }
+  if (bid.assignment.status !== AssignmentStatus.OPEN) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Cannot accept a bid on a closed assignment",
+    );
+  }
+  const transaction = await prisma.$transaction(async (tx) => {
+    await tx.assignment.update({
+      where: { id: bid.assignmentId },
+      data: {
+        status: AssignmentStatus.ASSIGNED,
+        assignedExpertId: bid.expertId,
+      },
+    });
+    await tx.assignmentBid.updateMany({
+      where: { assignmentId: bid.assignmentId, id: { not: bidId } },
+      data: {
+        status: BidStatus.REJECTED,
+        cancelReason: "Another bid has been accepted!",
+      },
+    });
+    const acceptedBid = await tx.assignmentBid.update({
+      where: { id: bidId },
+      data: { status: BidStatus.ACCEPTED },
+    });
+    return acceptedBid;
+  });
+  return transaction;
+};
+
 export const bidService = {
   bidAssignment,
   getBidByAssignmentId,
   getMyBids,
   deleteBid,
+  acceptBid,
 };

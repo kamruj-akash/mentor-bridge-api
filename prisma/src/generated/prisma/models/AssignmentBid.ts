@@ -42,6 +42,7 @@ export type AssignmentBidMinAggregateOutputType = {
   estimatedDelivery: Date | null
   coverNote: string | null
   status: $Enums.BidStatus | null
+  cancelReason: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type AssignmentBidMaxAggregateOutputType = {
   estimatedDelivery: Date | null
   coverNote: string | null
   status: $Enums.BidStatus | null
+  cancelReason: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +68,7 @@ export type AssignmentBidCountAggregateOutputType = {
   estimatedDelivery: number
   coverNote: number
   status: number
+  cancelReason: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +91,7 @@ export type AssignmentBidMinAggregateInputType = {
   estimatedDelivery?: true
   coverNote?: true
   status?: true
+  cancelReason?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +104,7 @@ export type AssignmentBidMaxAggregateInputType = {
   estimatedDelivery?: true
   coverNote?: true
   status?: true
+  cancelReason?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type AssignmentBidCountAggregateInputType = {
   estimatedDelivery?: true
   coverNote?: true
   status?: true
+  cancelReason?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +217,7 @@ export type AssignmentBidGroupByOutputType = {
   estimatedDelivery: Date
   coverNote: string
   status: $Enums.BidStatus
+  cancelReason: string | null
   createdAt: Date
   updatedAt: Date
   _count: AssignmentBidCountAggregateOutputType | null
@@ -246,6 +253,7 @@ export type AssignmentBidWhereInput = {
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   coverNote?: Prisma.StringFilter<"AssignmentBid"> | string
   status?: Prisma.EnumBidStatusFilter<"AssignmentBid"> | $Enums.BidStatus
+  cancelReason?: Prisma.StringNullableFilter<"AssignmentBid"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
@@ -260,6 +268,7 @@ export type AssignmentBidOrderByWithRelationInput = {
   estimatedDelivery?: Prisma.SortOrder
   coverNote?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   assignment?: Prisma.AssignmentOrderByWithRelationInput
@@ -278,6 +287,7 @@ export type AssignmentBidWhereUniqueInput = Prisma.AtLeast<{
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   coverNote?: Prisma.StringFilter<"AssignmentBid"> | string
   status?: Prisma.EnumBidStatusFilter<"AssignmentBid"> | $Enums.BidStatus
+  cancelReason?: Prisma.StringNullableFilter<"AssignmentBid"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
@@ -292,6 +302,7 @@ export type AssignmentBidOrderByWithAggregationInput = {
   estimatedDelivery?: Prisma.SortOrder
   coverNote?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AssignmentBidCountOrderByAggregateInput
@@ -312,6 +323,7 @@ export type AssignmentBidScalarWhereWithAggregatesInput = {
   estimatedDelivery?: Prisma.DateTimeWithAggregatesFilter<"AssignmentBid"> | Date | string
   coverNote?: Prisma.StringWithAggregatesFilter<"AssignmentBid"> | string
   status?: Prisma.EnumBidStatusWithAggregatesFilter<"AssignmentBid"> | $Enums.BidStatus
+  cancelReason?: Prisma.StringNullableWithAggregatesFilter<"AssignmentBid"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AssignmentBid"> | Date | string
 }
@@ -322,6 +334,7 @@ export type AssignmentBidCreateInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignment: Prisma.AssignmentCreateNestedOneWithoutBidsInput
@@ -336,6 +349,7 @@ export type AssignmentBidUncheckedCreateInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -346,6 +360,7 @@ export type AssignmentBidUpdateInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
@@ -360,6 +375,7 @@ export type AssignmentBidUncheckedUpdateInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -372,6 +388,7 @@ export type AssignmentBidCreateManyInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -382,6 +399,7 @@ export type AssignmentBidUpdateManyMutationInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -394,6 +412,7 @@ export type AssignmentBidUncheckedUpdateManyInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -421,6 +440,7 @@ export type AssignmentBidCountOrderByAggregateInput = {
   estimatedDelivery?: Prisma.SortOrder
   coverNote?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -437,6 +457,7 @@ export type AssignmentBidMaxOrderByAggregateInput = {
   estimatedDelivery?: Prisma.SortOrder
   coverNote?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -449,6 +470,7 @@ export type AssignmentBidMinOrderByAggregateInput = {
   estimatedDelivery?: Prisma.SortOrder
   coverNote?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -551,6 +573,7 @@ export type AssignmentBidCreateWithoutAssignmentInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   expert: Prisma.ExpertCreateNestedOneWithoutAssignmentBidsInput
@@ -563,6 +586,7 @@ export type AssignmentBidUncheckedCreateWithoutAssignmentInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -604,6 +628,7 @@ export type AssignmentBidScalarWhereInput = {
   estimatedDelivery?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   coverNote?: Prisma.StringFilter<"AssignmentBid"> | string
   status?: Prisma.EnumBidStatusFilter<"AssignmentBid"> | $Enums.BidStatus
+  cancelReason?: Prisma.StringNullableFilter<"AssignmentBid"> | string | null
   createdAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentBid"> | Date | string
 }
@@ -614,6 +639,7 @@ export type AssignmentBidCreateWithoutExpertInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   assignment: Prisma.AssignmentCreateNestedOneWithoutBidsInput
@@ -626,6 +652,7 @@ export type AssignmentBidUncheckedCreateWithoutExpertInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -663,6 +690,7 @@ export type AssignmentBidCreateManyAssignmentInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -673,6 +701,7 @@ export type AssignmentBidUpdateWithoutAssignmentInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expert?: Prisma.ExpertUpdateOneRequiredWithoutAssignmentBidsNestedInput
@@ -685,6 +714,7 @@ export type AssignmentBidUncheckedUpdateWithoutAssignmentInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -696,6 +726,7 @@ export type AssignmentBidUncheckedUpdateManyWithoutAssignmentInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -707,6 +738,7 @@ export type AssignmentBidCreateManyExpertInput = {
   estimatedDelivery: Date | string
   coverNote: string
   status?: $Enums.BidStatus
+  cancelReason?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -717,6 +749,7 @@ export type AssignmentBidUpdateWithoutExpertInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignment?: Prisma.AssignmentUpdateOneRequiredWithoutBidsNestedInput
@@ -729,6 +762,7 @@ export type AssignmentBidUncheckedUpdateWithoutExpertInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -740,6 +774,7 @@ export type AssignmentBidUncheckedUpdateManyWithoutExpertInput = {
   estimatedDelivery?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   coverNote?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumBidStatusFieldUpdateOperationsInput | $Enums.BidStatus
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -754,6 +789,7 @@ export type AssignmentBidSelect<ExtArgs extends runtime.Types.Extensions.Interna
   estimatedDelivery?: boolean
   coverNote?: boolean
   status?: boolean
+  cancelReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
@@ -768,6 +804,7 @@ export type AssignmentBidSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   estimatedDelivery?: boolean
   coverNote?: boolean
   status?: boolean
+  cancelReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
@@ -782,6 +819,7 @@ export type AssignmentBidSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   estimatedDelivery?: boolean
   coverNote?: boolean
   status?: boolean
+  cancelReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
@@ -796,11 +834,12 @@ export type AssignmentBidSelectScalar = {
   estimatedDelivery?: boolean
   coverNote?: boolean
   status?: boolean
+  cancelReason?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AssignmentBidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "expertId" | "proposedAmount" | "estimatedDelivery" | "coverNote" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["assignmentBid"]>
+export type AssignmentBidOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "expertId" | "proposedAmount" | "estimatedDelivery" | "coverNote" | "status" | "cancelReason" | "createdAt" | "updatedAt", ExtArgs["result"]["assignmentBid"]>
 export type AssignmentBidInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
   expert?: boolean | Prisma.ExpertDefaultArgs<ExtArgs>
@@ -828,6 +867,7 @@ export type $AssignmentBidPayload<ExtArgs extends runtime.Types.Extensions.Inter
     estimatedDelivery: Date
     coverNote: string
     status: $Enums.BidStatus
+    cancelReason: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["assignmentBid"]>
@@ -1262,6 +1302,7 @@ export interface AssignmentBidFieldRefs {
   readonly estimatedDelivery: Prisma.FieldRef<"AssignmentBid", 'DateTime'>
   readonly coverNote: Prisma.FieldRef<"AssignmentBid", 'String'>
   readonly status: Prisma.FieldRef<"AssignmentBid", 'BidStatus'>
+  readonly cancelReason: Prisma.FieldRef<"AssignmentBid", 'String'>
   readonly createdAt: Prisma.FieldRef<"AssignmentBid", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AssignmentBid", 'DateTime'>
 }

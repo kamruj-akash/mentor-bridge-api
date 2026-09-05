@@ -1081,6 +1081,7 @@ export const AssignmentBidScalarFieldEnum = {
   estimatedDelivery: 'estimatedDelivery',
   coverNote: 'coverNote',
   status: 'status',
+  cancelReason: 'cancelReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
