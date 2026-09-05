@@ -36,6 +36,7 @@ export type Role = (typeof Role)[keyof typeof Role]
 
 export const AssignmentStatus = {
   OPEN: 'OPEN',
+  AWAITING_PAYMENT: 'AWAITING_PAYMENT',
   ASSIGNED: 'ASSIGNED',
   IN_PROGRESS: 'IN_PROGRESS',
   UNDER_REVIEW: 'UNDER_REVIEW',

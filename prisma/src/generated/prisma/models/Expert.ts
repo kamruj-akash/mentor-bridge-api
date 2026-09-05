@@ -27,13 +27,13 @@ export type AggregateExpert = {
 }
 
 export type ExpertAvgAggregateOutputType = {
-  ratePerAssignment: number | null
-  walletBalance: number | null
+  ratePerAssignment: runtime.Decimal | null
+  walletBalance: runtime.Decimal | null
 }
 
 export type ExpertSumAggregateOutputType = {
-  ratePerAssignment: number | null
-  walletBalance: number | null
+  ratePerAssignment: runtime.Decimal | null
+  walletBalance: runtime.Decimal | null
 }
 
 export type ExpertMinAggregateOutputType = {
@@ -42,9 +42,9 @@ export type ExpertMinAggregateOutputType = {
   university: string | null
   department: string | null
   bio: string | null
-  ratePerAssignment: number | null
+  ratePerAssignment: runtime.Decimal | null
   isVerified: boolean | null
-  walletBalance: number | null
+  walletBalance: runtime.Decimal | null
   verificationStatus: $Enums.ExpertVerificationStatus | null
   rejectionReason: string | null
   createdAt: Date | null
@@ -57,9 +57,9 @@ export type ExpertMaxAggregateOutputType = {
   university: string | null
   department: string | null
   bio: string | null
-  ratePerAssignment: number | null
+  ratePerAssignment: runtime.Decimal | null
   isVerified: boolean | null
-  walletBalance: number | null
+  walletBalance: runtime.Decimal | null
   verificationStatus: $Enums.ExpertVerificationStatus | null
   rejectionReason: string | null
   createdAt: Date | null
@@ -234,9 +234,9 @@ export type ExpertGroupByOutputType = {
   department: string
   documents: runtime.JsonValue[]
   bio: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal
   isVerified: boolean
-  walletBalance: number
+  walletBalance: runtime.Decimal
   verificationStatus: $Enums.ExpertVerificationStatus
   rejectionReason: string | null
   createdAt: Date
@@ -273,9 +273,9 @@ export type ExpertWhereInput = {
   department?: Prisma.StringFilter<"Expert"> | string
   documents?: Prisma.JsonNullableListFilter<"Expert">
   bio?: Prisma.StringNullableFilter<"Expert"> | string | null
-  ratePerAssignment?: Prisma.FloatFilter<"Expert"> | number
+  ratePerAssignment?: Prisma.DecimalFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFilter<"Expert"> | boolean
-  walletBalance?: Prisma.FloatFilter<"Expert"> | number
+  walletBalance?: Prisma.DecimalFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableFilter<"Expert"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
@@ -316,9 +316,9 @@ export type ExpertWhereUniqueInput = Prisma.AtLeast<{
   department?: Prisma.StringFilter<"Expert"> | string
   documents?: Prisma.JsonNullableListFilter<"Expert">
   bio?: Prisma.StringNullableFilter<"Expert"> | string | null
-  ratePerAssignment?: Prisma.FloatFilter<"Expert"> | number
+  ratePerAssignment?: Prisma.DecimalFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFilter<"Expert"> | boolean
-  walletBalance?: Prisma.FloatFilter<"Expert"> | number
+  walletBalance?: Prisma.DecimalFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableFilter<"Expert"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Expert"> | Date | string
@@ -360,9 +360,9 @@ export type ExpertScalarWhereWithAggregatesInput = {
   department?: Prisma.StringWithAggregatesFilter<"Expert"> | string
   documents?: Prisma.JsonNullableListFilter<"Expert">
   bio?: Prisma.StringNullableWithAggregatesFilter<"Expert"> | string | null
-  ratePerAssignment?: Prisma.FloatWithAggregatesFilter<"Expert"> | number
+  ratePerAssignment?: Prisma.DecimalWithAggregatesFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolWithAggregatesFilter<"Expert"> | boolean
-  walletBalance?: Prisma.FloatWithAggregatesFilter<"Expert"> | number
+  walletBalance?: Prisma.DecimalWithAggregatesFilter<"Expert"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusWithAggregatesFilter<"Expert"> | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Expert"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Expert"> | Date | string
@@ -375,9 +375,9 @@ export type ExpertCreateInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -395,9 +395,9 @@ export type ExpertUncheckedCreateInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -413,9 +413,9 @@ export type ExpertUpdateInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -433,9 +433,9 @@ export type ExpertUncheckedUpdateInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -452,9 +452,9 @@ export type ExpertCreateManyInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -467,9 +467,9 @@ export type ExpertUpdateManyMutationInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -483,9 +483,9 @@ export type ExpertUncheckedUpdateManyInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -672,9 +672,9 @@ export type ExpertCreateWithoutAssignmentTasksInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -691,9 +691,9 @@ export type ExpertUncheckedCreateWithoutAssignmentTasksInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -724,9 +724,9 @@ export type ExpertUpdateWithoutAssignmentTasksInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -743,9 +743,9 @@ export type ExpertUncheckedUpdateWithoutAssignmentTasksInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -760,9 +760,9 @@ export type ExpertCreateWithoutAssignmentBidsInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -779,9 +779,9 @@ export type ExpertUncheckedCreateWithoutAssignmentBidsInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -812,9 +812,9 @@ export type ExpertUpdateWithoutAssignmentBidsInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -831,9 +831,9 @@ export type ExpertUncheckedUpdateWithoutAssignmentBidsInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -848,9 +848,9 @@ export type ExpertCreateWithoutReviewsInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -867,9 +867,9 @@ export type ExpertUncheckedCreateWithoutReviewsInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -900,9 +900,9 @@ export type ExpertUpdateWithoutReviewsInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -919,9 +919,9 @@ export type ExpertUncheckedUpdateWithoutReviewsInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -936,9 +936,9 @@ export type ExpertCreateWithoutUserInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -954,9 +954,9 @@ export type ExpertUncheckedCreateWithoutUserInput = {
   department: string
   documents?: Prisma.ExpertCreatedocumentsInput | runtime.InputJsonValue[]
   bio?: string | null
-  ratePerAssignment: number
+  ratePerAssignment: runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: boolean
-  walletBalance?: number
+  walletBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: $Enums.ExpertVerificationStatus
   rejectionReason?: string | null
   createdAt?: Date | string
@@ -988,9 +988,9 @@ export type ExpertUpdateWithoutUserInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1006,9 +1006,9 @@ export type ExpertUncheckedUpdateWithoutUserInput = {
   department?: Prisma.StringFieldUpdateOperationsInput | string
   documents?: Prisma.ExpertUpdatedocumentsInput | runtime.InputJsonValue[]
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  ratePerAssignment?: Prisma.FloatFieldUpdateOperationsInput | number
+  ratePerAssignment?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  walletBalance?: Prisma.FloatFieldUpdateOperationsInput | number
+  walletBalance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   verificationStatus?: Prisma.EnumExpertVerificationStatusFieldUpdateOperationsInput | $Enums.ExpertVerificationStatus
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1168,9 +1168,9 @@ export type $ExpertPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     department: string
     documents: runtime.JsonValue[]
     bio: string | null
-    ratePerAssignment: number
+    ratePerAssignment: runtime.Decimal
     isVerified: boolean
-    walletBalance: number
+    walletBalance: runtime.Decimal
     verificationStatus: $Enums.ExpertVerificationStatus
     rejectionReason: string | null
     createdAt: Date
@@ -1608,9 +1608,9 @@ export interface ExpertFieldRefs {
   readonly department: Prisma.FieldRef<"Expert", 'String'>
   readonly documents: Prisma.FieldRef<"Expert", 'Json[]'>
   readonly bio: Prisma.FieldRef<"Expert", 'String'>
-  readonly ratePerAssignment: Prisma.FieldRef<"Expert", 'Float'>
+  readonly ratePerAssignment: Prisma.FieldRef<"Expert", 'Decimal'>
   readonly isVerified: Prisma.FieldRef<"Expert", 'Boolean'>
-  readonly walletBalance: Prisma.FieldRef<"Expert", 'Float'>
+  readonly walletBalance: Prisma.FieldRef<"Expert", 'Decimal'>
   readonly verificationStatus: Prisma.FieldRef<"Expert", 'ExpertVerificationStatus'>
   readonly rejectionReason: Prisma.FieldRef<"Expert", 'String'>
   readonly createdAt: Prisma.FieldRef<"Expert", 'DateTime'>

@@ -1,16 +1,16 @@
 model Expert {
-  id                 String                   @id @default(uuid())
-  userId             String                   @unique
-  user               User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  university         String
-  department         String
-  documents          Json[]
-  bio                String?
-  ratePerAssignment  Float
-  
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  university        String
+  department        String
+  documents         Json[]
+  bio               String?
+  ratePerAssignment Decimal @db.Decimal(12, 2)
+
   isVerified         Boolean                  @default(false)
-  walletBalance      Float                    @default(0.0)
+  walletBalance      Decimal                  @default(0) @db.Decimal(12, 2)
   verificationStatus ExpertVerificationStatus @default(PENDING)
   rejectionReason    String?
 

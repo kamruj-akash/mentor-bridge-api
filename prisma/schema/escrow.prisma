@@ -1,10 +1,10 @@
 model Escrow {
   id                 String       @id @default(uuid())
-  taskId             String       @unique
-  task               Assignment   @relation(fields: [taskId], references: [id])
-  totalAmount        Float
-  platformCommission Float        @default(15)
-  expertEarnings     Float        @default(85)
+  assignmentId       String       @unique
+  assignment         Assignment   @relation(fields: [assignmentId], references: [id])
+  totalAmount        Decimal      @db.Decimal(12, 2)
+  platformCommission Decimal      @default(15) @db.Decimal(12, 2)
+  expertEarnings     Decimal      @default(85) @db.Decimal(12, 2)
   status             EscrowStatus @default(HELD)
   disbursedAt        DateTime?
 

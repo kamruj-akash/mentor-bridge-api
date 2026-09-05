@@ -1,18 +1,18 @@
 model Payment {
-  id            String         @id @default(uuid())
+  id String @id @default(uuid())
 
-  assignmentId        String         @unique
-  assignment          Assignment     @relation(fields: [assignmentId], references: [id])
+  assignmentId String     @unique
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
 
-  transactionId String?         @unique //bkash tx id
-  amount        Float
-  status        PaymentStatus  @default(INITIATED)
-  paymentGateway        PaymentGateway  @default(BKASH)
+  transactionId String?       @unique //gateway tx id
+  amount        Decimal       @db.Decimal(12, 2)
+  status        PaymentStatus @default(INITIATED)
 
+  paymentGateway        PaymentGateway @default(BKASH)
   // bkash
-  merchantInvoiceNumber String?  @unique // assignment id
-  bkashPaymentId        String? @unique
-  bkashTrxId            String? @unique
+  merchantInvoiceNumber String?        @unique // assignment id
+  bkashPaymentId        String?        @unique
+  bkashTrxId            String?        @unique
   payerReference        String? //users email or phoneNo
   paidAt                String?
   gatewayResponse       Json?

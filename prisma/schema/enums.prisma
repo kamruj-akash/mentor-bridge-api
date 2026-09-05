@@ -16,6 +16,7 @@ enum Role {
 
 enum AssignmentStatus {
   OPEN
+  AWAITING_PAYMENT
   ASSIGNED
   IN_PROGRESS
   UNDER_REVIEW

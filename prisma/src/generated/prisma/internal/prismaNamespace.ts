@@ -1066,6 +1066,7 @@ export const AssignmentScalarFieldEnum = {
   status: 'status',
   assignedExpertId: 'assignedExpertId',
   submissionUrl: 'submissionUrl',
+  acceptedBidId: 'acceptedBidId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1091,7 +1092,7 @@ export type AssignmentBidScalarFieldEnum = (typeof AssignmentBidScalarFieldEnum)
 
 export const EscrowScalarFieldEnum = {
   id: 'id',
-  taskId: 'taskId',
+  assignmentId: 'assignmentId',
   totalAmount: 'totalAmount',
   platformCommission: 'platformCommission',
   expertEarnings: 'expertEarnings',
@@ -1267,16 +1268,16 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'Decimal'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
 /**
- * Reference to a field of type 'Float[]'
+ * Reference to a field of type 'Decimal[]'
  */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -1445,6 +1446,20 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**

@@ -88,6 +88,7 @@ export const AssignmentScalarFieldEnum = {
   status: 'status',
   assignedExpertId: 'assignedExpertId',
   submissionUrl: 'submissionUrl',
+  acceptedBidId: 'acceptedBidId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -113,7 +114,7 @@ export type AssignmentBidScalarFieldEnum = (typeof AssignmentBidScalarFieldEnum)
 
 export const EscrowScalarFieldEnum = {
   id: 'id',
-  taskId: 'taskId',
+  assignmentId: 'assignmentId',
   totalAmount: 'totalAmount',
   platformCommission: 'platformCommission',
   expertEarnings: 'expertEarnings',

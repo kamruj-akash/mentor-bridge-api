@@ -27,23 +27,23 @@ export type AggregateEscrow = {
 }
 
 export type EscrowAvgAggregateOutputType = {
-  totalAmount: number | null
-  platformCommission: number | null
-  expertEarnings: number | null
+  totalAmount: runtime.Decimal | null
+  platformCommission: runtime.Decimal | null
+  expertEarnings: runtime.Decimal | null
 }
 
 export type EscrowSumAggregateOutputType = {
-  totalAmount: number | null
-  platformCommission: number | null
-  expertEarnings: number | null
+  totalAmount: runtime.Decimal | null
+  platformCommission: runtime.Decimal | null
+  expertEarnings: runtime.Decimal | null
 }
 
 export type EscrowMinAggregateOutputType = {
   id: string | null
-  taskId: string | null
-  totalAmount: number | null
-  platformCommission: number | null
-  expertEarnings: number | null
+  assignmentId: string | null
+  totalAmount: runtime.Decimal | null
+  platformCommission: runtime.Decimal | null
+  expertEarnings: runtime.Decimal | null
   status: $Enums.EscrowStatus | null
   disbursedAt: Date | null
   createdAt: Date | null
@@ -52,10 +52,10 @@ export type EscrowMinAggregateOutputType = {
 
 export type EscrowMaxAggregateOutputType = {
   id: string | null
-  taskId: string | null
-  totalAmount: number | null
-  platformCommission: number | null
-  expertEarnings: number | null
+  assignmentId: string | null
+  totalAmount: runtime.Decimal | null
+  platformCommission: runtime.Decimal | null
+  expertEarnings: runtime.Decimal | null
   status: $Enums.EscrowStatus | null
   disbursedAt: Date | null
   createdAt: Date | null
@@ -64,7 +64,7 @@ export type EscrowMaxAggregateOutputType = {
 
 export type EscrowCountAggregateOutputType = {
   id: number
-  taskId: number
+  assignmentId: number
   totalAmount: number
   platformCommission: number
   expertEarnings: number
@@ -90,7 +90,7 @@ export type EscrowSumAggregateInputType = {
 
 export type EscrowMinAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   totalAmount?: true
   platformCommission?: true
   expertEarnings?: true
@@ -102,7 +102,7 @@ export type EscrowMinAggregateInputType = {
 
 export type EscrowMaxAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   totalAmount?: true
   platformCommission?: true
   expertEarnings?: true
@@ -114,7 +114,7 @@ export type EscrowMaxAggregateInputType = {
 
 export type EscrowCountAggregateInputType = {
   id?: true
-  taskId?: true
+  assignmentId?: true
   totalAmount?: true
   platformCommission?: true
   expertEarnings?: true
@@ -213,10 +213,10 @@ export type EscrowGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type EscrowGroupByOutputType = {
   id: string
-  taskId: string
-  totalAmount: number
-  platformCommission: number
-  expertEarnings: number
+  assignmentId: string
+  totalAmount: runtime.Decimal
+  platformCommission: runtime.Decimal
+  expertEarnings: runtime.Decimal
   status: $Enums.EscrowStatus
   disbursedAt: Date | null
   createdAt: Date
@@ -248,20 +248,20 @@ export type EscrowWhereInput = {
   OR?: Prisma.EscrowWhereInput[]
   NOT?: Prisma.EscrowWhereInput | Prisma.EscrowWhereInput[]
   id?: Prisma.StringFilter<"Escrow"> | string
-  taskId?: Prisma.StringFilter<"Escrow"> | string
-  totalAmount?: Prisma.FloatFilter<"Escrow"> | number
-  platformCommission?: Prisma.FloatFilter<"Escrow"> | number
-  expertEarnings?: Prisma.FloatFilter<"Escrow"> | number
+  assignmentId?: Prisma.StringFilter<"Escrow"> | string
+  totalAmount?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFilter<"Escrow"> | $Enums.EscrowStatus
   disbursedAt?: Prisma.DateTimeNullableFilter<"Escrow"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Escrow"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Escrow"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
 }
 
 export type EscrowOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   platformCommission?: Prisma.SortOrder
   expertEarnings?: Prisma.SortOrder
@@ -269,28 +269,28 @@ export type EscrowOrderByWithRelationInput = {
   disbursedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  task?: Prisma.AssignmentOrderByWithRelationInput
+  assignment?: Prisma.AssignmentOrderByWithRelationInput
 }
 
 export type EscrowWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  taskId?: string
+  assignmentId?: string
   AND?: Prisma.EscrowWhereInput | Prisma.EscrowWhereInput[]
   OR?: Prisma.EscrowWhereInput[]
   NOT?: Prisma.EscrowWhereInput | Prisma.EscrowWhereInput[]
-  totalAmount?: Prisma.FloatFilter<"Escrow"> | number
-  platformCommission?: Prisma.FloatFilter<"Escrow"> | number
-  expertEarnings?: Prisma.FloatFilter<"Escrow"> | number
+  totalAmount?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFilter<"Escrow"> | $Enums.EscrowStatus
   disbursedAt?: Prisma.DateTimeNullableFilter<"Escrow"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Escrow"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Escrow"> | Date | string
-  task?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
-}, "id" | "taskId">
+  assignment?: Prisma.XOR<Prisma.AssignmentScalarRelationFilter, Prisma.AssignmentWhereInput>
+}, "id" | "assignmentId">
 
 export type EscrowOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   platformCommission?: Prisma.SortOrder
   expertEarnings?: Prisma.SortOrder
@@ -310,10 +310,10 @@ export type EscrowScalarWhereWithAggregatesInput = {
   OR?: Prisma.EscrowScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EscrowScalarWhereWithAggregatesInput | Prisma.EscrowScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Escrow"> | string
-  taskId?: Prisma.StringWithAggregatesFilter<"Escrow"> | string
-  totalAmount?: Prisma.FloatWithAggregatesFilter<"Escrow"> | number
-  platformCommission?: Prisma.FloatWithAggregatesFilter<"Escrow"> | number
-  expertEarnings?: Prisma.FloatWithAggregatesFilter<"Escrow"> | number
+  assignmentId?: Prisma.StringWithAggregatesFilter<"Escrow"> | string
+  totalAmount?: Prisma.DecimalWithAggregatesFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalWithAggregatesFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalWithAggregatesFilter<"Escrow"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusWithAggregatesFilter<"Escrow"> | $Enums.EscrowStatus
   disbursedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Escrow"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Escrow"> | Date | string
@@ -322,22 +322,22 @@ export type EscrowScalarWhereWithAggregatesInput = {
 
 export type EscrowCreateInput = {
   id?: string
-  totalAmount: number
-  platformCommission?: number
-  expertEarnings?: number
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.EscrowStatus
   disbursedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  task: Prisma.AssignmentCreateNestedOneWithoutEscrowInput
+  assignment: Prisma.AssignmentCreateNestedOneWithoutEscrowInput
 }
 
 export type EscrowUncheckedCreateInput = {
   id?: string
-  taskId: string
-  totalAmount: number
-  platformCommission?: number
-  expertEarnings?: number
+  assignmentId: string
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.EscrowStatus
   disbursedAt?: Date | string | null
   createdAt?: Date | string
@@ -346,22 +346,22 @@ export type EscrowUncheckedCreateInput = {
 
 export type EscrowUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  task?: Prisma.AssignmentUpdateOneRequiredWithoutEscrowNestedInput
+  assignment?: Prisma.AssignmentUpdateOneRequiredWithoutEscrowNestedInput
 }
 
 export type EscrowUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -370,10 +370,10 @@ export type EscrowUncheckedUpdateInput = {
 
 export type EscrowCreateManyInput = {
   id?: string
-  taskId: string
-  totalAmount: number
-  platformCommission?: number
-  expertEarnings?: number
+  assignmentId: string
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.EscrowStatus
   disbursedAt?: Date | string | null
   createdAt?: Date | string
@@ -382,9 +382,9 @@ export type EscrowCreateManyInput = {
 
 export type EscrowUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -393,10 +393,10 @@ export type EscrowUpdateManyMutationInput = {
 
 export type EscrowUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  taskId?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  assignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -410,7 +410,7 @@ export type EscrowNullableScalarRelationFilter = {
 
 export type EscrowCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   platformCommission?: Prisma.SortOrder
   expertEarnings?: Prisma.SortOrder
@@ -428,7 +428,7 @@ export type EscrowAvgOrderByAggregateInput = {
 
 export type EscrowMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   platformCommission?: Prisma.SortOrder
   expertEarnings?: Prisma.SortOrder
@@ -440,7 +440,7 @@ export type EscrowMaxOrderByAggregateInput = {
 
 export type EscrowMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  taskId?: Prisma.SortOrder
+  assignmentId?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
   platformCommission?: Prisma.SortOrder
   expertEarnings?: Prisma.SortOrder
@@ -456,36 +456,36 @@ export type EscrowSumOrderByAggregateInput = {
   expertEarnings?: Prisma.SortOrder
 }
 
-export type EscrowCreateNestedOneWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutTaskInput
+export type EscrowCreateNestedOneWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutAssignmentInput
   connect?: Prisma.EscrowWhereUniqueInput
 }
 
-export type EscrowUncheckedCreateNestedOneWithoutTaskInput = {
-  create?: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutTaskInput
+export type EscrowUncheckedCreateNestedOneWithoutAssignmentInput = {
+  create?: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutAssignmentInput
   connect?: Prisma.EscrowWhereUniqueInput
 }
 
-export type EscrowUpdateOneWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutTaskInput
-  upsert?: Prisma.EscrowUpsertWithoutTaskInput
+export type EscrowUpdateOneWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutAssignmentInput
+  upsert?: Prisma.EscrowUpsertWithoutAssignmentInput
   disconnect?: Prisma.EscrowWhereInput | boolean
   delete?: Prisma.EscrowWhereInput | boolean
   connect?: Prisma.EscrowWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EscrowUpdateToOneWithWhereWithoutTaskInput, Prisma.EscrowUpdateWithoutTaskInput>, Prisma.EscrowUncheckedUpdateWithoutTaskInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EscrowUpdateToOneWithWhereWithoutAssignmentInput, Prisma.EscrowUpdateWithoutAssignmentInput>, Prisma.EscrowUncheckedUpdateWithoutAssignmentInput>
 }
 
-export type EscrowUncheckedUpdateOneWithoutTaskNestedInput = {
-  create?: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
-  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutTaskInput
-  upsert?: Prisma.EscrowUpsertWithoutTaskInput
+export type EscrowUncheckedUpdateOneWithoutAssignmentNestedInput = {
+  create?: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
+  connectOrCreate?: Prisma.EscrowCreateOrConnectWithoutAssignmentInput
+  upsert?: Prisma.EscrowUpsertWithoutAssignmentInput
   disconnect?: Prisma.EscrowWhereInput | boolean
   delete?: Prisma.EscrowWhereInput | boolean
   connect?: Prisma.EscrowWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EscrowUpdateToOneWithWhereWithoutTaskInput, Prisma.EscrowUpdateWithoutTaskInput>, Prisma.EscrowUncheckedUpdateWithoutTaskInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EscrowUpdateToOneWithWhereWithoutAssignmentInput, Prisma.EscrowUpdateWithoutAssignmentInput>, Prisma.EscrowUncheckedUpdateWithoutAssignmentInput>
 }
 
 export type EnumEscrowStatusFieldUpdateOperationsInput = {
@@ -496,60 +496,60 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type EscrowCreateWithoutTaskInput = {
+export type EscrowCreateWithoutAssignmentInput = {
   id?: string
-  totalAmount: number
-  platformCommission?: number
-  expertEarnings?: number
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.EscrowStatus
   disbursedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type EscrowUncheckedCreateWithoutTaskInput = {
+export type EscrowUncheckedCreateWithoutAssignmentInput = {
   id?: string
-  totalAmount: number
-  platformCommission?: number
-  expertEarnings?: number
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.EscrowStatus
   disbursedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type EscrowCreateOrConnectWithoutTaskInput = {
+export type EscrowCreateOrConnectWithoutAssignmentInput = {
   where: Prisma.EscrowWhereUniqueInput
-  create: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
+  create: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
 }
 
-export type EscrowUpsertWithoutTaskInput = {
-  update: Prisma.XOR<Prisma.EscrowUpdateWithoutTaskInput, Prisma.EscrowUncheckedUpdateWithoutTaskInput>
-  create: Prisma.XOR<Prisma.EscrowCreateWithoutTaskInput, Prisma.EscrowUncheckedCreateWithoutTaskInput>
+export type EscrowUpsertWithoutAssignmentInput = {
+  update: Prisma.XOR<Prisma.EscrowUpdateWithoutAssignmentInput, Prisma.EscrowUncheckedUpdateWithoutAssignmentInput>
+  create: Prisma.XOR<Prisma.EscrowCreateWithoutAssignmentInput, Prisma.EscrowUncheckedCreateWithoutAssignmentInput>
   where?: Prisma.EscrowWhereInput
 }
 
-export type EscrowUpdateToOneWithWhereWithoutTaskInput = {
+export type EscrowUpdateToOneWithWhereWithoutAssignmentInput = {
   where?: Prisma.EscrowWhereInput
-  data: Prisma.XOR<Prisma.EscrowUpdateWithoutTaskInput, Prisma.EscrowUncheckedUpdateWithoutTaskInput>
+  data: Prisma.XOR<Prisma.EscrowUpdateWithoutAssignmentInput, Prisma.EscrowUncheckedUpdateWithoutAssignmentInput>
 }
 
-export type EscrowUpdateWithoutTaskInput = {
+export type EscrowUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type EscrowUncheckedUpdateWithoutTaskInput = {
+export type EscrowUncheckedUpdateWithoutAssignmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  platformCommission?: Prisma.FloatFieldUpdateOperationsInput | number
-  expertEarnings?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  platformCommission?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  expertEarnings?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumEscrowStatusFieldUpdateOperationsInput | $Enums.EscrowStatus
   disbursedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -560,7 +560,7 @@ export type EscrowUncheckedUpdateWithoutTaskInput = {
 
 export type EscrowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   totalAmount?: boolean
   platformCommission?: boolean
   expertEarnings?: boolean
@@ -568,12 +568,12 @@ export type EscrowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   disbursedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrow"]>
 
 export type EscrowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   totalAmount?: boolean
   platformCommission?: boolean
   expertEarnings?: boolean
@@ -581,12 +581,12 @@ export type EscrowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   disbursedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrow"]>
 
 export type EscrowSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   totalAmount?: boolean
   platformCommission?: boolean
   expertEarnings?: boolean
@@ -594,12 +594,12 @@ export type EscrowSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   disbursedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["escrow"]>
 
 export type EscrowSelectScalar = {
   id?: boolean
-  taskId?: boolean
+  assignmentId?: boolean
   totalAmount?: boolean
   platformCommission?: boolean
   expertEarnings?: boolean
@@ -609,28 +609,28 @@ export type EscrowSelectScalar = {
   updatedAt?: boolean
 }
 
-export type EscrowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "taskId" | "totalAmount" | "platformCommission" | "expertEarnings" | "status" | "disbursedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["escrow"]>
+export type EscrowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentId" | "totalAmount" | "platformCommission" | "expertEarnings" | "status" | "disbursedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["escrow"]>
 export type EscrowInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 export type EscrowIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 export type EscrowIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  task?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
+  assignment?: boolean | Prisma.AssignmentDefaultArgs<ExtArgs>
 }
 
 export type $EscrowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Escrow"
   objects: {
-    task: Prisma.$AssignmentPayload<ExtArgs>
+    assignment: Prisma.$AssignmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    taskId: string
-    totalAmount: number
-    platformCommission: number
-    expertEarnings: number
+    assignmentId: string
+    totalAmount: runtime.Decimal
+    platformCommission: runtime.Decimal
+    expertEarnings: runtime.Decimal
     status: $Enums.EscrowStatus
     disbursedAt: Date | null
     createdAt: Date
@@ -1029,7 +1029,7 @@ readonly fields: EscrowFieldRefs;
  */
 export interface Prisma__EscrowClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  task<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignment<T extends Prisma.AssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AssignmentClient<runtime.Types.Result.GetResult<Prisma.$AssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1060,10 +1060,10 @@ export interface Prisma__EscrowClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface EscrowFieldRefs {
   readonly id: Prisma.FieldRef<"Escrow", 'String'>
-  readonly taskId: Prisma.FieldRef<"Escrow", 'String'>
-  readonly totalAmount: Prisma.FieldRef<"Escrow", 'Float'>
-  readonly platformCommission: Prisma.FieldRef<"Escrow", 'Float'>
-  readonly expertEarnings: Prisma.FieldRef<"Escrow", 'Float'>
+  readonly assignmentId: Prisma.FieldRef<"Escrow", 'String'>
+  readonly totalAmount: Prisma.FieldRef<"Escrow", 'Decimal'>
+  readonly platformCommission: Prisma.FieldRef<"Escrow", 'Decimal'>
+  readonly expertEarnings: Prisma.FieldRef<"Escrow", 'Decimal'>
   readonly status: Prisma.FieldRef<"Escrow", 'EscrowStatus'>
   readonly disbursedAt: Prisma.FieldRef<"Escrow", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Escrow", 'DateTime'>

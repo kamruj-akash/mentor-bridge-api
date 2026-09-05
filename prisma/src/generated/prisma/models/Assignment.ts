@@ -27,11 +27,11 @@ export type AggregateAssignment = {
 }
 
 export type AssignmentAvgAggregateOutputType = {
-  budget: number | null
+  budget: runtime.Decimal | null
 }
 
 export type AssignmentSumAggregateOutputType = {
-  budget: number | null
+  budget: runtime.Decimal | null
 }
 
 export type AssignmentMinAggregateOutputType = {
@@ -39,11 +39,12 @@ export type AssignmentMinAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  budget: number | null
+  budget: runtime.Decimal | null
   deadline: Date | null
   status: $Enums.AssignmentStatus | null
   assignedExpertId: string | null
   submissionUrl: string | null
+  acceptedBidId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +54,12 @@ export type AssignmentMaxAggregateOutputType = {
   studentId: string | null
   title: string | null
   description: string | null
-  budget: number | null
+  budget: runtime.Decimal | null
   deadline: Date | null
   status: $Enums.AssignmentStatus | null
   assignedExpertId: string | null
   submissionUrl: string | null
+  acceptedBidId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -73,6 +75,7 @@ export type AssignmentCountAggregateOutputType = {
   status: number
   assignedExpertId: number
   submissionUrl: number
+  acceptedBidId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -97,6 +100,7 @@ export type AssignmentMinAggregateInputType = {
   status?: true
   assignedExpertId?: true
   submissionUrl?: true
+  acceptedBidId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -111,6 +115,7 @@ export type AssignmentMaxAggregateInputType = {
   status?: true
   assignedExpertId?: true
   submissionUrl?: true
+  acceptedBidId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -126,6 +131,7 @@ export type AssignmentCountAggregateInputType = {
   status?: true
   assignedExpertId?: true
   submissionUrl?: true
+  acceptedBidId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -223,11 +229,12 @@ export type AssignmentGroupByOutputType = {
   title: string
   description: string
   attachmentUrl: runtime.JsonValue | null
-  budget: number
+  budget: runtime.Decimal
   deadline: Date
   status: $Enums.AssignmentStatus
   assignedExpertId: string | null
   submissionUrl: string | null
+  acceptedBidId: string | null
   createdAt: Date
   updatedAt: Date
   _count: AssignmentCountAggregateOutputType | null
@@ -261,19 +268,21 @@ export type AssignmentWhereInput = {
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
   attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
-  budget?: Prisma.FloatFilter<"Assignment"> | number
+  budget?: Prisma.DecimalFilter<"Assignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
+  acceptedBidId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   assignedExpert?: Prisma.XOR<Prisma.ExpertNullableScalarRelationFilter, Prisma.ExpertWhereInput> | null
   bids?: Prisma.AssignmentBidListRelationFilter
-  escrow?: Prisma.XOR<Prisma.EscrowNullableScalarRelationFilter, Prisma.EscrowWhereInput> | null
+  acceptedBid?: Prisma.XOR<Prisma.AssignmentBidNullableScalarRelationFilter, Prisma.AssignmentBidWhereInput> | null
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
+  escrow?: Prisma.XOR<Prisma.EscrowNullableScalarRelationFilter, Prisma.EscrowWhereInput> | null
 }
 
 export type AssignmentOrderByWithRelationInput = {
@@ -287,18 +296,21 @@ export type AssignmentOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   assignedExpertId?: Prisma.SortOrderInput | Prisma.SortOrder
   submissionUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptedBidId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
   assignedExpert?: Prisma.ExpertOrderByWithRelationInput
   bids?: Prisma.AssignmentBidOrderByRelationAggregateInput
-  escrow?: Prisma.EscrowOrderByWithRelationInput
+  acceptedBid?: Prisma.AssignmentBidOrderByWithRelationInput
   payment?: Prisma.PaymentOrderByWithRelationInput
   review?: Prisma.ReviewOrderByWithRelationInput
+  escrow?: Prisma.EscrowOrderByWithRelationInput
 }
 
 export type AssignmentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  acceptedBidId?: string
   AND?: Prisma.AssignmentWhereInput | Prisma.AssignmentWhereInput[]
   OR?: Prisma.AssignmentWhereInput[]
   NOT?: Prisma.AssignmentWhereInput | Prisma.AssignmentWhereInput[]
@@ -306,7 +318,7 @@ export type AssignmentWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
   attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
-  budget?: Prisma.FloatFilter<"Assignment"> | number
+  budget?: Prisma.DecimalFilter<"Assignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
@@ -316,10 +328,11 @@ export type AssignmentWhereUniqueInput = Prisma.AtLeast<{
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   assignedExpert?: Prisma.XOR<Prisma.ExpertNullableScalarRelationFilter, Prisma.ExpertWhereInput> | null
   bids?: Prisma.AssignmentBidListRelationFilter
-  escrow?: Prisma.XOR<Prisma.EscrowNullableScalarRelationFilter, Prisma.EscrowWhereInput> | null
+  acceptedBid?: Prisma.XOR<Prisma.AssignmentBidNullableScalarRelationFilter, Prisma.AssignmentBidWhereInput> | null
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   review?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
-}, "id">
+  escrow?: Prisma.XOR<Prisma.EscrowNullableScalarRelationFilter, Prisma.EscrowWhereInput> | null
+}, "id" | "acceptedBidId">
 
 export type AssignmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -332,6 +345,7 @@ export type AssignmentOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   assignedExpertId?: Prisma.SortOrderInput | Prisma.SortOrder
   submissionUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  acceptedBidId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AssignmentCountOrderByAggregateInput
@@ -350,11 +364,12 @@ export type AssignmentScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   description?: Prisma.StringWithAggregatesFilter<"Assignment"> | string
   attachmentUrl?: Prisma.JsonNullableWithAggregatesFilter<"Assignment">
-  budget?: Prisma.FloatWithAggregatesFilter<"Assignment"> | number
+  budget?: Prisma.DecimalWithAggregatesFilter<"Assignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
   status?: Prisma.EnumAssignmentStatusWithAggregatesFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
+  acceptedBidId?: Prisma.StringNullableWithAggregatesFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Assignment"> | Date | string
 }
@@ -364,7 +379,7 @@ export type AssignmentCreateInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -373,9 +388,10 @@ export type AssignmentCreateInput = {
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateInput = {
@@ -384,17 +400,18 @@ export type AssignmentUncheckedCreateInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUpdateInput = {
@@ -402,7 +419,7 @@ export type AssignmentUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -411,9 +428,10 @@ export type AssignmentUpdateInput = {
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateInput = {
@@ -422,17 +440,18 @@ export type AssignmentUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentCreateManyInput = {
@@ -441,11 +460,12 @@ export type AssignmentCreateManyInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -455,7 +475,7 @@ export type AssignmentUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,11 +489,12 @@ export type AssignmentUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -489,6 +510,7 @@ export type AssignmentCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   assignedExpertId?: Prisma.SortOrder
   submissionUrl?: Prisma.SortOrder
+  acceptedBidId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -507,6 +529,7 @@ export type AssignmentMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   assignedExpertId?: Prisma.SortOrder
   submissionUrl?: Prisma.SortOrder
+  acceptedBidId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -521,6 +544,7 @@ export type AssignmentMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   assignedExpertId?: Prisma.SortOrder
   submissionUrl?: Prisma.SortOrder
+  acceptedBidId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -532,6 +556,11 @@ export type AssignmentSumOrderByAggregateInput = {
 export type AssignmentScalarRelationFilter = {
   is?: Prisma.AssignmentWhereInput
   isNot?: Prisma.AssignmentWhereInput
+}
+
+export type AssignmentNullableScalarRelationFilter = {
+  is?: Prisma.AssignmentWhereInput | null
+  isNot?: Prisma.AssignmentWhereInput | null
 }
 
 export type AssignmentListRelationFilter = {
@@ -548,12 +577,12 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -574,12 +603,44 @@ export type AssignmentCreateNestedOneWithoutBidsInput = {
   connect?: Prisma.AssignmentWhereUniqueInput
 }
 
+export type AssignmentCreateNestedOneWithoutAcceptedBidInput = {
+  create?: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
+  connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutAcceptedBidInput
+  connect?: Prisma.AssignmentWhereUniqueInput
+}
+
+export type AssignmentUncheckedCreateNestedOneWithoutAcceptedBidInput = {
+  create?: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
+  connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutAcceptedBidInput
+  connect?: Prisma.AssignmentWhereUniqueInput
+}
+
 export type AssignmentUpdateOneRequiredWithoutBidsNestedInput = {
   create?: Prisma.XOR<Prisma.AssignmentCreateWithoutBidsInput, Prisma.AssignmentUncheckedCreateWithoutBidsInput>
   connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutBidsInput
   upsert?: Prisma.AssignmentUpsertWithoutBidsInput
   connect?: Prisma.AssignmentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssignmentUpdateToOneWithWhereWithoutBidsInput, Prisma.AssignmentUpdateWithoutBidsInput>, Prisma.AssignmentUncheckedUpdateWithoutBidsInput>
+}
+
+export type AssignmentUpdateOneWithoutAcceptedBidNestedInput = {
+  create?: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
+  connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutAcceptedBidInput
+  upsert?: Prisma.AssignmentUpsertWithoutAcceptedBidInput
+  disconnect?: Prisma.AssignmentWhereInput | boolean
+  delete?: Prisma.AssignmentWhereInput | boolean
+  connect?: Prisma.AssignmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssignmentUpdateToOneWithWhereWithoutAcceptedBidInput, Prisma.AssignmentUpdateWithoutAcceptedBidInput>, Prisma.AssignmentUncheckedUpdateWithoutAcceptedBidInput>
+}
+
+export type AssignmentUncheckedUpdateOneWithoutAcceptedBidNestedInput = {
+  create?: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
+  connectOrCreate?: Prisma.AssignmentCreateOrConnectWithoutAcceptedBidInput
+  upsert?: Prisma.AssignmentUpsertWithoutAcceptedBidInput
+  disconnect?: Prisma.AssignmentWhereInput | boolean
+  delete?: Prisma.AssignmentWhereInput | boolean
+  connect?: Prisma.AssignmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssignmentUpdateToOneWithWhereWithoutAcceptedBidInput, Prisma.AssignmentUpdateWithoutAcceptedBidInput>, Prisma.AssignmentUncheckedUpdateWithoutAcceptedBidInput>
 }
 
 export type AssignmentCreateNestedOneWithoutEscrowInput = {
@@ -713,7 +774,7 @@ export type AssignmentCreateWithoutBidsInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -721,9 +782,10 @@ export type AssignmentCreateWithoutBidsInput = {
   updatedAt?: Date | string
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateWithoutBidsInput = {
@@ -732,21 +794,65 @@ export type AssignmentUncheckedCreateWithoutBidsInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deadline: Date | string
+  status?: $Enums.AssignmentStatus
+  assignedExpertId?: string | null
+  submissionUrl?: string | null
+  acceptedBidId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
+  review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
+}
+
+export type AssignmentCreateOrConnectWithoutBidsInput = {
+  where: Prisma.AssignmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssignmentCreateWithoutBidsInput, Prisma.AssignmentUncheckedCreateWithoutBidsInput>
+}
+
+export type AssignmentCreateWithoutAcceptedBidInput = {
+  id?: string
+  title: string
+  description: string
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
+  deadline: Date | string
+  status?: $Enums.AssignmentStatus
+  submissionUrl?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
+  assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
+  bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
+  review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
+}
+
+export type AssignmentUncheckedCreateWithoutAcceptedBidInput = {
+  id?: string
+  studentId: string
+  title: string
+  description: string
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
+  bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
-export type AssignmentCreateOrConnectWithoutBidsInput = {
+export type AssignmentCreateOrConnectWithoutAcceptedBidInput = {
   where: Prisma.AssignmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.AssignmentCreateWithoutBidsInput, Prisma.AssignmentUncheckedCreateWithoutBidsInput>
+  create: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
 }
 
 export type AssignmentUpsertWithoutBidsInput = {
@@ -765,7 +871,7 @@ export type AssignmentUpdateWithoutBidsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -773,9 +879,10 @@ export type AssignmentUpdateWithoutBidsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateWithoutBidsInput = {
@@ -784,16 +891,66 @@ export type AssignmentUncheckedUpdateWithoutBidsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
+  assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
+  review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
+}
+
+export type AssignmentUpsertWithoutAcceptedBidInput = {
+  update: Prisma.XOR<Prisma.AssignmentUpdateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedUpdateWithoutAcceptedBidInput>
+  create: Prisma.XOR<Prisma.AssignmentCreateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedCreateWithoutAcceptedBidInput>
+  where?: Prisma.AssignmentWhereInput
+}
+
+export type AssignmentUpdateToOneWithWhereWithoutAcceptedBidInput = {
+  where?: Prisma.AssignmentWhereInput
+  data: Prisma.XOR<Prisma.AssignmentUpdateWithoutAcceptedBidInput, Prisma.AssignmentUncheckedUpdateWithoutAcceptedBidInput>
+}
+
+export type AssignmentUpdateWithoutAcceptedBidInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
+  submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
+  assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
+  bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
+  review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
+}
+
+export type AssignmentUncheckedUpdateWithoutAcceptedBidInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
+  bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentCreateWithoutEscrowInput = {
@@ -801,7 +958,7 @@ export type AssignmentCreateWithoutEscrowInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -810,6 +967,7 @@ export type AssignmentCreateWithoutEscrowInput = {
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
 }
@@ -820,11 +978,12 @@ export type AssignmentUncheckedCreateWithoutEscrowInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
@@ -853,7 +1012,7 @@ export type AssignmentUpdateWithoutEscrowInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -862,6 +1021,7 @@ export type AssignmentUpdateWithoutEscrowInput = {
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
 }
@@ -872,11 +1032,12 @@ export type AssignmentUncheckedUpdateWithoutEscrowInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
@@ -889,7 +1050,7 @@ export type AssignmentCreateWithoutAssignedExpertInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -897,9 +1058,10 @@ export type AssignmentCreateWithoutAssignedExpertInput = {
   updatedAt?: Date | string
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateWithoutAssignedExpertInput = {
@@ -908,16 +1070,17 @@ export type AssignmentUncheckedCreateWithoutAssignedExpertInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentCreateOrConnectWithoutAssignedExpertInput = {
@@ -955,11 +1118,12 @@ export type AssignmentScalarWhereInput = {
   title?: Prisma.StringFilter<"Assignment"> | string
   description?: Prisma.StringFilter<"Assignment"> | string
   attachmentUrl?: Prisma.JsonNullableFilter<"Assignment">
-  budget?: Prisma.FloatFilter<"Assignment"> | number
+  budget?: Prisma.DecimalFilter<"Assignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   status?: Prisma.EnumAssignmentStatusFilter<"Assignment"> | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   submissionUrl?: Prisma.StringNullableFilter<"Assignment"> | string | null
+  acceptedBidId?: Prisma.StringNullableFilter<"Assignment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Assignment"> | Date | string
 }
@@ -969,7 +1133,7 @@ export type AssignmentCreateWithoutPaymentInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -978,8 +1142,9 @@ export type AssignmentCreateWithoutPaymentInput = {
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateWithoutPaymentInput = {
@@ -988,16 +1153,17 @@ export type AssignmentUncheckedCreateWithoutPaymentInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentCreateOrConnectWithoutPaymentInput = {
@@ -1021,7 +1187,7 @@ export type AssignmentUpdateWithoutPaymentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1030,8 +1196,9 @@ export type AssignmentUpdateWithoutPaymentInput = {
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateWithoutPaymentInput = {
@@ -1040,16 +1207,17 @@ export type AssignmentUncheckedUpdateWithoutPaymentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentCreateWithoutReviewInput = {
@@ -1057,7 +1225,7 @@ export type AssignmentCreateWithoutReviewInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -1066,8 +1234,9 @@ export type AssignmentCreateWithoutReviewInput = {
   student: Prisma.StudentCreateNestedOneWithoutAssignmentTasksInput
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateWithoutReviewInput = {
@@ -1076,16 +1245,17 @@ export type AssignmentUncheckedCreateWithoutReviewInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentCreateOrConnectWithoutReviewInput = {
@@ -1109,7 +1279,7 @@ export type AssignmentUpdateWithoutReviewInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1118,8 +1288,9 @@ export type AssignmentUpdateWithoutReviewInput = {
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateWithoutReviewInput = {
@@ -1128,16 +1299,17 @@ export type AssignmentUncheckedUpdateWithoutReviewInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentCreateWithoutStudentInput = {
@@ -1145,7 +1317,7 @@ export type AssignmentCreateWithoutStudentInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
@@ -1153,9 +1325,10 @@ export type AssignmentCreateWithoutStudentInput = {
   updatedAt?: Date | string
   assignedExpert?: Prisma.ExpertCreateNestedOneWithoutAssignmentTasksInput
   bids?: Prisma.AssignmentBidCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowCreateNestedOneWithoutTaskInput
+  acceptedBid?: Prisma.AssignmentBidCreateNestedOneWithoutWonAssignmentInput
   payment?: Prisma.PaymentCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentUncheckedCreateWithoutStudentInput = {
@@ -1163,17 +1336,18 @@ export type AssignmentUncheckedCreateWithoutStudentInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bids?: Prisma.AssignmentBidUncheckedCreateNestedManyWithoutAssignmentInput
-  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutTaskInput
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutAssignmentInput
   review?: Prisma.ReviewUncheckedCreateNestedOneWithoutTaskInput
+  escrow?: Prisma.EscrowUncheckedCreateNestedOneWithoutAssignmentInput
 }
 
 export type AssignmentCreateOrConnectWithoutStudentInput = {
@@ -1208,10 +1382,11 @@ export type AssignmentCreateManyAssignedExpertInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1221,7 +1396,7 @@ export type AssignmentUpdateWithoutAssignedExpertInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1229,9 +1404,10 @@ export type AssignmentUpdateWithoutAssignedExpertInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneRequiredWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateWithoutAssignedExpertInput = {
@@ -1240,16 +1416,17 @@ export type AssignmentUncheckedUpdateWithoutAssignedExpertInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateManyWithoutAssignedExpertInput = {
@@ -1258,10 +1435,11 @@ export type AssignmentUncheckedUpdateManyWithoutAssignedExpertInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1271,11 +1449,12 @@ export type AssignmentCreateManyStudentInput = {
   title: string
   description: string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget: number
+  budget: runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline: Date | string
   status?: $Enums.AssignmentStatus
   assignedExpertId?: string | null
   submissionUrl?: string | null
+  acceptedBidId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1285,7 +1464,7 @@ export type AssignmentUpdateWithoutStudentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1293,9 +1472,10 @@ export type AssignmentUpdateWithoutStudentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedExpert?: Prisma.ExpertUpdateOneWithoutAssignmentTasksNestedInput
   bids?: Prisma.AssignmentBidUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUpdateOneWithoutTaskNestedInput
+  acceptedBid?: Prisma.AssignmentBidUpdateOneWithoutWonAssignmentNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateWithoutStudentInput = {
@@ -1303,17 +1483,18 @@ export type AssignmentUncheckedUpdateWithoutStudentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bids?: Prisma.AssignmentBidUncheckedUpdateManyWithoutAssignmentNestedInput
-  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutTaskNestedInput
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutAssignmentNestedInput
   review?: Prisma.ReviewUncheckedUpdateOneWithoutTaskNestedInput
+  escrow?: Prisma.EscrowUncheckedUpdateOneWithoutAssignmentNestedInput
 }
 
 export type AssignmentUncheckedUpdateManyWithoutStudentInput = {
@@ -1321,11 +1502,12 @@ export type AssignmentUncheckedUpdateManyWithoutStudentInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentUrl?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  budget?: Prisma.FloatFieldUpdateOperationsInput | number
+  budget?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   deadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumAssignmentStatusFieldUpdateOperationsInput | $Enums.AssignmentStatus
   assignedExpertId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   submissionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acceptedBidId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1372,14 +1554,16 @@ export type AssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   status?: boolean
   assignedExpertId?: boolean
   submissionUrl?: boolean
+  acceptedBidId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
   bids?: boolean | Prisma.Assignment$bidsArgs<ExtArgs>
-  escrow?: boolean | Prisma.Assignment$escrowArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
   payment?: boolean | Prisma.Assignment$paymentArgs<ExtArgs>
   review?: boolean | Prisma.Assignment$reviewArgs<ExtArgs>
+  escrow?: boolean | Prisma.Assignment$escrowArgs<ExtArgs>
   _count?: boolean | Prisma.AssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignment"]>
 
@@ -1394,10 +1578,12 @@ export type AssignmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   assignedExpertId?: boolean
   submissionUrl?: boolean
+  acceptedBidId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
 }, ExtArgs["result"]["assignment"]>
 
 export type AssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1411,10 +1597,12 @@ export type AssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   status?: boolean
   assignedExpertId?: boolean
   submissionUrl?: boolean
+  acceptedBidId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
 }, ExtArgs["result"]["assignment"]>
 
 export type AssignmentSelectScalar = {
@@ -1428,27 +1616,31 @@ export type AssignmentSelectScalar = {
   status?: boolean
   assignedExpertId?: boolean
   submissionUrl?: boolean
+  acceptedBidId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "title" | "description" | "attachmentUrl" | "budget" | "deadline" | "status" | "assignedExpertId" | "submissionUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["assignment"]>
+export type AssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "title" | "description" | "attachmentUrl" | "budget" | "deadline" | "status" | "assignedExpertId" | "submissionUrl" | "acceptedBidId" | "createdAt" | "updatedAt", ExtArgs["result"]["assignment"]>
 export type AssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
   bids?: boolean | Prisma.Assignment$bidsArgs<ExtArgs>
-  escrow?: boolean | Prisma.Assignment$escrowArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
   payment?: boolean | Prisma.Assignment$paymentArgs<ExtArgs>
   review?: boolean | Prisma.Assignment$reviewArgs<ExtArgs>
+  escrow?: boolean | Prisma.Assignment$escrowArgs<ExtArgs>
   _count?: boolean | Prisma.AssignmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
 }
 export type AssignmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   assignedExpert?: boolean | Prisma.Assignment$assignedExpertArgs<ExtArgs>
+  acceptedBid?: boolean | Prisma.Assignment$acceptedBidArgs<ExtArgs>
 }
 
 export type $AssignmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1457,9 +1649,10 @@ export type $AssignmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     student: Prisma.$StudentPayload<ExtArgs>
     assignedExpert: Prisma.$ExpertPayload<ExtArgs> | null
     bids: Prisma.$AssignmentBidPayload<ExtArgs>[]
-    escrow: Prisma.$EscrowPayload<ExtArgs> | null
+    acceptedBid: Prisma.$AssignmentBidPayload<ExtArgs> | null
     payment: Prisma.$PaymentPayload<ExtArgs> | null
     review: Prisma.$ReviewPayload<ExtArgs> | null
+    escrow: Prisma.$EscrowPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1467,11 +1660,12 @@ export type $AssignmentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     title: string
     description: string
     attachmentUrl: runtime.JsonValue | null
-    budget: number
+    budget: runtime.Decimal
     deadline: Date
     status: $Enums.AssignmentStatus
     assignedExpertId: string | null
     submissionUrl: string | null
+    acceptedBidId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["assignment"]>
@@ -1871,9 +2065,10 @@ export interface Prisma__AssignmentClient<T, Null = never, ExtArgs extends runti
   student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignedExpert<T extends Prisma.Assignment$assignedExpertArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$assignedExpertArgs<ExtArgs>>): Prisma.Prisma__ExpertClient<runtime.Types.Result.GetResult<Prisma.$ExpertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   bids<T extends Prisma.Assignment$bidsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AssignmentBidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  escrow<T extends Prisma.Assignment$escrowArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$escrowArgs<ExtArgs>>): Prisma.Prisma__EscrowClient<runtime.Types.Result.GetResult<Prisma.$EscrowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  acceptedBid<T extends Prisma.Assignment$acceptedBidArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$acceptedBidArgs<ExtArgs>>): Prisma.Prisma__AssignmentBidClient<runtime.Types.Result.GetResult<Prisma.$AssignmentBidPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payment<T extends Prisma.Assignment$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   review<T extends Prisma.Assignment$reviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$reviewArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  escrow<T extends Prisma.Assignment$escrowArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Assignment$escrowArgs<ExtArgs>>): Prisma.Prisma__EscrowClient<runtime.Types.Result.GetResult<Prisma.$EscrowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1908,11 +2103,12 @@ export interface AssignmentFieldRefs {
   readonly title: Prisma.FieldRef<"Assignment", 'String'>
   readonly description: Prisma.FieldRef<"Assignment", 'String'>
   readonly attachmentUrl: Prisma.FieldRef<"Assignment", 'Json'>
-  readonly budget: Prisma.FieldRef<"Assignment", 'Float'>
+  readonly budget: Prisma.FieldRef<"Assignment", 'Decimal'>
   readonly deadline: Prisma.FieldRef<"Assignment", 'DateTime'>
   readonly status: Prisma.FieldRef<"Assignment", 'AssignmentStatus'>
   readonly assignedExpertId: Prisma.FieldRef<"Assignment", 'String'>
   readonly submissionUrl: Prisma.FieldRef<"Assignment", 'String'>
+  readonly acceptedBidId: Prisma.FieldRef<"Assignment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Assignment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Assignment", 'DateTime'>
 }
@@ -2359,22 +2555,22 @@ export type Assignment$bidsArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Assignment.escrow
+ * Assignment.acceptedBid
  */
-export type Assignment$escrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Assignment$acceptedBidArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Escrow
+   * Select specific fields to fetch from the AssignmentBid
    */
-  select?: Prisma.EscrowSelect<ExtArgs> | null
+  select?: Prisma.AssignmentBidSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Escrow
+   * Omit specific fields from the AssignmentBid
    */
-  omit?: Prisma.EscrowOmit<ExtArgs> | null
+  omit?: Prisma.AssignmentBidOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.EscrowInclude<ExtArgs> | null
-  where?: Prisma.EscrowWhereInput
+  include?: Prisma.AssignmentBidInclude<ExtArgs> | null
+  where?: Prisma.AssignmentBidWhereInput
 }
 
 /**
@@ -2413,6 +2609,25 @@ export type Assignment$reviewArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.ReviewInclude<ExtArgs> | null
   where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * Assignment.escrow
+ */
+export type Assignment$escrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Escrow
+   */
+  select?: Prisma.EscrowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Escrow
+   */
+  omit?: Prisma.EscrowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EscrowInclude<ExtArgs> | null
+  where?: Prisma.EscrowWhereInput
 }
 
 /**

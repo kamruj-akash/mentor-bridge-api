@@ -6,7 +6,7 @@ model Assignment {
   title         String
   description   String
   attachmentUrl Json?
-  budget        Float
+  budget        Decimal          @db.Decimal(12, 2)
   deadline      DateTime
   status        AssignmentStatus @default(OPEN)
 
@@ -14,13 +14,16 @@ model Assignment {
   assignedExpert   Expert? @relation(fields: [assignedExpertId], references: [id])
   submissionUrl    String?
 
-  bids   AssignmentBid[]
-  escrow Escrow?
+  bids AssignmentBid[]
+
+  acceptedBidId String?        @unique
+  acceptedBid   AssignmentBid? @relation("AcceptedBid", fields: [acceptedBidId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   payment   Payment?
   review    Review?
+  escrow Escrow?
 
   @@index([studentId, title, budget])
   @@map("assignments")

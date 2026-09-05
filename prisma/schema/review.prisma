@@ -1,7 +1,7 @@
 model Review {
-  id        String     @id @default(uuid())
-  taskId    String     @unique
-  
+  id     String @id @default(uuid())
+  taskId String @unique
+
   task      Assignment @relation(fields: [taskId], references: [id])
   expertId  String
   expert    Expert     @relation(fields: [expertId], references: [id])
@@ -10,8 +10,8 @@ model Review {
 
   rating    Int // 1 to 5
   comment   String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("reviews")
 }
