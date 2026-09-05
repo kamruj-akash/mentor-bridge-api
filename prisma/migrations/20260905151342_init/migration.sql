@@ -44,18 +44,19 @@ CREATE TABLE "assignments" (
 );
 
 -- CreateTable
-CREATE TABLE "AssignmentBids" (
+CREATE TABLE "assignmentBids" (
     "id" TEXT NOT NULL,
-    "taskId" TEXT NOT NULL,
+    "assignmentId" TEXT NOT NULL,
     "expertId" TEXT NOT NULL,
     "proposedAmount" DOUBLE PRECISION NOT NULL,
     "estimatedDelivery" TIMESTAMP(3) NOT NULL,
     "coverNote" TEXT NOT NULL,
     "status" "BidStatus" NOT NULL DEFAULT 'PENDING',
+    "cancelReason" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "AssignmentBids_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "assignmentBids_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -95,13 +96,12 @@ CREATE TABLE "experts" (
 -- CreateTable
 CREATE TABLE "payments" (
     "id" TEXT NOT NULL,
-    "taskId" TEXT NOT NULL,
-    "transactionId" TEXT NOT NULL,
+    "assignmentId" TEXT NOT NULL,
+    "transactionId" TEXT,
     "amount" DOUBLE PRECISION NOT NULL,
-    "gateway" "PaymentGateway" NOT NULL,
     "status" "PaymentStatus" NOT NULL DEFAULT 'INITIATED',
-    "paymentGateway" TEXT NOT NULL DEFAULT 'bkash',
-    "merchantInvoiceNumber" TEXT NOT NULL,
+    "paymentGateway" "PaymentGateway" NOT NULL DEFAULT 'BKASH',
+    "merchantInvoiceNumber" TEXT,
     "bkashPaymentId" TEXT,
     "bkashTrxId" TEXT,
     "payerReference" TEXT,
@@ -165,7 +165,10 @@ CREATE TABLE "users" (
 CREATE INDEX "assignments_studentId_title_budget_idx" ON "assignments"("studentId", "title", "budget");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "AssignmentBids_taskId_expertId_key" ON "AssignmentBids"("taskId", "expertId");
+CREATE UNIQUE INDEX "assignmentBids_assignmentId_expertId_status_key" ON "assignmentBids"("assignmentId", "expertId", "status");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "assignmentBids_assignmentId_expertId_key" ON "assignmentBids"("assignmentId", "expertId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "escrows_taskId_key" ON "escrows"("taskId");
@@ -177,7 +180,7 @@ CREATE UNIQUE INDEX "experts_userId_key" ON "experts"("userId");
 CREATE INDEX "experts_university_isVerified_verificationStatus_idx" ON "experts"("university", "isVerified", "verificationStatus");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "payments_taskId_key" ON "payments"("taskId");
+CREATE UNIQUE INDEX "payments_assignmentId_key" ON "payments"("assignmentId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "payments_transactionId_key" ON "payments"("transactionId");
@@ -213,10 +216,10 @@ ALTER TABLE "assignments" ADD CONSTRAINT "assignments_studentId_fkey" FOREIGN KE
 ALTER TABLE "assignments" ADD CONSTRAINT "assignments_assignedExpertId_fkey" FOREIGN KEY ("assignedExpertId") REFERENCES "experts"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssignmentBids" ADD CONSTRAINT "AssignmentBids_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "assignmentBids" ADD CONSTRAINT "assignmentBids_assignmentId_fkey" FOREIGN KEY ("assignmentId") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AssignmentBids" ADD CONSTRAINT "AssignmentBids_expertId_fkey" FOREIGN KEY ("expertId") REFERENCES "experts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "assignmentBids" ADD CONSTRAINT "assignmentBids_expertId_fkey" FOREIGN KEY ("expertId") REFERENCES "experts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "escrows" ADD CONSTRAINT "escrows_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "assignments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -225,7 +228,7 @@ ALTER TABLE "escrows" ADD CONSTRAINT "escrows_taskId_fkey" FOREIGN KEY ("taskId"
 ALTER TABLE "experts" ADD CONSTRAINT "experts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payments" ADD CONSTRAINT "payments_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "assignments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payments" ADD CONSTRAINT "payments_assignmentId_fkey" FOREIGN KEY ("assignmentId") REFERENCES "assignments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "assignments"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
