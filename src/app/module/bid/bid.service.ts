@@ -252,25 +252,45 @@ const acceptBid = async (bidId: string, user: RequestUser) => {
       "Cannot accept a bid on a closed assignment",
     );
   }
+  if (bid.status !== BidStatus.PENDING) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Only pending bids can be accepted!",
+    );
+  }
   const transaction = await prisma.$transaction(async (tx) => {
-    await tx.assignment.update({
-      where: { id: bid.assignmentId },
+    const claimed = await tx.assignment.updateMany({
+      where: { id: bid.assignmentId, status: AssignmentStatus.OPEN },
       data: {
         status: AssignmentStatus.ASSIGNED,
         assignedExpertId: bid.expertId,
       },
     });
+
+    if (claimed.count === 0) {
+      throw new AppError(
+        httpStatus.CONFLICT,
+        "This assignment is no longer open for bids",
+      );
+    }
+
+    const acceptedBid = await tx.assignmentBid.update({
+      where: { id: bidId, status: BidStatus.PENDING },
+      data: { status: BidStatus.ACCEPTED },
+    });
+
     await tx.assignmentBid.updateMany({
-      where: { assignmentId: bid.assignmentId, id: { not: bidId } },
+      where: {
+        assignmentId: bid.assignmentId,
+        id: { not: bidId },
+        status: BidStatus.PENDING,
+      },
       data: {
         status: BidStatus.REJECTED,
         cancelReason: "Another bid has been accepted!",
       },
     });
-    const acceptedBid = await tx.assignmentBid.update({
-      where: { id: bidId },
-      data: { status: BidStatus.ACCEPTED },
-    });
+
     return acceptedBid;
   });
   return transaction;
